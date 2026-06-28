@@ -1,142 +1,330 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { supabase } from '../lib/supabase'
+import { useAuth } from './AuthContext'
 
 const DataContext = createContext()
 
-const initialActivities = [
-  { id: 1, type: 'Run', distance: 5.2, duration: 28, date: '2026-06-27', user: 'You' },
-  { id: 2, type: 'Cycle', distance: 22.5, duration: 55, date: '2026-06-25', user: 'You' },
-  { id: 3, type: 'Swim', distance: 1.0, duration: 35, date: '2026-06-23', user: 'You' },
-]
-
-const initialEvents = [
-  {
-    id: 1,
-    title: '5K Morning Run',
-    description: 'Join us for a casual 5K around Marina Bay. All levels welcome!',
-    date: '2026-07-05',
-    location: 'Marina Bay Sands',
-    participants: 24,
-    type: 'Run',
-  },
-  {
-    id: 2,
-    title: 'Century Ride Challenge',
-    description: '100km cycling challenge through East Coast Park. Complete it within 4 hours!',
-    date: '2026-07-12',
-    location: 'East Coast Park',
-    participants: 15,
-    type: 'Cycle',
-  },
-  {
-    id: 3,
-    title: 'Swim & Brunch',
-    description: 'Open water swim followed by brunch at the beach club.',
-    date: '2026-07-20',
-    location: 'Sentosa Beach',
-    participants: 12,
-    type: 'Swim',
-  },
-  {
-    id: 4,
-    title: '30-Day Fitness Challenge',
-    description: 'Log at least 30 minutes of activity every day for 30 days. Leaderboard prizes!',
-    date: '2026-07-01',
-    location: 'Virtual',
-    participants: 89,
-    type: 'Challenge',
-  },
-]
-
-const initialListings = [
-  {
-    id: 1,
-    title: 'Garmin Forerunner 265',
-    description: 'Used for 6 months, excellent condition. Comes with original box and charger.',
-    price: 350,
-    category: 'Electronics',
-    condition: 'Like New',
-    seller: 'RunnerJohn',
-    image: '⌚',
-    date: '2026-06-26',
-  },
-  {
-    id: 2,
-    title: 'Trek Domane AL 5 Road Bike',
-    description: 'Size 56cm. Well maintained, recently serviced. Perfect for long rides.',
-    price: 1200,
-    category: 'Cycling',
-    condition: 'Good',
-    seller: 'CyclistMike',
-    image: '🚲',
-    date: '2026-06-25',
-  },
-  {
-    id: 3,
-    title: 'Nike Vaporfly Next% 2',
-    description: 'Size US 10. Worn twice for races only. Still has plenty of life.',
-    price: 180,
-    category: 'Running',
-    condition: 'Like New',
-    seller: 'SpeedDemon',
-    image: '👟',
-    date: '2026-06-24',
-  },
-  {
-    id: 4,
-    title: 'TYR Wetsuit Men\'s M',
-    description: 'Full sleeve triathlon wetsuit. Perfect for open water swimming.',
-    price: 150,
-    category: 'Swimming',
-    condition: 'Good',
-    seller: 'TriAthlete99',
-    image: '🏊',
-    date: '2026-06-23',
-  },
-  {
-    id: 5,
-    title: 'Yoga Mat - Manduka PRO',
-    description: 'Barely used premium yoga mat. 6mm thick, great grip.',
-    price: 60,
-    category: 'Fitness',
-    condition: 'Like New',
-    seller: 'YogaFan',
-    image: '🧘',
-    date: '2026-06-22',
-  },
-]
-
 export function DataProvider({ children }) {
-  const [activities, setActivities] = useState(initialActivities)
-  const [events, setEvents] = useState(initialEvents)
-  const [listings, setListings] = useState(initialListings)
+  const { user, profile } = useAuth()
+  const [activities, setActivities] = useState([])
+  const [events, setEvents] = useState([])
+  const [listings, setListings] = useState([])
+  const [feedPosts, setFeedPosts] = useState([])
   const [joinedEvents, setJoinedEvents] = useState([])
+  const [following, setFollowing] = useState([])
+  const [followers, setFollowers] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  const addActivity = (activity) => {
-    setActivities((prev) => [{ ...activity, id: Date.now(), user: 'You' }, ...prev])
+  const showError = (msg) => {
+    setError(msg)
+    setTimeout(() => setError(null), 5000)
   }
 
-  const joinEvent = (eventId) => {
-    if (!joinedEvents.includes(eventId)) {
-      setJoinedEvents((prev) => [...prev, eventId])
-      setEvents((prev) =>
-        prev.map((e) => (e.id === eventId ? { ...e, participants: e.participants + 1 } : e))
-      )
+  // Fetch activities for current user
+  const fetchActivities = useCallback(async () => {
+    if (!user) return
+    const { data, error } = await supabase
+      .from('activities')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: false })
+
+    if (error) { showError('Failed to load activities'); return }
+    setActivities(data || [])
+  }, [user])
+
+  // Fetch events
+  const fetchEvents = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*, profiles(display_name, role)')
+      .gte('date', new Date().toISOString().split('T')[0])
+      .order('date', { ascending: true })
+
+    if (error) { showError('Failed to load events'); return }
+    setEvents(data || [])
+  }, [])
+
+  // Fetch marketplace listings
+  const fetchListings = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('listings')
+      .select('*, profiles(display_name, role)')
+      .order('created_at', { ascending: false })
+
+    if (error) { showError('Failed to load listings'); return }
+    setListings(data || [])
+  }, [])
+
+  // Fetch community feed posts
+  const fetchFeedPosts = useCallback(async (offset = 0, limit = 20) => {
+    if (!user) return []
+    const { data, error } = await supabase
+      .from('feed_posts')
+      .select('*, profiles(display_name, avatar_url, role), activities(*)')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (error) { showError('Failed to load feed'); return [] }
+    if (offset === 0) {
+      setFeedPosts(data || [])
+    } else {
+      setFeedPosts(prev => [...prev, ...(data || [])])
     }
+    return data || []
+  }, [user])
+
+  // Fetch joined events
+  const fetchJoinedEvents = useCallback(async () => {
+    if (!user) return
+    const { data, error } = await supabase
+      .from('event_participants')
+      .select('event_id')
+      .eq('user_id', user.id)
+
+    if (!error && data) {
+      setJoinedEvents(data.map(d => d.event_id))
+    }
+  }, [user])
+
+  // Fetch following/followers
+  const fetchFollowing = useCallback(async () => {
+    if (!user) return
+    const { data } = await supabase
+      .from('follows')
+      .select('following_id')
+      .eq('follower_id', user.id)
+
+    setFollowing(data?.map(d => d.following_id) || [])
+  }, [user])
+
+  const fetchFollowers = useCallback(async () => {
+    if (!user) return
+    const { data } = await supabase
+      .from('follows')
+      .select('follower_id')
+      .eq('following_id', user.id)
+
+    setFollowers(data?.map(d => d.follower_id) || [])
+  }, [user])
+
+  useEffect(() => {
+    if (user) {
+      setLoading(true)
+      Promise.all([
+        fetchActivities(),
+        fetchEvents(),
+        fetchListings(),
+        fetchJoinedEvents(),
+        fetchFollowing(),
+        fetchFollowers(),
+      ]).finally(() => setLoading(false))
+    }
+  }, [user, fetchActivities, fetchEvents, fetchListings, fetchJoinedEvents, fetchFollowing, fetchFollowers])
+
+  // Add activity
+  async function addActivity(activity) {
+    if (!user) return
+    const newActivity = {
+      ...activity,
+      user_id: user.id,
+      pace: activity.duration / activity.distance,
+    }
+    const { data, error } = await supabase
+      .from('activities')
+      .insert(newActivity)
+      .select()
+      .single()
+
+    if (error) { showError('Failed to save activity'); return null }
+    setActivities(prev => [data, ...prev])
+    return data
   }
 
-  const addListing = (listing) => {
-    setListings((prev) => [{ ...listing, id: Date.now(), seller: 'You', date: new Date().toISOString().split('T')[0] }, ...prev])
+  // Share activity to feed
+  async function shareToFeed(activityId, caption = '') {
+    if (!user) return
+    const { data, error } = await supabase
+      .from('feed_posts')
+      .insert({
+        user_id: user.id,
+        activity_id: activityId,
+        caption,
+        likes_count: 0,
+        comments_count: 0,
+      })
+      .select('*, profiles(display_name, avatar_url, role), activities(*)')
+      .single()
+
+    if (error) { showError('Failed to share activity'); return }
+    setFeedPosts(prev => [data, ...prev])
   }
 
-  return (
-    <DataContext.Provider
-      value={{ activities, addActivity, events, joinEvent, joinedEvents, listings, addListing }}
-    >
-      {children}
-    </DataContext.Provider>
-  )
+  // Like a post
+  async function likePost(postId) {
+    if (!user) return
+    const { error } = await supabase.from('likes').insert({
+      user_id: user.id,
+      post_id: postId
+    })
+
+    if (error) {
+      if (error.code === '23505') return // already liked
+      showError('Failed to like post')
+      return
+    }
+
+    await supabase.from('feed_posts').update({
+      likes_count: supabase.rpc ? undefined : undefined
+    }).eq('id', postId)
+
+    setFeedPosts(prev => prev.map(p =>
+      p.id === postId ? { ...p, likes_count: (p.likes_count || 0) + 1, user_liked: true } : p
+    ))
+  }
+
+  // Unlike a post
+  async function unlikePost(postId) {
+    if (!user) return
+    const { error } = await supabase.from('likes')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('post_id', postId)
+
+    if (error) { showError('Failed to unlike post'); return }
+    setFeedPosts(prev => prev.map(p =>
+      p.id === postId ? { ...p, likes_count: Math.max(0, (p.likes_count || 0) - 1), user_liked: false } : p
+    ))
+  }
+
+  // Add comment
+  async function addComment(postId, content) {
+    if (!user) return
+    const { data, error } = await supabase
+      .from('comments')
+      .insert({ post_id: postId, user_id: user.id, content })
+      .select('*, profiles(display_name, avatar_url)')
+      .single()
+
+    if (error) { showError('Failed to add comment'); return null }
+    setFeedPosts(prev => prev.map(p =>
+      p.id === postId ? { ...p, comments_count: (p.comments_count || 0) + 1 } : p
+    ))
+    return data
+  }
+
+  // Fetch comments for a post
+  async function fetchComments(postId, offset = 0, limit = 10) {
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*, profiles(display_name, avatar_url)')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    if (error) { showError('Failed to load comments'); return [] }
+    return data || []
+  }
+
+  // Join event
+  async function joinEvent(eventId) {
+    if (!user || joinedEvents.includes(eventId)) return
+    const { error } = await supabase
+      .from('event_participants')
+      .insert({ event_id: eventId, user_id: user.id })
+
+    if (error) { showError('Failed to join event'); return }
+    setJoinedEvents(prev => [...prev, eventId])
+    setEvents(prev => prev.map(e =>
+      e.id === eventId ? { ...e, participant_count: (e.participant_count || 0) + 1 } : e
+    ))
+  }
+
+  // Create event (merchant only)
+  async function createEvent(eventData) {
+    if (!user || profile?.role !== 'merchant') return
+    const { data, error } = await supabase
+      .from('events')
+      .insert({ ...eventData, merchant_id: user.id, participant_count: 0 })
+      .select('*, profiles(display_name, role)')
+      .single()
+
+    if (error) { showError('Failed to create event'); return null }
+    setEvents(prev => [...prev, data].sort((a, b) => new Date(a.date) - new Date(b.date)))
+    return data
+  }
+
+  // Create listing (merchant only)
+  async function createListing(listingData) {
+    if (!user || profile?.role !== 'merchant') return
+    const { data, error } = await supabase
+      .from('listings')
+      .insert({ ...listingData, seller_id: user.id })
+      .select('*, profiles(display_name, role)')
+      .single()
+
+    if (error) { showError('Failed to create listing'); return null }
+    setListings(prev => [data, ...prev])
+    return data
+  }
+
+  // Follow user
+  async function followUser(userId) {
+    if (!user || userId === user.id) return
+    const { error } = await supabase
+      .from('follows')
+      .insert({ follower_id: user.id, following_id: userId })
+
+    if (error) { showError('Failed to follow user'); return }
+    setFollowing(prev => [...prev, userId])
+  }
+
+  // Unfollow user
+  async function unfollowUser(userId) {
+    if (!user) return
+    const { error } = await supabase
+      .from('follows')
+      .delete()
+      .eq('follower_id', user.id)
+      .eq('following_id', userId)
+
+    if (error) { showError('Failed to unfollow user'); return }
+    setFollowing(prev => prev.filter(id => id !== userId))
+  }
+
+  const value = {
+    activities,
+    events,
+    listings,
+    feedPosts,
+    joinedEvents,
+    following,
+    followers,
+    loading,
+    error,
+    addActivity,
+    shareToFeed,
+    likePost,
+    unlikePost,
+    addComment,
+    fetchComments,
+    fetchFeedPosts,
+    joinEvent,
+    createEvent,
+    createListing,
+    followUser,
+    unfollowUser,
+    fetchActivities,
+    fetchEvents,
+    fetchListings,
+  }
+
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>
 }
 
 export function useData() {
-  return useContext(DataContext)
+  const context = useContext(DataContext)
+  if (!context) throw new Error('useData must be used within DataProvider')
+  return context
 }

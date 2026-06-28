@@ -1,70 +1,45 @@
-============================================
-  AnytimeFit - Setup & Run Instructions
-============================================
+FitCarousell - Setup & Run Guide
+=================================
 
-PREREQUISITES
--------------
-1. Install Node.js (v18 or above)
-   Download from: https://nodejs.org/
+Prerequisites:
+- Node.js 18+
+- A Supabase account (free tier works)
 
-2. Verify installation by opening a terminal and running:
-   node --version
-   npm --version
-
-
-STEPS TO RUN
-------------
-1. Open a terminal and navigate to the project folder:
-   cd path\to\AnytimeFit
-
-2. Install dependencies:
-   npm install
-
-3. Start the development server:
-   npm run dev
-
-4. Open your browser and go to:
-   http://localhost:5173/
-
-   The app will hot-reload as you make changes to the code.
-
-
-BUILD FOR PRODUCTION
---------------------
-1. Run the build command:
-   npm run build
-
-2. Preview the production build locally:
-   npm run preview
-
-   This serves the built files at http://localhost:4173/
-
-
-PROJECT STRUCTURE
+1. SUPABASE SETUP
 -----------------
-AnytimeFit/
-├── index.html              - Entry HTML file
-├── package.json            - Dependencies and scripts
-├── vite.config.js          - Vite configuration
-└── src/
-    ├── main.jsx            - React entry point
-    ├── index.css           - Global styles
-    ├── App.jsx             - App routes and layout
-    ├── context/
-    │   └── DataContext.jsx - Shared state (activities, events, listings)
-    ├── components/
-    │   ├── Layout.jsx      - Navigation and page layout
-    │   └── Layout.css
-    └── pages/
-        ├── Dashboard.jsx   - Home page with stats overview
-        ├── Activities.jsx  - Log and view fitness activities
-        ├── Events.jsx      - Browse and join events/challenges
-        ├── Marketplace.jsx - Buy/sell sports gear
-        └── Profile.jsx     - User profile and achievements
+a) Create a new project at https://supabase.com
+b) Go to SQL Editor and run the contents of supabase/schema.sql
+c) Copy your project URL and anon key from Settings > API
 
+2. ENVIRONMENT VARIABLES
+------------------------
+Create a .env file in the project root:
 
-NOTES
------
-- All data is stored in memory (React state). It resets on page refresh.
-- No backend or database is required for this prototype.
-- To stop the dev server, press Ctrl+C in the terminal.
+  VITE_SUPABASE_URL=https://your-project.supabase.co
+  VITE_SUPABASE_ANON_KEY=your-anon-key
+
+3. INSTALL & RUN
+----------------
+  npm install
+  npm run dev
+
+The app will start at http://localhost:5173
+
+4. USER ROLES
+-------------
+- Register as "Individual" to track activities and use the social feed
+- Register as "Merchant" to create events and list products for sale
+
+5. KEY FEATURES
+---------------
+- Real-time activity tracker (Run, Cycle, Swim, Walk) with start/pause/stop
+- Manual activity logging
+- Community feed with likes, comments, and follows
+- Merchant-driven events and marketplace
+- Dark-themed Strava-inspired UI
+- Responsive design (mobile bottom tabs, desktop top nav)
+
+6. BUILD FOR PRODUCTION
+-----------------------
+  npm run build
+  npm run preview
