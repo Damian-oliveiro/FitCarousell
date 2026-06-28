@@ -1,0 +1,70 @@
+============================================
+  AnytimeFit - Setup & Run Instructions
+============================================
+
+PREREQUISITES
+-------------
+1. Install Node.js (v18 or above)
+   Download from: https://nodejs.org/
+
+2. Verify installation by opening a terminal and running:
+   node --version
+   npm --version
+
+
+STEPS TO RUN
+------------
+1. Open a terminal and navigate to the project folder:
+   cd path\to\AnytimeFit
+
+2. Install dependencies:
+   npm install
+
+3. Start the development server:
+   npm run dev
+
+4. Open your browser and go to:
+   http://localhost:5173/
+
+   The app will hot-reload as you make changes to the code.
+
+
+BUILD FOR PRODUCTION
+--------------------
+1. Run the build command:
+   npm run build
+
+2. Preview the production build locally:
+   npm run preview
+
+   This serves the built files at http://localhost:4173/
+
+
+PROJECT STRUCTURE
+-----------------
+AnytimeFit/
+├── index.html              - Entry HTML file
+├── package.json            - Dependencies and scripts
+├── vite.config.js          - Vite configuration
+└── src/
+    ├── main.jsx            - React entry point
+    ├── index.css           - Global styles
+    ├── App.jsx             - App routes and layout
+    ├── context/
+    │   └── DataContext.jsx - Shared state (activities, events, listings)
+    ├── components/
+    │   ├── Layout.jsx      - Navigation and page layout
+    │   └── Layout.css
+    └── pages/
+        ├── Dashboard.jsx   - Home page with stats overview
+        ├── Activities.jsx  - Log and view fitness activities
+        ├── Events.jsx      - Browse and join events/challenges
+        ├── Marketplace.jsx - Buy/sell sports gear
+        └── Profile.jsx     - User profile and achievements
+
+
+NOTES
+-----
+- All data is stored in memory (React state). It resets on page refresh.
+- No backend or database is required for this prototype.
+- To stop the dev server, press Ctrl+C in the terminal.

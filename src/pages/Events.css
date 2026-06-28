@@ -1,0 +1,89 @@
+.events h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-card .event-type-badge {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #4CAF50;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.event-card .event-type-badge.challenge {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.event-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.event-card .event-desc {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.event-card .event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #888;
+}
+
+.event-card .event-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-card .event-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.event-card .participants {
+  font-size: 13px;
+  color: #888;
+}
+
+.btn-join {
+  background: #4CAF50;
+  color: white;
+  padding: 8px 20px;
+  font-size: 13px;
+}
+
+.btn-joined {
+  background: #e0e0e0;
+  color: #888;
+  padding: 8px 20px;
+  font-size: 13px;
+}
