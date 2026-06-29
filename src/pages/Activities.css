@@ -389,3 +389,94 @@
     text-align: center;
   }
 }
+
+/* ===== GPS TRACKING STATS ===== */
+.tracker-gps-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 16px 0;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.gps-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gps-stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.gps-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* GPS accuracy indicator */
+.gps-accuracy {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.gps-accuracy.good {
+  background: rgba(72, 187, 120, 0.15);
+  color: #48bb78;
+}
+
+.gps-accuracy.fair {
+  background: rgba(236, 201, 75, 0.15);
+  color: #ecc94b;
+}
+
+.gps-accuracy.poor {
+  background: rgba(229, 62, 62, 0.15);
+  color: #e53e3e;
+}
+
+/* GPS error message */
+.gps-error {
+  font-size: 0.85rem;
+  color: #e53e3e;
+  background: rgba(229, 62, 62, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* GPS distance result on completion */
+.gps-distance-result {
+  margin: 16px 0 20px;
+}
+
+.gps-distance-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.gps-distance-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .tracker-gps-stats {
+    gap: 16px;
+  }
+
+  .gps-stat-value {
+    font-size: 1.2rem;
+  }
+}

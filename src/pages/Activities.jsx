@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useData } from '../context/DataContext'
 import { useAuth } from '../context/AuthContext'
+import { useGPS } from '../hooks/useGPS'
 import './Activities.css'
 
 const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
@@ -11,6 +12,7 @@ const SESSION_STORAGE_KEY = 'fitcarousell_active_session'
 export default function Activities() {
   const { activities, addActivity, shareToFeed } = useData()
   const { profile } = useAuth()
+  const gps = useGPS()
 
   // Tracker state
   const [trackerState, setTrackerState] = useState('idle') // idle, selecting, running, paused, stopped
@@ -90,34 +92,46 @@ export default function Activities() {
     setElapsedTime(0)
     setStartedAt(Date.now())
     setTrackerState('running')
+    gps.startTracking()
   }
 
   const handlePause = () => {
     setTrackerState('paused')
+    gps.pauseTracking()
   }
 
   const handleResume = () => {
     setTrackerState('running')
+    gps.resumeTracking()
   }
 
   const handleStop = () => {
     setTrackerState('stopped')
+    gps.stopTracking()
     localStorage.removeItem(SESSION_STORAGE_KEY)
   }
 
   const handleSubmitDistance = async () => {
-    const dist = parseFloat(distance)
-    if (!distance || isNaN(dist) || dist <= 0 || dist > 9999.99) {
-      setDistanceError('Enter a valid distance between 0.01 and 9999.99 km')
-      return
+    // Use GPS distance if available, otherwise require manual input
+    let dist = gps.totalDistance
+
+    if (dist < 0.01) {
+      dist = parseFloat(distance)
+      if (!distance || isNaN(dist) || dist <= 0 || dist > 9999.99) {
+        setDistanceError('Enter a valid distance between 0.01 and 9999.99 km')
+        return
+      }
     }
+
     setDistanceError('')
 
-    const pace = (elapsedTime / 60) / dist
+    const durationMinutes = Math.max(1, Math.round(elapsedTime / 60))
+    const pace = durationMinutes / dist
+
     const activity = {
       type: selectedType,
-      distance: dist,
-      duration: Math.round(elapsedTime / 60),
+      distance: parseFloat(dist.toFixed(2)),
+      duration: durationMinutes,
       pace: parseFloat(pace.toFixed(2)),
       date: new Date().toISOString().split('T')[0],
     }
@@ -151,6 +165,7 @@ export default function Activities() {
     setSavedActivity(null)
     setShareCaption('')
     setShowSharePrompt(false)
+    gps.resetTracking()
   }
 
   // Recovery handlers
@@ -269,9 +284,42 @@ export default function Activities() {
               {typeIcons[selectedType]} {selectedType}
             </div>
             <div className="tracker-timer">{formatTime(elapsedTime)}</div>
+
+            {/* Live GPS Stats */}
+            <div className="tracker-gps-stats">
+              <div className="gps-stat">
+                <span className="gps-stat-value">{gps.totalDistance.toFixed(2)}</span>
+                <span className="gps-stat-label">km</span>
+              </div>
+              <div className="gps-stat">
+                <span className="gps-stat-value">
+                  {gps.totalDistance > 0 ? ((elapsedTime / 60) / gps.totalDistance).toFixed(1) : '0.0'}
+                </span>
+                <span className="gps-stat-label">min/km</span>
+              </div>
+              <div className="gps-stat">
+                <span className="gps-stat-value">{gps.currentSpeed.toFixed(1)}</span>
+                <span className="gps-stat-label">km/h</span>
+              </div>
+            </div>
+
+            {/* GPS accuracy indicator */}
+            {gps.gpsAccuracy && (
+              <div className={`gps-accuracy ${gps.gpsAccuracy < 10 ? 'good' : gps.gpsAccuracy < 25 ? 'fair' : 'poor'}`}>
+                GPS: ±{Math.round(gps.gpsAccuracy)}m
+              </div>
+            )}
+
+            {/* GPS Error */}
+            {gps.gpsError && (
+              <div className="gps-error">
+                ⚠️ {gps.gpsError}
+              </div>
+            )}
+
             <div className="tracker-status">
               {trackerState === 'paused' && <span className="status-paused">PAUSED</span>}
-              {trackerState === 'running' && <span className="status-running">RECORDING</span>}
+              {trackerState === 'running' && <span className="status-running">● RECORDING</span>}
             </div>
             <div className="tracker-controls">
               {trackerState === 'running' ? (
@@ -290,19 +338,29 @@ export default function Activities() {
             <p className="complete-info">
               {typeIcons[selectedType]} {selectedType} — {formatTime(elapsedTime)}
             </p>
-            <label className="distance-input">
-              Distance (km)
-              <input
-                type="number"
-                step="0.01"
-                min="0.01"
-                max="9999.99"
-                value={distance}
-                onChange={(e) => setDistance(e.target.value)}
-                placeholder="Enter distance in km"
-              />
-              {distanceError && <span className="field-error">{distanceError}</span>}
-            </label>
+
+            {/* Show GPS distance if captured, otherwise manual input */}
+            {gps.totalDistance >= 0.01 ? (
+              <div className="gps-distance-result">
+                <div className="gps-distance-value">{gps.totalDistance.toFixed(2)} km</div>
+                <div className="gps-distance-label">Distance tracked by GPS</div>
+              </div>
+            ) : (
+              <label className="distance-input">
+                Distance (km)
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  max="9999.99"
+                  value={distance}
+                  onChange={(e) => setDistance(e.target.value)}
+                  placeholder="GPS didn't detect movement — enter distance"
+                />
+                {distanceError && <span className="field-error">{distanceError}</span>}
+              </label>
+            )}
+
             <button className="btn-primary" onClick={handleSubmitDistance}>Save Activity</button>
             <button className="btn-cancel" onClick={resetTracker}>Discard</button>
           </div>
