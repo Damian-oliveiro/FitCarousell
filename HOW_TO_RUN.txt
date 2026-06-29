@@ -13,33 +13,58 @@ c) Copy your project URL and anon key from Settings > API
 
 2. ENVIRONMENT VARIABLES
 ------------------------
-Create a .env file in the project root:
+Create a .env file in the project root (DO NOT commit this file):
 
-  VITE_SUPABASE_URL=https://your-project.supabase.co
-  VITE_SUPABASE_ANON_KEY=your-anon-key
+  VITE_SUPABASE_URL=<your-supabase-project-url>
+  VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+
+Ask a team member for the credentials or get them from your Supabase dashboard.
 
 3. INSTALL & RUN
 ----------------
   npm install
   npm run dev
 
-The app will start at http://localhost:5173
+The app will start at https://localhost:5173 (served over HTTPS for GPS support).
 
-4. USER ROLES
+4. TESTING ON MOBILE (iPhone/Android)
+--------------------------------------
+The dev server is configured to serve over HTTPS on your local network:
+
+  npm run dev
+
+Look for the "Network:" URL in the terminal output, e.g.:
+  Network: https://192.168.x.x:5173/
+
+Open that URL on your phone (same WiFi network required).
+- You'll see a certificate warning — tap "Advanced" > "Proceed" to accept it.
+- HTTPS is required for GPS/location features to work on mobile browsers.
+
+5. USER ROLES
 -------------
 - Register as "Individual" to track activities and use the social feed
 - Register as "Merchant" to create events and list products for sale
 
-5. KEY FEATURES
+6. KEY FEATURES
 ---------------
-- Real-time activity tracker (Run, Cycle, Swim, Walk) with start/pause/stop
+- GPS activity tracking with live map (Run, Cycle, Swim, Walk)
+  - Real-time distance, pace, and speed display
+  - iOS-specific optimizations for Safari GPS throttling
+  - Live route map with current position indicator
+  - Falls back to manual distance entry if GPS unavailable
 - Manual activity logging
 - Community feed with likes, comments, and follows
-- Merchant-driven events and marketplace
+- Groups with challenges and events
+- Merchant-driven events and marketplace with chat
+- Seller ratings system
 - Dark-themed Strava-inspired UI
 - Responsive design (mobile bottom tabs, desktop top nav)
 
-6. BUILD FOR PRODUCTION
+7. BUILD FOR PRODUCTION
 -----------------------
   npm run build
   npm run preview
+
+8. RUNNING TESTS
+----------------
+  npm run test
