@@ -169,18 +169,18 @@ export default function Events() {
                   {event.event_type || event.type}
                 </span>
                 {event.profiles?.role === 'merchant' && (
-                  <span className="merchant-badge">🏪 {merchantName}</span>
+                  <span className="merchant-badge">PRO · {merchantName}</span>
                 )}
               </div>
               <h3>{event.title}</h3>
               <p className="event-desc">{event.description}</p>
               <div className="event-meta">
-                <span>📅 {event.date} {event.time && `at ${event.time}`}</span>
-                <span>📍 {event.location}</span>
+                <span>{event.date} {event.time && `at ${event.time}`}</span>
+                <span>{event.location}</span>
               </div>
               <div className="event-footer">
                 <span className="participants">
-                  👥 {event.participant_count || 0}/{event.max_participants || '∞'}
+                  {event.participant_count || 0}/{event.max_participants || '∞'} joined
                 </span>
                 <button
                   className={isJoined ? 'btn-joined' : isFull ? 'btn-full' : 'btn-join'}

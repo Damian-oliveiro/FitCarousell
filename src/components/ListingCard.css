@@ -1,0 +1,116 @@
+/* ===== LISTING CARD ===== */
+.listing-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.listing-card:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.listing-image {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  background: var(--bg-secondary);
+}
+
+.listing-info {
+  padding: 16px;
+}
+
+.listing-title {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.listing-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.condition-badge,
+.category-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.condition-badge {
+  background: #ecc94b20;
+  color: #ecc94b;
+}
+
+.category-badge {
+  background: #2196f320;
+  color: var(--accent-info);
+}
+
+.listing-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent-primary);
+}
+
+.seller {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.merchant-badge {
+  font-size: 0.85rem;
+}
+
+
+/* ===== SPOTLIGHT BADGE ===== */
+.listing-card.spotlighted {
+  border: 2px solid #ecc94b;
+  position: relative;
+}
+
+.spotlight-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(135deg, #f6e05e, #ecc94b);
+  color: #744210;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+/* ===== LISTING RATING ===== */
+.listing-rating {
+  margin-top: 8px;
+}

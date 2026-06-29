@@ -1,0 +1,70 @@
+/* ===== OFFER FORM ===== */
+.offer-form {
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.offer-form__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.offer-form__input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.offer-form__currency {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.offer-form__input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.offer-form__input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.offer-form__input:disabled {
+  opacity: 0.6;
+}
+
+.offer-form__submit {
+  white-space: nowrap;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+}
+
+.offer-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.offer-form__error {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #fc8181;
+}
+
+.offer-form__unavailable {
+  color: #fc8181;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px 0;
+}

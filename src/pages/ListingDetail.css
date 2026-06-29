@@ -1,0 +1,307 @@
+/* ===== LISTING DETAIL PAGE ===== */
+.listing-detail-page {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Loading State */
+.listing-detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: var(--text-secondary);
+}
+
+.listing-detail-loading .loading-spinner {
+  margin-bottom: 16px;
+}
+
+/* Error State */
+.listing-detail-error {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.listing-detail-error h2 {
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.listing-detail-error p {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* Back Button */
+.listing-detail-page .btn-back {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.listing-detail-page .btn-back:hover {
+  color: var(--text-primary);
+}
+
+/* Detail Card */
+.listing-detail-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.listing-detail-card .listing-detail-image {
+  font-size: 5rem;
+  text-align: center;
+  padding: 40px;
+  background: var(--bg-secondary);
+}
+
+.listing-detail-content {
+  padding: 32px;
+}
+
+/* Header with title and status */
+.listing-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.listing-detail-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.status-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+  background: #48bb7820;
+  color: #48bb78;
+}
+
+.status-badge.sold {
+  background: #e53e3e20;
+  color: #e53e3e;
+}
+
+/* Price */
+.listing-detail-card .listing-detail-price {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 16px;
+}
+
+/* Badges */
+.listing-detail-badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.listing-detail-badges .condition-badge,
+.listing-detail-badges .category-badge {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.listing-detail-badges .condition-badge {
+  background: #ecc94b20;
+  color: #ecc94b;
+}
+
+.listing-detail-badges .category-badge {
+  background: #2196f320;
+  color: var(--accent-info);
+}
+
+/* Description */
+.listing-detail-description {
+  margin-bottom: 24px;
+}
+
+.listing-detail-description h3 {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.listing-detail-description p {
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Seller Info */
+.listing-detail-seller {
+  margin-bottom: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.listing-detail-seller h3 {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.seller-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.seller-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.listing-detail-seller .merchant-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  background: #9f7aea20;
+  color: #9f7aea;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.listing-detail-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.listing-detail-actions .btn-primary {
+  flex: 1;
+  min-width: 150px;
+}
+
+.listing-detail-actions .btn-secondary {
+  flex: 1;
+  min-width: 150px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.listing-detail-actions .btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+.listing-detail-actions .btn-spotlight {
+  flex: 1;
+  min-width: 150px;
+  background: linear-gradient(135deg, #f6e05e, #ecc94b);
+  color: #744210;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.listing-detail-actions .btn-spotlight:hover {
+  opacity: 0.9;
+}
+
+/* Offer Section */
+.listing-detail-offer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .listing-detail-content {
+    padding: 20px;
+  }
+
+  .listing-detail-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .listing-detail-card .listing-detail-price {
+    font-size: 1.5rem;
+  }
+
+  .listing-detail-actions {
+    flex-direction: column;
+  }
+
+  .listing-detail-actions .btn-primary,
+  .listing-detail-actions .btn-secondary,
+  .listing-detail-actions .btn-spotlight {
+    min-width: unset;
+  }
+}
+
+
+/* ===== SPOTLIGHT STYLES ===== */
+.status-badge.spotlight {
+  background: linear-gradient(135deg, #f6e05e, #ecc94b);
+  color: #744210;
+}
+
+.listing-detail-actions .btn-spotlight:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spotlight-message {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.spotlight-message--success {
+  background: #48bb7820;
+  color: #48bb78;
+}
+
+.spotlight-message--error {
+  background: #e53e3e20;
+  color: #e53e3e;
+}
+
+/* ===== SELLER RATING IN DETAIL ===== */
+.seller-rating-display {
+  margin-top: 8px;
+}
+
+.listing-detail-rating {
+  margin-top: 20px;
+}

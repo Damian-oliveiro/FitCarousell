@@ -1,0 +1,123 @@
+/* ===== FEED CARD ===== */
+.feed-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast);
+}
+
+.feed-card:hover {
+  transform: translateY(-1px);
+}
+
+/* Header */
+.feed-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.feed-card__avatar {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.feed-card__avatar-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.feed-card__avatar-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.feed-card__user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-card__display-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.feed-card__timestamp {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.feed-card__activity-icon {
+  font-size: 1.5rem;
+}
+
+/* Stats */
+.feed-card__stats {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 12px;
+}
+
+.feed-card__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feed-card__stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.feed-card__stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Caption */
+.feed-card__caption {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .feed-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .feed-card__stats {
+    gap: 16px;
+  }
+
+  .feed-card__stat-value {
+    font-size: 1rem;
+  }
+}

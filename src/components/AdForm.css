@@ -1,0 +1,159 @@
+/* ===== AD FORM OVERLAY ===== */
+.ad-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* ===== AD FORM ===== */
+.ad-form {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-elevated);
+}
+
+.ad-form__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ad-form__header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.ad-form__close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.ad-form__close:hover {
+  background: var(--bg-hover);
+}
+
+/* ===== FORM FIELDS ===== */
+.ad-form__field {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.ad-form__field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.ad-form__field input,
+.ad-form__field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+.ad-form__field input:focus,
+.ad-form__field select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.ad-form__char-count {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+/* ===== ERROR ===== */
+.ad-form__error {
+  color: var(--error-color, #e53935);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  background: rgba(229, 57, 53, 0.1);
+  border-radius: 6px;
+}
+
+/* ===== ACTIONS ===== */
+.ad-form__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.ad-form__cancel {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ad-form__cancel:hover {
+  background: var(--border-color);
+}
+
+.ad-form__submit {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.ad-form__submit:hover {
+  opacity: 0.9;
+}
+
+.ad-form__submit:disabled,
+.ad-form__cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+  .ad-form-overlay {
+    padding: 12px;
+  }
+
+  .ad-form {
+    padding: 20px;
+  }
+}

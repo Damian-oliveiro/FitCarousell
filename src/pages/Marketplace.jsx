@@ -1,156 +1,104 @@
-import React, { useState } from 'react'
-import { useData } from '../context/DataContext'
+import React, { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { supabase } from '../lib/supabase'
+import { generateMockListings } from '../utils/mockData'
+import ListingCard from '../components/ListingCard'
+import CreateListingForm from '../components/CreateListingForm'
+import SpotlightSection from '../components/SpotlightSection'
+import { isSpotlightActive, sortListingsWithSpotlight } from '../utils/spotlightUtils'
 import './Marketplace.css'
 
+const CATEGORIES = ['All', 'Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
+const USE_MOCK_DATA = true // Set to false when Supabase is connected with real data
+
 export default function Marketplace() {
-  const { listings, createListing } = useData()
   const { isMerchant } = useAuth()
 
-  const [showForm, setShowForm] = useState(false)
-  const [filter, setFilter] = useState('All')
+  const [listings, setListings] = useState([])
+  const [spotlightIds, setSpotlightIds] = useState(new Set())
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [search, setSearch] = useState('')
-  const [selectedListing, setSelectedListing] = useState(null)
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    price: '',
-    category: 'Running',
-    condition: 'Like New',
-    image: '📦',
-  })
+  const [filter, setFilter] = useState('All')
+  const [showCreateForm, setShowCreateForm] = useState(false)
 
-  const categories = ['All', 'Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
-  const emojis = ['👟', '🚲', '🏊', '🧘', '⌚', '📦', '🎽', '💪']
+  useEffect(() => {
+    fetchListings()
+  }, [])
 
-  const filteredListings = listings.filter(l => {
-    const matchCategory = filter === 'All' || l.category === filter
-    const matchSearch = !search || l.title.toLowerCase().includes(search.toLowerCase())
-    return matchCategory && matchSearch
-  })
+  async function fetchListings() {
+    setLoading(true)
+    setError(null)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!form.title || !form.price || parseFloat(form.price) <= 0) return
-
-    const result = await createListing({
-      title: form.title,
-      description: form.description,
-      price: parseFloat(form.price),
-      category: form.category,
-      condition: form.condition,
-      image: form.image,
-    })
-
-    if (result) {
-      setForm({ title: '', description: '', price: '', category: 'Running', condition: 'Like New', image: '📦' })
-      setShowForm(false)
+    if (USE_MOCK_DATA) {
+      const mockListings = generateMockListings(25)
+      setListings(mockListings)
+      setSpotlightIds(new Set([mockListings[0]?.id, mockListings[1]?.id, mockListings[2]?.id].filter(Boolean)))
+      setLoading(false)
+      return
     }
+
+    // Fetch listings and active spotlights in parallel
+    const [listingsResult, spotlightsResult] = await Promise.all([
+      supabase
+        .from('listings')
+        .select('*, profiles(display_name, role)')
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('listing_spotlights')
+        .select('listing_id, expires_at'),
+    ])
+
+    if (listingsResult.error) {
+      // Fallback to mock data
+      const mockListings = generateMockListings(25)
+      setListings(mockListings)
+      setLoading(false)
+      return
+    }
+
+    // Filter active spotlights client-side
+    const activeSpotlightListingIds = new Set(
+      (spotlightsResult.data || [])
+        .filter((s) => isSpotlightActive(s))
+        .map((s) => s.listing_id)
+    )
+    setSpotlightIds(activeSpotlightListingIds)
+    setListings(listingsResult.data || [])
+    setLoading(false)
   }
 
-  if (selectedListing) {
-    return (
-      <div className="marketplace">
-        <button className="btn-back" onClick={() => setSelectedListing(null)}>
-          ← Back to Marketplace
-        </button>
-        <div className="listing-detail">
-          <div className="listing-detail-image">{selectedListing.image}</div>
-          <h2>{selectedListing.title}</h2>
-          <div className="listing-detail-meta">
-            <span className="condition-badge">{selectedListing.condition}</span>
-            <span className="category-badge">{selectedListing.category}</span>
-          </div>
-          <p className="listing-detail-price">${selectedListing.price}</p>
-          <p className="listing-detail-desc">{selectedListing.description}</p>
-          <div className="listing-detail-seller">
-            <span>
-              Sold by <strong>{selectedListing.profiles?.display_name || selectedListing.seller || 'Seller'}</strong>
-              {selectedListing.profiles?.role === 'merchant' && <span className="merchant-badge">🏪</span>}
-            </span>
-          </div>
-          <button className="btn-primary">Contact Seller</button>
-        </div>
-      </div>
-    )
-  }
+  const filteredListings = sortListingsWithSpotlight(
+    listings.filter((listing) => {
+      const matchesCategory = filter === 'All' || listing.category === filter
+      const matchesSearch =
+        !search || listing.title.toLowerCase().includes(search.toLowerCase())
+      return matchesCategory && matchesSearch
+    }),
+    [...spotlightIds]
+  )
 
   return (
     <div className="marketplace">
       <div className="marketplace-header">
         <h2>Marketplace</h2>
         {isMerchant && (
-          <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-            {showForm ? 'Cancel' : '+ Create Listing'}
+          <button
+            className="btn-primary"
+            onClick={() => setShowCreateForm(!showCreateForm)}
+          >
+            {showCreateForm ? 'Cancel' : '+ Create Listing'}
           </button>
         )}
       </div>
 
-      {showForm && isMerchant && (
-        <form className="listing-form" onSubmit={handleSubmit}>
-          <h3>List an Item for Sale</h3>
-          <div className="form-grid">
-            <label>
-              Title
-              <input
-                type="text"
-                maxLength={100}
-                placeholder="Product name"
-                value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-              />
-            </label>
-            <label>
-              Price ($)
-              <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                placeholder="e.g. 50"
-                value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
-              />
-            </label>
-            <label>
-              Category
-              <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-                <option value="Running">Running</option>
-                <option value="Cycling">Cycling</option>
-                <option value="Swimming">Swimming</option>
-                <option value="Fitness">Fitness</option>
-                <option value="Electronics">Electronics</option>
-              </select>
-            </label>
-            <label>
-              Condition
-              <select value={form.condition} onChange={(e) => setForm({ ...form, condition: e.target.value })}>
-                <option value="Brand New">Brand New</option>
-                <option value="Like New">Like New</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
-              </select>
-            </label>
-            <label>
-              Icon
-              <select value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })}>
-                {emojis.map((emoji) => (
-                  <option key={emoji} value={emoji}>{emoji}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <label>
-            Description
-            <textarea
-              maxLength={500}
-              rows={3}
-              placeholder="Describe your item..."
-              value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-            />
-          </label>
-          <button type="submit" className="btn-primary">Publish Listing</button>
-        </form>
+      {showCreateForm && isMerchant && (
+        <CreateListingForm
+          onClose={() => setShowCreateForm(false)}
+          onSuccess={(newListing) => {
+            setListings((prev) => [newListing, ...prev])
+          }}
+        />
       )}
 
       <div className="marketplace-filters">
@@ -160,13 +108,15 @@ export default function Marketplace() {
           placeholder="Search listings..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search listings"
         />
-        <div className="filter-bar">
-          {categories.map((cat) => (
+        <div className="filter-bar" role="group" aria-label="Category filters">
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
               className={`filter-btn ${filter === cat ? 'active' : ''}`}
               onClick={() => setFilter(cat)}
+              aria-pressed={filter === cat}
             >
               {cat}
             </button>
@@ -174,39 +124,41 @@ export default function Marketplace() {
         </div>
       </div>
 
-      <div className="listings-grid">
-        {filteredListings.map((listing) => (
-          <div
-            key={listing.id}
-            className="listing-card"
-            onClick={() => setSelectedListing(listing)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && setSelectedListing(listing)}
-          >
-            <div className="listing-image">{listing.image}</div>
-            <div className="listing-info">
-              <h4>{listing.title}</h4>
-              <div className="listing-meta">
-                <span className="condition-badge">{listing.condition}</span>
-                <span className="category-badge">{listing.category}</span>
+      {loading && (
+        <div className="marketplace-loading">
+          <div className="loading-spinner" />
+          <p>Loading listings...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="marketplace-error">
+          <p>{error}</p>
+          <button className="btn-primary" onClick={fetchListings}>
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <>
+          <SpotlightSection />
+          <div className="listings-grid">
+            {filteredListings.map((listing) => (
+              <ListingCard
+                key={listing.id}
+                listing={listing}
+                isSpotlighted={spotlightIds.has(listing.id)}
+              />
+            ))}
+            {filteredListings.length === 0 && (
+              <div className="empty-state">
+                <p>No listings found</p>
               </div>
-              <div className="listing-footer">
-                <span className="price">${listing.price}</span>
-                <span className="seller">
-                  {listing.profiles?.display_name || listing.seller || 'Seller'}
-                  {listing.profiles?.role === 'merchant' && <span className="merchant-badge">🏪</span>}
-                </span>
-              </div>
-            </div>
+            )}
           </div>
-        ))}
-        {filteredListings.length === 0 && (
-          <div className="empty-state">
-            <p>No listings found.</p>
-          </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   )
 }

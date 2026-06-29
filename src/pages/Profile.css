@@ -30,6 +30,7 @@
   font-size: 2rem;
   overflow: hidden;
   border: 3px solid var(--accent-primary);
+  flex-shrink: 0;
 }
 
 .avatar img {
@@ -42,7 +43,27 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 8px;
+  margin: 0;
+}
+
+.role-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.role-badge.merchant {
+  background: #fc4c0220;
+  color: #fc4c02;
+}
+
+.role-badge.individual {
+  background: #2196f320;
+  color: #2196f3;
 }
 
 .member-since {
@@ -59,6 +80,8 @@
   border-radius: 8px;
   font-size: 0.8rem;
   margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
 .btn-edit:hover {
@@ -74,11 +97,61 @@
 
 .edit-form-inline input {
   max-width: 250px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.edit-form-inline input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.field-error {
+  color: #e53e3e;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .edit-actions {
   display: flex;
   gap: 8px;
+}
+
+.edit-actions .btn-primary {
+  background: var(--accent-primary);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.edit-actions .btn-primary:hover {
+  opacity: 0.9;
+}
+
+.edit-actions .btn-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.edit-actions .btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+.btn-sm {
+  font-size: 0.8rem;
+  padding: 6px 14px;
 }
 
 .btn-logout {
@@ -89,6 +162,8 @@
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .btn-logout:hover {
@@ -136,53 +211,6 @@
 
 .profile-section h3 {
   margin-bottom: 16px;
-}
-
-/* Breakdown */
-.breakdown-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.breakdown-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.breakdown-type {
-  width: 60px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.breakdown-bar-container {
-  flex: 1;
-  height: 24px;
-  background: var(--bg-secondary);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.breakdown-bar {
-  height: 100%;
-  border-radius: 12px;
-  transition: width 0.5s ease;
-  min-width: 4px;
-}
-
-.breakdown-value {
-  width: 70px;
-  text-align: right;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.empty-text {
-  color: var(--text-muted);
-  font-size: 0.9rem;
 }
 
 /* Merchant section */

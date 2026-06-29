@@ -1,0 +1,65 @@
+.group-challenge-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.group-challenge-form h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+}
+
+.group-challenge-form .form-field {
+  margin-bottom: 0.75rem;
+}
+
+.group-challenge-form .form-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.group-challenge-form .form-field input,
+.group-challenge-form .form-field textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.group-challenge-form .form-field textarea {
+  resize: vertical;
+}
+
+.group-challenge-form .field-error {
+  display: block;
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.group-challenge-form .btn-primary {
+  width: 100%;
+  padding: 0.6rem;
+  background: #4a90d9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.group-challenge-form .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.group-challenge-form .btn-primary:hover:not(:disabled) {
+  background: #357abd;
+}

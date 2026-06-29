@@ -1,0 +1,102 @@
+/* ===== CHAT THREAD LIST ===== */
+.chat-thread-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-thread-list__empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+.chat-thread-list__empty p {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.chat-thread-list__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  text-align: left;
+  width: 100%;
+  color: var(--text-primary);
+}
+
+.chat-thread-list__item:hover {
+  background: var(--bg-hover);
+}
+
+.chat-thread-list__item.unread {
+  background: rgba(252, 76, 2, 0.05);
+}
+
+.chat-thread-list__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.chat-thread-list__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-thread-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.chat-thread-list__name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.chat-thread-list__item.unread .chat-thread-list__name {
+  color: var(--accent-primary);
+}
+
+.chat-thread-list__time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.chat-thread-list__preview {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-thread-list__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--accent-primary);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0 6px;
+  flex-shrink: 0;
+}

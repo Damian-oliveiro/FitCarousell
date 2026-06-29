@@ -3,7 +3,7 @@ import { useData } from '../context/DataContext'
 import { useAuth } from '../context/AuthContext'
 import './Community.css'
 
-const typeIcons = { Run: '🏃', Cycle: '🚴', Swim: '🏊', Walk: '🚶' }
+const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
 const typeColors = { Run: '#fc4c02', Cycle: '#2196f3', Swim: '#00bcd4', Walk: '#4caf50' }
 
 export default function Community() {
@@ -111,7 +111,7 @@ export default function Community() {
             <div className="feed-user-info">
               <span className="feed-username">
                 {profile?.display_name || 'Unknown'}
-                {profile?.role === 'merchant' && <span className="merchant-badge">🏪</span>}
+                {profile?.role === 'merchant' && <span className="merchant-badge">PRO</span>}
               </span>
               <span className="feed-date">
                 {new Date(post.created_at).toLocaleDateString()}
@@ -160,13 +160,13 @@ export default function Community() {
             className={`btn-like ${post.user_liked ? 'liked' : ''}`}
             onClick={() => handleLike(post)}
           >
-            {post.user_liked ? '❤️' : '🤍'} {post.likes_count || 0}
+            {post.user_liked ? '♥' : '♡'} {post.likes_count || 0}
           </button>
           <button
             className="btn-comment"
             onClick={() => toggleComments(post.id)}
           >
-            💬 {post.comments_count || 0}
+            {post.comments_count || 0} comments
           </button>
         </div>
 

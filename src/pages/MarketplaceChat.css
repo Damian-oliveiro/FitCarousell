@@ -1,0 +1,76 @@
+/* ===== MARKETPLACE CHAT PAGE ===== */
+.marketplace-chat {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 70px); /* account for footer nav */
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.marketplace-chat__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.marketplace-chat__back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.marketplace-chat__back-btn:hover {
+  background: var(--bg-hover);
+}
+
+.marketplace-chat__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.marketplace-chat__subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.marketplace-chat__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Thread List View */
+.marketplace-chat--list .marketplace-chat__body {
+  overflow-y: auto;
+}
+
+/* Thread View */
+.marketplace-chat--thread .marketplace-chat__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.marketplace-chat__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+  flex: 1;
+}

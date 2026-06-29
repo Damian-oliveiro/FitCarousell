@@ -1,0 +1,340 @@
+/* ===== HOME FEED PAGE ===== */
+.home-feed {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 0 20px;
+}
+
+.home-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.home-feed-title {
+  margin-bottom: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.home-feed-create-ad-btn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.home-feed-create-ad-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== FEED LIST ===== */
+.home-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ===== EMPTY STATE ===== */
+.home-feed-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.home-feed-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.home-feed-empty p {
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 300px;
+}
+
+/* ===== LOADING STATE ===== */
+.home-feed-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.home-feed-loading p {
+  font-size: 0.9rem;
+}
+
+.home-feed-loading-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.home-feed-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: home-feed-spin 0.8s linear infinite;
+}
+
+@keyframes home-feed-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== ERROR STATE ===== */
+.home-feed-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.home-feed-error-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(248, 113, 113, 0.1);
+  color: var(--accent-error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.home-feed-error p {
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.home-feed-inline-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.home-feed-inline-error p {
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.home-feed-retry-btn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.home-feed-retry-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== SENTINEL (IntersectionObserver target) ===== */
+.home-feed-sentinel {
+  height: 20px;
+  width: 100%;
+}
+
+/* ===== FEED CARD (shared styles from Community.css, scoped here for HomeFeed) ===== */
+.home-feed .feed-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.home-feed .feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.home-feed .feed-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-feed .feed-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-feed .feed-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-feed .avatar-placeholder {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.home-feed .feed-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-feed .feed-username {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.home-feed .merchant-badge {
+  margin-left: 4px;
+}
+
+.home-feed .feed-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.home-feed .feed-activity {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-left: 4px solid var(--accent-primary);
+}
+
+.home-feed .feed-activity-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.home-feed .feed-metrics {
+  display: flex;
+  gap: 24px;
+}
+
+.home-feed .feed-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-feed .feed-metric-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.home-feed .feed-metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.home-feed .feed-caption {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.home-feed .feed-actions {
+  display: flex;
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.home-feed .feed-action-item {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== ACTIVITY TYPE ICON ===== */
+.home-feed .activity-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* ===== FEED HEADER ROW ===== */
+.home-feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.home-feed-create-ad-btn {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.home-feed-create-ad-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}

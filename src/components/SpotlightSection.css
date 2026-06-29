@@ -1,0 +1,33 @@
+/* ===== SPOTLIGHT SECTION ===== */
+.spotlight-section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.spotlight-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.spotlight-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .spotlight-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+}

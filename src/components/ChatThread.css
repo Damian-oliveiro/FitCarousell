@@ -1,0 +1,43 @@
+/* ===== CHAT THREAD ===== */
+.chat-thread {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 16px;
+  min-height: 0;
+}
+
+.chat-thread__messages {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chat-thread__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+.chat-thread__empty p {
+  font-size: 0.9rem;
+}
+
+/* Offer message wrappers */
+.chat-thread__offer-wrapper {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.chat-thread__offer-wrapper.own {
+  justify-content: flex-end;
+}
+
+.chat-thread__offer-wrapper.other {
+  justify-content: flex-start;
+}

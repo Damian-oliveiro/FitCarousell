@@ -1,15 +1,19 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout'
-import Activities from './pages/Activities'
-import Community from './pages/Community'
-import Events from './pages/Events'
+import HomeFeed from './pages/HomeFeed'
 import Marketplace from './pages/Marketplace'
+import ListingDetail from './pages/ListingDetail'
+import MarketplaceChat from './pages/MarketplaceChat'
+import Record from './pages/Record'
+import Groups from './pages/Groups'
+import GroupDetail from './pages/GroupDetail'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { DataProvider } from './context/DataContext'
+import { ChatProvider } from './context/ChatContext'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth()
@@ -43,7 +47,7 @@ function AuthRoute({ children }) {
   }
 
   if (user) {
-    return <Navigate to="/activities" replace />
+    return <Navigate to="/" replace />
   }
 
   return children
@@ -60,20 +64,25 @@ function AppRoutes() {
       <Route path="/" element={
         <ProtectedRoute>
           <DataProvider>
-            <Layout />
+            <ChatProvider>
+              <Layout />
+            </ChatProvider>
           </DataProvider>
         </ProtectedRoute>
       }>
-        <Route index element={<Navigate to="/activities" replace />} />
-        <Route path="activities" element={<Activities />} />
-        <Route path="community" element={<Community />} />
-        <Route path="events" element={<Events />} />
+        <Route index element={<HomeFeed />} />
         <Route path="marketplace" element={<Marketplace />} />
+        <Route path="marketplace/:id" element={<ListingDetail />} />
+        <Route path="marketplace/chat" element={<MarketplaceChat />} />
+        <Route path="marketplace/chat/:threadId" element={<MarketplaceChat />} />
+        <Route path="record" element={<Record />} />
+        <Route path="groups" element={<Groups />} />
+        <Route path="groups/:id" element={<GroupDetail />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 
       {/* Fallback */}
-      <Route path="*" element={<Navigate to="/activities" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

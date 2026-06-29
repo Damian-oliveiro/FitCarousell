@@ -1,0 +1,12 @@
+/* ===== RATING DISPLAY (INLINE) ===== */
+.rating-display {
+  font-size: 0.8rem;
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.rating-display.no-ratings-inline {
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+}

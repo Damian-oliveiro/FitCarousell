@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from './AuthContext'
+import { submitRating as submitRatingUtil } from '../utils/ratingUtils'
 
 const DataContext = createContext()
 
@@ -269,6 +270,118 @@ export function DataProvider({ children }) {
     return data
   }
 
+  // Fetch groups (up to 50 ordered by member_count desc)
+  async function fetchGroups() {
+    const { data, error } = await supabase
+      .from('groups')
+      .select('*')
+      .order('member_count', { ascending: false })
+      .limit(50)
+
+    if (error) { showError('Failed to load groups'); return [] }
+    return data || []
+  }
+
+  // Fetch group detail by ID
+  async function fetchGroupDetail(groupId) {
+    const { data, error } = await supabase
+      .from('groups')
+      .select('*')
+      .eq('id', groupId)
+      .single()
+
+    if (error) { showError('Failed to load group'); return null }
+    return data
+  }
+
+  // Join a group
+  async function joinGroup(groupId) {
+    if (!user) return { success: false, message: 'Not authenticated' }
+
+    const { error } = await supabase
+      .from('group_members')
+      .insert({ group_id: groupId, user_id: user.id })
+
+    if (error) {
+      if (error.code === '23505') {
+        return { success: false, message: 'Already a member' }
+      }
+      showError('Failed to join group')
+      return { success: false, message: 'Failed to join group' }
+    }
+
+    return { success: true }
+  }
+
+  // Leave a group
+  async function leaveGroup(groupId) {
+    if (!user) return { success: false, message: 'Not authenticated' }
+
+    const { error } = await supabase
+      .from('group_members')
+      .delete()
+      .eq('group_id', groupId)
+      .eq('user_id', user.id)
+
+    if (error) {
+      showError('Failed to leave group')
+      return { success: false, message: 'Failed to leave group' }
+    }
+
+    return { success: true }
+  }
+
+  // Create group event (merchant or group creator only)
+  async function createGroupEvent(groupId, { title, description, date, time, location }) {
+    if (!user) return null
+    if (profile?.role !== 'merchant') {
+      showError('Only merchants can create group events')
+      return null
+    }
+
+    const { data, error } = await supabase
+      .from('group_events')
+      .insert({
+        group_id: groupId,
+        merchant_id: user.id,
+        title,
+        description: description || null,
+        date,
+        time: time || null,
+        location: location || null,
+      })
+      .select()
+      .single()
+
+    if (error) { showError('Failed to create group event'); return null }
+    return data
+  }
+
+  // Create challenge (merchant or group admin only)
+  async function createChallenge(groupId, { title, goal, startDate, endDate }) {
+    if (!user) return null
+    if (profile?.role !== 'merchant') {
+      showError('Only merchants can create challenges')
+      return null
+    }
+
+    const { data, error } = await supabase
+      .from('challenges')
+      .insert({
+        group_id: groupId,
+        created_by: user.id,
+        title,
+        goal,
+        start_date: startDate,
+        end_date: endDate,
+      })
+      .select()
+      .single()
+
+    if (error) { showError('Failed to create challenge'); return null }
+    return data
+  }
+
   // Follow user
   async function followUser(userId) {
     if (!user || userId === user.id) return
@@ -291,6 +404,40 @@ export function DataProvider({ children }) {
 
     if (error) { showError('Failed to unfollow user'); return }
     setFollowing(prev => prev.filter(id => id !== userId))
+  }
+
+  // Submit seller rating
+  async function submitRating({ listingId, sellerId, score, review }) {
+    if (!user) return null
+    const { data, error: ratingError } = await submitRatingUtil(supabase, {
+      listingId,
+      buyerId: user.id,
+      sellerId,
+      score,
+      review,
+    })
+
+    if (ratingError) {
+      showError(ratingError)
+      return null
+    }
+    return data
+  }
+
+  // Fetch seller average rating
+  async function fetchSellerRating(sellerId) {
+    const { data, error: fetchError } = await supabase
+      .from('seller_ratings')
+      .select('score')
+      .eq('seller_id', sellerId)
+
+    if (fetchError) return { average: 0, count: 0 }
+
+    if (!data || data.length === 0) return { average: 0, count: 0 }
+
+    const sum = data.reduce((acc, r) => acc + r.score, 0)
+    const average = Math.round((sum / data.length) * 10) / 10
+    return { average, count: data.length }
   }
 
   const value = {
@@ -318,6 +465,14 @@ export function DataProvider({ children }) {
     fetchActivities,
     fetchEvents,
     fetchListings,
+    fetchGroups,
+    fetchGroupDetail,
+    joinGroup,
+    leaveGroup,
+    createGroupEvent,
+    createChallenge,
+    submitRating,
+    fetchSellerRating,
   }
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>

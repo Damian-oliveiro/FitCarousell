@@ -1,0 +1,92 @@
+/* ===== RATING FORM ===== */
+.rating-form {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.rating-form-title {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.star-selector {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  padding: 4px;
+  line-height: 1;
+}
+
+.star-btn:hover,
+.star-btn.active {
+  color: #f59e0b;
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.review-field {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.review-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.review-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.char-counter {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.rating-error {
+  color: var(--accent-danger, #ef4444);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.rating-submit {
+  width: 100%;
+}
+
+.rating-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.rating-success {
+  text-align: center;
+  color: var(--accent-success, #10b981);
+  font-weight: 500;
+}

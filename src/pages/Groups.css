@@ -1,0 +1,147 @@
+/* ===== GROUPS PAGE ===== */
+.groups-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.groups-page h2 {
+  margin-bottom: 20px;
+}
+
+/* Groups Grid */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Group Card */
+.group-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.group-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.group-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.group-card-description {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.group-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.group-member-count {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.group-card .btn-join {
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), opacity var(--transition-fast);
+}
+
+.group-card .btn-join:hover {
+  opacity: 0.9;
+}
+
+.group-card .btn-join:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.group-card .btn-leave {
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--accent-error, #ef4444);
+  border: 1px solid var(--accent-error, #ef4444);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.group-card .btn-leave:hover {
+  background: var(--accent-error, #ef4444);
+  color: white;
+}
+
+.group-card .btn-leave:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.group-card .member-badge {
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+}
+
+/* Loading & Error States */
+.groups-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+}
+
+.groups-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+}
+
+.groups-error p {
+  color: var(--accent-error, #ef4444);
+}
+
+.groups-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .groups-grid {
+    grid-template-columns: 1fr;
+  }
+}

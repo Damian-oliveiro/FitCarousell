@@ -1,0 +1,139 @@
+/* ===== CREATE LISTING FORM ===== */
+.create-listing-form-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.create-listing-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-listing-form-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.create-listing-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.create-listing-close-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.create-listing-error-banner {
+  background: #e53e3e20;
+  color: #e53e3e;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+/* Form Grid */
+.create-listing-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Form Fields */
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field input[aria-invalid="true"],
+.form-field select[aria-invalid="true"],
+.form-field textarea[aria-invalid="true"] {
+  border-color: #e53e3e;
+}
+
+.form-field-full {
+  margin-bottom: 16px;
+}
+
+.field-error {
+  display: block;
+  color: #e53e3e;
+  font-size: 0.78rem;
+  margin-top: 4px;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Actions */
+.create-listing-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .create-listing-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .create-listing-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .create-listing-form-actions button {
+    width: 100%;
+  }
+}

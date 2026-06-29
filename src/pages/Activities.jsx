@@ -3,7 +3,7 @@ import { useData } from '../context/DataContext'
 import { useAuth } from '../context/AuthContext'
 import './Activities.css'
 
-const typeIcons = { Run: '🏃', Cycle: '🚴', Swim: '🏊', Walk: '🚶' }
+const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
 const typeColors = { Run: '#fc4c02', Cycle: '#2196f3', Swim: '#00bcd4', Walk: '#4caf50' }
 
 const SESSION_STORAGE_KEY = 'fitcarousell_active_session'
@@ -237,7 +237,7 @@ export default function Activities() {
                 ▶ Start Activity
               </button>
               <button className="btn-manual" onClick={() => setShowManualForm(!showManualForm)}>
-                ✏️ Log Manually
+                Log Manually
               </button>
             </div>
           </div>
