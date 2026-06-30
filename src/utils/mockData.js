@@ -3,7 +3,7 @@
  * Provides scrollable content for HomeFeed, Marketplace, and Groups.
  */
 
-import { getCategoryImage, routeMapList } from './imagePlaceholders'
+import { getCategoryImage } from './imagePlaceholders'
 
 const FIRST_NAMES = ['Alex', 'Jordan', 'Sam', 'Casey', 'Taylor', 'Morgan', 'Riley', 'Quinn', 'Avery', 'Blake', 'Drew', 'Sage', 'Kai', 'Reese', 'Charlie']
 const LAST_NAMES = ['Chen', 'Kim', 'Patel', 'Nguyen', 'Tanaka', 'Garcia', 'Lee', 'Singh', 'Williams', 'Brown', 'Johnson', 'Miller', 'Davis', 'Wilson', 'Moore']
