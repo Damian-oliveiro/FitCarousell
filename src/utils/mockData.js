@@ -305,40 +305,41 @@ export function generateMerchantShopItems() {
 const WEAR_LEVELS = ['Like New - Used once', 'Good - Minor wear', 'Fair - Visible wear', 'Well-loved - Heavy use']
 
 export function generateUsedListings(count = 20) {
-  const USED_TITLES = [
-    'Nike Pegasus 39 (Used 3 months)',
-    'Garmin Forerunner 245 Watch',
-    'Road Bike Helmet - Specialized',
-    'Foam Roller - Trigger Point',
-    'Swimming Goggles - Arena',
-    'Resistance Bands Set',
-    'Running Vest - Salomon',
-    'Yoga Blocks (pair)',
-    'Cycling Gloves - Pearl Izumi',
-    'Jump Rope - Speed Cable',
-    'Running Belt - FlipBelt',
-    'Gym Duffel Bag',
-    'Pull-up Bar (doorframe)',
-    'Compression Socks (3 pairs)',
-    'Running Sunglasses - Oakley',
-    'Kettlebell 16kg',
-    'TRX Suspension Trainer',
-    'Swim Fins - Speedo',
-    'Cycling Jersey - Castelli',
-    'Recovery Massage Gun',
+  // Each item has a title, its correct category, and a matching image
+  const USED_ITEMS = [
+    { title: 'Nike Pegasus 39 (Used 3 months)', category: 'Running', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop' },
+    { title: 'Garmin Forerunner 245 Watch', category: 'Electronics', image: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600&h=400&fit=crop' },
+    { title: 'Road Bike Helmet - Specialized', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
+    { title: 'Foam Roller - Trigger Point', category: 'Fitness', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop' },
+    { title: 'Swimming Goggles - Arena', category: 'Swimming', image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop' },
+    { title: 'Resistance Bands Set', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
+    { title: 'Running Vest - Salomon', category: 'Running', image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop' },
+    { title: 'Yoga Blocks (pair)', category: 'Fitness', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop' },
+    { title: 'Cycling Gloves - Pearl Izumi', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Jump Rope - Speed Cable', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
+    { title: 'Running Belt - FlipBelt', category: 'Running', image: 'https://images.unsplash.com/photo-1461897104016-0b3b00b1ea56?w=600&h=400&fit=crop' },
+    { title: 'Gym Duffel Bag', category: 'Fitness', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=400&fit=crop' },
+    { title: 'Pull-up Bar (doorframe)', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
+    { title: 'Compression Socks (3 pairs)', category: 'Running', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=400&fit=crop' },
+    { title: 'Running Sunglasses - Oakley', category: 'Running', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=400&fit=crop' },
+    { title: 'Kettlebell 16kg', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
+    { title: 'TRX Suspension Trainer', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
+    { title: 'Swim Fins - Speedo', category: 'Swimming', image: 'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=600&h=400&fit=crop' },
+    { title: 'Cycling Jersey - Castelli', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Recovery Massage Gun', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
   ]
 
   return Array.from({ length: count }, (_, i) => {
-    const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+    const item = USED_ITEMS[i % USED_ITEMS.length]
     return {
       id: randomId(),
-      title: USED_TITLES[i % USED_TITLES.length],
-      description: `Selling my ${USED_TITLES[i % USED_TITLES.length].toLowerCase()}. Condition detailed below. Pick up or meet up available.`,
+      title: item.title,
+      description: `Selling my ${item.title.toLowerCase()}. Well maintained, condition detailed below. Pick up or meet up available.`,
       price: +(Math.random() * 200 + 5).toFixed(2),
-      category,
+      category: item.category,
       condition: CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)],
       wear: WEAR_LEVELS[Math.floor(Math.random() * WEAR_LEVELS.length)],
-      image: getCategoryImage(category, i),
+      image: item.image,
       status: 'active',
       seller_id: randomId(),
       created_at: randomDate(30),
