@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
 
     if (!error && data) {
       setProfile(data)
@@ -99,16 +99,44 @@ export function AuthProvider({ children }) {
 
   async function updateProfile(updates) {
     if (!user) return
-    const { data, error } = await supabase
+
+    // First try the update
+    const { error } = await supabase
       .from('profiles')
       .update(updates)
       .eq('id', user.id)
-      .select()
-      .single()
 
     if (error) throw error
-    setProfile(data)
-    return data
+
+    // Refetch the profile — use maybeSingle to avoid crash if row not found
+    const { data: refreshed, error: fetchError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    if (fetchError) throw fetchError
+
+    if (refreshed) {
+      setProfile(refreshed)
+    } else {
+      // Row doesn't exist — create it
+      const { data: created, error: createError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          ...updates,
+          role: profile?.role || 'individual',
+          created_at: new Date().toISOString(),
+        })
+        .select()
+        .single()
+
+      if (createError) throw createError
+      setProfile(created)
+    }
+
+    return refreshed || profile
   }
 
   const value = {

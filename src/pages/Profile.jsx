@@ -102,7 +102,7 @@ export default function Profile() {
       setEditing(false)
       setEditError('')
     } catch (err) {
-      setEditError('Update failed')
+      setEditError(err?.message || 'Update failed')
     }
   }
 
