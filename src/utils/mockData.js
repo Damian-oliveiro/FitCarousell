@@ -39,6 +39,19 @@ function randomName() {
 }
 
 export function generateMockFeedPosts(count = 30) {
+  const ROUTE_IMAGES = [
+    'https://i.redd.it/strava-art-santa-v0-7vqjx8o3ja4a1.jpg?width=750&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/christmas-tree-strava-art-v0-2d7k8n5tl64a1.jpg?width=750&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/strava-art-reindeer-v0-3xv0yfqqra4a1.jpg?width=750&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/9xg7a0e7g0961.jpg?width=640&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/snowflake-strava-art-v0-k2h1p5r9v74a1.jpg?width=750&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/strava-art-snowman-v0-lw3tn4r2sa4a1.jpg?width=750&format=pjpg&auto=webp&s=300',
+    'https://external-preview.redd.it/strava-art-v0-dG0yaGt6djYxcmRjMafrwv3XJJFDxlDPWkNQXhzLqfJyaT5IWHlTcDlyVQ.png?width=640&format=png&auto=webp&s=300',
+    'https://i.redd.it/yqn07rnxs9a61.jpg?width=640&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/d2d5v19dfwe61.jpg?width=640&format=pjpg&auto=webp&s=300',
+    'https://i.redd.it/j9xg6w7bc0961.png?width=640&format=png&auto=webp&s=300',
+  ]
+
   const posts = []
   for (let i = 0; i < count; i++) {
     const type = ACTIVITY_TYPES[Math.floor(Math.random() * ACTIVITY_TYPES.length)]
@@ -49,6 +62,7 @@ export function generateMockFeedPosts(count = 30) {
       id: randomId(),
       created_at: randomDate(14),
       caption: Math.random() > 0.3 ? CAPTIONS[Math.floor(Math.random() * CAPTIONS.length)] : null,
+      route_image: ROUTE_IMAGES[Math.floor(Math.random() * ROUTE_IMAGES.length)],
       likes_count: Math.floor(Math.random() * 50),
       comments_count: Math.floor(Math.random() * 12),
       profiles: {
@@ -94,7 +108,33 @@ const LISTING_TITLES = [
   'Exercise Mat - Manduka PRO',
 ]
 
-const LISTING_IMAGES = ['RUN', 'TECH', 'BIKE', 'YOGA', 'FIT', 'SWIM', 'CYCLE', 'GEAR', 'CORE', 'TRAIN', 'TRAIL', 'BAG', 'WATCH', 'SPIN', 'FUEL', 'HYDRO', 'LIFT', 'AQUA', 'HR', 'COMP', 'FLEX', 'NAV', 'SPEED', 'MOVE', 'PRO']
+const LISTING_IMAGES = [
+  'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1585298723682-7115561c51b7?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1518459031867-a89b944bffe4?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1483721310020-03333e577078?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1517344884509-a0c97ec11bcc?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300&h=200&fit=crop',
+  'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop',
+]
 const CATEGORIES = ['Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
 const CONDITIONS = ['Brand New', 'Like New', 'Good', 'Fair']
 
@@ -148,6 +188,54 @@ const GROUP_DESCRIPTIONS = [
 ]
 
 export function generateMockGroups(count = 12) {
+  const MAP_IMAGES = [
+    'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1548345680-f5475ea5df84?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=250&fit=crop',
+  ]
+
+  const EVENT_TITLES = [
+    'Saturday Morning 5K',
+    'Sunrise Trail Run',
+    'Interval Training Session',
+    'Long Run Weekend',
+    'Recovery Jog + Coffee',
+    'Sprint Challenge',
+    'Group Hill Repeats',
+    'Coastal Loop Run',
+    'Night Run City Tour',
+    'Park Run Meetup',
+    'Bridge to Bridge',
+    'Marathon Pace Run',
+  ]
+
+  const EVENT_LOCATIONS = [
+    'East Coast Park, Gate 4',
+    'MacRitchie Reservoir Trail',
+    'Marina Bay Sands Loop',
+    'Botanic Gardens Main Gate',
+    'Sentosa Boardwalk Start',
+    'Bukit Timah Nature Reserve',
+    'Gardens by the Bay East',
+    'Punggol Waterway Park',
+    'Bedok Reservoir',
+    'Bishan-Ang Mo Kio Park',
+    'West Coast Park',
+    'Jurong Lake Gardens',
+  ]
+
+  const EVENT_DESCRIPTIONS = [
+    'Friendly group run for all paces. We regroup at every kilometer marker. No one left behind.',
+    'Moderate pace run through scenic trails. Bring headlamp if joining early. Water provided at checkpoints.',
+    'High intensity interval training on the track. 400m repeats with 90 second recovery. All fitness levels welcome.',
+    'Building up for race day. Steady pace at 5:30-6:00 min/km. Hydration stations along the way.',
+    'Easy pace run followed by brunch at the nearby cafe. Great way to start the weekend.',
+    'Timed sprints with full recovery. Push your limits. Warm-up at 6:45am, sprints start at 7am sharp.',
+  ]
+
   return Array.from({ length: count }, (_, i) => ({
     id: randomId(),
     name: GROUP_NAMES[i % GROUP_NAMES.length],
@@ -155,6 +243,15 @@ export function generateMockGroups(count = 12) {
     member_count: Math.floor(Math.random() * 200 + 5),
     created_by: randomId(),
     created_at: randomDate(180),
+    cover_image: MAP_IMAGES[i % MAP_IMAGES.length],
+    upcoming_event: {
+      title: EVENT_TITLES[i % EVENT_TITLES.length],
+      description: EVENT_DESCRIPTIONS[i % EVENT_DESCRIPTIONS.length],
+      location: EVENT_LOCATIONS[i % EVENT_LOCATIONS.length],
+      date: new Date(Date.now() + (i + 1) * 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      time: `${6 + (i % 4)}:${i % 2 === 0 ? '00' : '30'} AM`,
+      map_image: MAP_IMAGES[(i + 2) % MAP_IMAGES.length],
+    },
   }))
 }
 

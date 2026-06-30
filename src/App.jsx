@@ -5,6 +5,7 @@ import HomeFeed from './pages/HomeFeed'
 import Marketplace from './pages/Marketplace'
 import ListingDetail from './pages/ListingDetail'
 import MarketplaceChat from './pages/MarketplaceChat'
+import FoodScanner from './pages/FoodScanner'
 import Record from './pages/Record'
 import Groups from './pages/Groups'
 import GroupDetail from './pages/GroupDetail'
@@ -75,6 +76,7 @@ function AppRoutes() {
         <Route path="marketplace/:id" element={<ListingDetail />} />
         <Route path="marketplace/chat" element={<MarketplaceChat />} />
         <Route path="marketplace/chat/:threadId" element={<MarketplaceChat />} />
+        <Route path="scan" element={<FoodScanner />} />
         <Route path="record" element={<Record />} />
         <Route path="groups" element={<Groups />} />
         <Route path="groups/:id" element={<GroupDetail />} />

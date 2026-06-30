@@ -1,11 +1,12 @@
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { IconHome, IconMarket, IconRecord, IconGroups, IconUser } from './Icons'
+import { IconHome, IconMarket, IconScan, IconRecord, IconGroups, IconUser } from './Icons'
 import './FooterNav.css'
 
 const tabs = [
   { path: '/', label: 'Home', Icon: IconHome },
   { path: '/marketplace', label: 'Market', Icon: IconMarket },
+  { path: '/scan', label: 'Scan', Icon: IconScan },
   { path: '/record', label: 'Record', Icon: IconRecord },
   { path: '/groups', label: 'Groups', Icon: IconGroups },
   { path: '/profile', label: 'You', Icon: IconUser },

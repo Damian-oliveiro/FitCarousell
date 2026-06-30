@@ -54,7 +54,13 @@ export default function ListingCard({ listing, isSpotlighted = false }) {
       aria-label={`${listing.title} - ${formatPrice(listing.price)}`}
     >
       {isSpotlighted && <span className="spotlight-badge">Spotlight</span>}
-      <div className="listing-image">{listing.image}</div>
+      <div className="listing-image">
+        {listing.image && listing.image.startsWith('http') ? (
+          <img src={listing.image} alt={listing.title} className="listing-image-img" />
+        ) : (
+          <span className="listing-image-placeholder">{listing.image || '?'}</span>
+        )}
+      </div>
       <div className="listing-info">
         <h4 className="listing-title">{listing.title}</h4>
         <div className="listing-meta">

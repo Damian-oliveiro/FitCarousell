@@ -6,6 +6,7 @@ import { fetchActiveAds } from '../components/AdForm'
 import { generateMockFeedPosts, generateMockAds } from '../utils/mockData'
 import AdFeedCard from '../components/AdFeedCard'
 import AdForm from '../components/AdForm'
+import RouteMap from '../components/RouteMap'
 import './HomeFeed.css'
 
 const BATCH_SIZE = 20
@@ -371,6 +372,10 @@ function FeedCard({ post }) {
       )}
 
       {post.caption && <p className="feed-caption">{post.caption}</p>}
+
+      <div className="feed-route-image">
+        <RouteMap seed={post.id ? post.id.charCodeAt(0) + post.id.charCodeAt(1) : Math.floor(Math.random() * 100)} height={180} />
+      </div>
 
       <div className="feed-actions">
         <span className="feed-action-item">

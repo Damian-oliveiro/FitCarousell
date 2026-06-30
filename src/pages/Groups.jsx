@@ -177,37 +177,62 @@ export default function Groups() {
 
             return (
               <div key={group.id} className="group-card">
-                <Link to={`/groups/${group.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <h3>{group.name}</h3>
-                </Link>
-                <p className="group-card-description">
-                  {truncateDescription(group.description)}
-                </p>
-                <div className="group-card-footer">
-                  <span className="group-member-count">
-                    {group.member_count || 0} {group.member_count === 1 ? 'member' : 'members'}
-                  </span>
-                  {isMember ? (
-                    <button
-                      className="btn-leave"
-                      onClick={() => handleLeave(group.id)}
-                      disabled={isActing}
-                    >
-                      {isActing ? 'Leaving...' : 'Leave'}
-                    </button>
-                  ) : (
-                    <button
-                      className="btn-join"
-                      onClick={() => handleJoin(group.id)}
-                      disabled={isActing}
-                    >
-                      {isActing ? 'Joining...' : 'Join'}
-                    </button>
+                {group.cover_image && (
+                  <div className="group-card-cover">
+                    <img src={group.cover_image} alt={group.name} />
+                  </div>
+                )}
+                <div className="group-card-body">
+                  <Link to={`/groups/${group.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <h3>{group.name}</h3>
+                  </Link>
+                  <p className="group-card-description">
+                    {truncateDescription(group.description)}
+                  </p>
+
+                  {group.upcoming_event && (
+                    <div className="group-card-event">
+                      <div className="group-card-event-header">Next Event</div>
+                      <div className="group-card-event-title">{group.upcoming_event.title}</div>
+                      <p className="group-card-event-desc">{group.upcoming_event.description}</p>
+                      <div className="group-card-event-meta">
+                        <span>{group.upcoming_event.date} at {group.upcoming_event.time}</span>
+                        <span>{group.upcoming_event.location}</span>
+                      </div>
+                      {group.upcoming_event.map_image && (
+                        <div className="group-card-map">
+                          <img src={group.upcoming_event.map_image} alt="Route map" />
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="group-card-footer">
+                    <span className="group-member-count">
+                      {group.member_count || 0} {group.member_count === 1 ? 'member' : 'members'}
+                    </span>
+                    {isMember ? (
+                      <button
+                        className="btn-leave"
+                        onClick={() => handleLeave(group.id)}
+                        disabled={isActing}
+                      >
+                        {isActing ? 'Leaving...' : 'Leave'}
+                      </button>
+                    ) : (
+                      <button
+                        className="btn-join"
+                        onClick={() => handleJoin(group.id)}
+                        disabled={isActing}
+                      >
+                        {isActing ? 'Joining...' : 'Join'}
+                      </button>
+                    )}
+                  </div>
+                  {message && (
+                    <span className="member-badge">{message}</span>
                   )}
                 </div>
-                {message && (
-                  <span className="member-badge">{message}</span>
-                )}
               </div>
             )
           })}

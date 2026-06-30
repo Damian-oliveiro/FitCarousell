@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useData } from '../context/DataContext'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
+import { generateMockFeedPosts } from '../utils/mockData'
 import { IconEdit, IconLogout, IconStore } from '../components/Icons'
+import RouteMap from '../components/RouteMap'
 import SellerRatings from '../components/SellerRatings'
 import './Profile.css'
 
@@ -225,6 +227,67 @@ export default function Profile() {
           <SellerRatings sellerId={profile.id} />
         </div>
       )}
+
+      {/* Run History */}
+      <RunHistory userName={profile?.display_name || 'You'} />
+    </div>
+  )
+}
+
+const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
+const typeColors = { Run: '#8b5cf6', Cycle: '#60a5fa', Swim: '#22d3ee', Walk: '#34d399' }
+
+function RunHistory({ userName }) {
+  const [runs] = useState(() => {
+    const mockPosts = generateMockFeedPosts(10)
+    // Override display names to be the current user
+    return mockPosts.map(p => ({
+      ...p,
+      profiles: { ...p.profiles, display_name: userName },
+    }))
+  })
+
+  return (
+    <div className="profile-section">
+      <h3>Activity History</h3>
+      <div className="run-history-list">
+        {runs.map(post => {
+          const activity = post.activities
+          return (
+            <div key={post.id} className="run-history-card">
+              <div className="run-history-map">
+                <RouteMap seed={post.id ? post.id.charCodeAt(0) * 7 + post.id.charCodeAt(2) : i * 13} height={140} />
+              </div>
+              <div className="run-history-info">
+                <div className="run-history-type">
+                  <span className="run-history-icon" style={{ background: typeColors[activity?.type] || '#666' }}>
+                    {typeIcons[activity?.type] || '?'}
+                  </span>
+                  <span className="run-history-type-label">{activity?.type || 'Activity'}</span>
+                  <span className="run-history-date">{new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+                <div className="run-history-metrics">
+                  <div className="run-history-metric">
+                    <span className="run-history-metric-value">{activity?.distance} km</span>
+                    <span className="run-history-metric-label">Distance</span>
+                  </div>
+                  <div className="run-history-metric">
+                    <span className="run-history-metric-value">{activity?.duration} min</span>
+                    <span className="run-history-metric-label">Duration</span>
+                  </div>
+                  {activity?.distance > 0 && (
+                    <div className="run-history-metric">
+                      <span className="run-history-metric-value">{(activity.duration / activity.distance).toFixed(1)}</span>
+                      <span className="run-history-metric-label">min/km</span>
+                    </div>
+                  )}
+                </div>
+                {post.caption && <p className="run-history-caption">{post.caption}</p>}
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
