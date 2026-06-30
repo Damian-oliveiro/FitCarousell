@@ -13,8 +13,9 @@ export default function Groups() {
   const [memberships, setMemberships] = useState([]) // group IDs user has joined
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [actionLoading, setActionLoading] = useState(null) // group ID currently being acted on
-  const [actionMessage, setActionMessage] = useState(null) // { groupId, message }
+  const [actionLoading, setActionLoading] = useState(null)
+  const [actionMessage, setActionMessage] = useState(null)
+  const [activityFilter, setActivityFilter] = useState('All')
 
   const fetchGroups = useCallback(async () => {
     setLoading(true)
@@ -164,7 +165,20 @@ export default function Groups() {
 
   return (
     <div className="groups-page">
-      <h2>Groups</h2>
+      <h2>Groups & Events</h2>
+
+      {/* Activity type filter */}
+      <div className="groups-filter-bar">
+        {['All', 'Running', 'Marathon', 'Cycling', 'Yoga', 'Pilates', 'Fitness', 'Walking', 'CrossFit'].map(type => (
+          <button
+            key={type}
+            className={`filter-btn ${activityFilter === type ? 'active' : ''}`}
+            onClick={() => setActivityFilter(type)}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
 
       {groups.length === 0 ? (
         <div className="groups-empty">
@@ -172,7 +186,7 @@ export default function Groups() {
         </div>
       ) : (
         <div className="groups-grid">
-          {groups.map(group => {
+          {groups.filter(g => activityFilter === 'All' || g.upcoming_event?.eventType === activityFilter).map(group => {
             const isMember = memberships.includes(group.id)
             const isActing = actionLoading === group.id
             const message = actionMessage?.groupId === group.id ? actionMessage.message : null
@@ -255,6 +269,78 @@ export default function Groups() {
           })}
         </div>
       )}
+
+      {/* Health Tips & Blogs Section */}
+      <HealthTipsSection />
+    </div>
+  )
+}
+
+const HEALTH_TIPS = [
+  {
+    author: 'Dr. Sarah Fit',
+    tag: 'Nutrition',
+    title: 'What to Eat Before a Morning Run',
+    body: 'Your pre-run fuel matters more than you think. A light meal 60-90 minutes before — think banana with peanut butter or oatmeal with berries — gives your body the glycogen it needs without causing cramps. Avoid high-fiber and high-fat foods right before running.',
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&h=300&fit=crop',
+  },
+  {
+    author: 'Coach Jake',
+    tag: 'Recovery',
+    title: 'The 48-Hour Rule: Why Rest Days Matter',
+    body: 'Muscle growth happens during rest, not during the workout. After intense training, your muscle fibers need 48 hours to repair and come back stronger. Skipping rest leads to overtraining, elevated cortisol, and eventually injury. Schedule rest like you schedule workouts.',
+    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=300&fit=crop',
+  },
+  {
+    author: 'NutriFit Clinic',
+    tag: 'Healthy Eating',
+    title: '5 Post-Workout Meals for Muscle Recovery',
+    body: 'The 30-minute window after training is when your body absorbs nutrients most efficiently. Aim for a 3:1 carb-to-protein ratio. Try: grilled chicken with sweet potato, Greek yogurt with granola, salmon with quinoa, protein smoothie with banana, or eggs with avocado toast.',
+    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=300&fit=crop',
+  },
+  {
+    author: 'RunWithJake',
+    tag: 'Training',
+    title: 'Why 80% of Your Runs Should Be Easy',
+    body: 'The biggest mistake recreational runners make is running too fast on easy days. The 80/20 rule — 80% easy, 20% hard — builds your aerobic base without accumulating fatigue. Easy means you can hold a full conversation. If you are gasping, slow down.',
+    image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=300&fit=crop',
+  },
+  {
+    author: 'YogaWithRen',
+    tag: 'Mobility',
+    title: 'Hip Openers Every Runner Needs',
+    body: 'Tight hips are the #1 cause of IT band syndrome and knee pain in runners. Spend 10 minutes daily on pigeon pose, 90/90 stretch, and hip flexor lunges. Your stride will lengthen, your pace will drop, and your joints will thank you.',
+    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=300&fit=crop',
+  },
+  {
+    author: 'StrengthByAlex',
+    tag: 'Workout',
+    title: 'The Only 3 Lifts Runners Need',
+    body: 'Deadlifts for posterior chain strength, Bulgarian split squats for single-leg stability, and calf raises for ankle resilience. Two sessions per week, 3 sets of 8 reps. This alone prevents 70% of common running injuries.',
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=300&fit=crop',
+  },
+]
+
+function HealthTipsSection() {
+  return (
+    <div className="health-tips-section">
+      <h3 className="health-tips-title">Health & Fitness Tips</h3>
+      <p className="health-tips-subtitle">From coaches, nutritionists, and athletes</p>
+      <div className="health-tips-list">
+        {HEALTH_TIPS.map((tip, i) => (
+          <div key={i} className="health-tip-card">
+            <img src={tip.image} alt={tip.title} className="health-tip-image" />
+            <div className="health-tip-content">
+              <div className="health-tip-meta">
+                <span className="health-tip-tag">{tip.tag}</span>
+                <span className="health-tip-author">{tip.author}</span>
+              </div>
+              <h4 className="health-tip-title">{tip.title}</h4>
+              <p className="health-tip-body">{tip.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

@@ -16,6 +16,22 @@ const USE_MOCK_DATA = true // Set to false when Supabase is connected with real 
 const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
 const typeColors = { Run: '#8b5cf6', Cycle: '#60a5fa', Swim: '#22d3ee', Walk: '#34d399' }
 
+function timeAgo(dateStr) {
+  const now = new Date()
+  const date = new Date(dateStr)
+  const seconds = Math.floor((now - date) / 1000)
+  if (seconds < 60) return 'just now'
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days}d ago`
+  const weeks = Math.floor(days / 7)
+  if (weeks < 4) return `${weeks}w ago`
+  return date.toLocaleDateString()
+}
+
 export default function HomeFeed() {
   const { user, isMerchant } = useAuth()
   const [posts, setPosts] = useState([])
@@ -367,7 +383,7 @@ function FeedCard({ post, onClick }) {
               {profile?.role === 'merchant' && <span className="merchant-badge">PRO</span>}
             </span>
             <span className="feed-date">
-              {new Date(post.created_at).toLocaleDateString()}
+              {timeAgo(post.created_at)}
             </span>
           </div>
         </div>
@@ -447,7 +463,7 @@ function BlogCard({ post, onClick }) {
               <span className="blog-badge">Blog</span>
             </span>
             <span className="feed-date">
-              {new Date(post.created_at).toLocaleDateString()}
+              {timeAgo(post.created_at)}
             </span>
           </div>
         </div>

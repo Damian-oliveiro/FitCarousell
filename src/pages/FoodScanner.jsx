@@ -388,6 +388,21 @@ export default function FoodScanner() {
               </div>
             </form>
           )}
+
+          {/* Fitness Influencer Blog Links */}
+          <div className="nutrition-blogs">
+            <h3 className="tracker-title">Recommended Reading</h3>
+            <div className="blog-links-list">
+              <BlogLink title="High-Protein Meal Prep for the Week" author="FitNadia" category="Meal Prep" time="2d ago" />
+              <BlogLink title="How to Calculate Your TDEE Accurately" author="Coach Maya" category="Fitness Goals" time="3d ago" />
+              <BlogLink title="5 Pre-Workout Snacks for Maximum Energy" author="RunWithJake" category="Nutrition" time="4d ago" />
+              <BlogLink title="Carb Cycling: A Beginner's Guide" author="StrengthByAlex" category="Meal Prep" time="5d ago" />
+              <BlogLink title="Recovery Nutrition: What to Eat Post-Workout" author="SwimCoachLee" category="Workout Tips" time="1w ago" />
+              <BlogLink title="Building a Sustainable Calorie Deficit" author="TrailBlazerTom" category="Fitness Goals" time="1w ago" />
+              <BlogLink title="My Morning Routine for Peak Performance" author="CycleQueenSara" category="Routines" time="1w ago" />
+              <BlogLink title="Intermittent Fasting for Athletes" author="YogaWithRen" category="Nutrition" time="2w ago" />
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -404,6 +419,21 @@ function ProgressBar({ label, current, target, unit, color }) {
       </div>
       <div className="progress-bar-bg">
         <div className="progress-bar-fill" style={{ width: `${pct}%`, background: color }} />
+      </div>
+    </div>
+  )
+}
+
+function BlogLink({ title, author, category, time }) {
+  return (
+    <div className="blog-link-item">
+      <div className="blog-link-content">
+        <h4 className="blog-link-title">{title}</h4>
+        <div className="blog-link-meta">
+          <span className="blog-link-author">{author}</span>
+          <span className="blog-link-category">{category}</span>
+          <span className="blog-link-time">{time}</span>
+        </div>
       </div>
     </div>
   )

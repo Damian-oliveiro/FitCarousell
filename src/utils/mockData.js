@@ -278,19 +278,43 @@ export function generateMockGroups(count = 12) {
   ]
 
   const EVENT_ORGANIZERS = [
-    'FitCarousell Official',
+    'Nike Run Club',
     'RunSG Community',
-    'Coach Maya Fitness',
+    'Adidas Runners',
     'Endurance Lab SG',
-    'YogaWithRen Studio',
-    'ActiveSG',
+    'Lululemon Studio',
+    'New Balance Running',
     'Singapore Marathon Org',
-    'Urban Runners Club',
+    'Under Armour Training',
+    'ASICS FrontRunner',
+    'Garmin Sports',
+    'Hoka One One',
+    'Puma Nitro Club',
   ]
+
+  // Activity-matched cover images for groups/events
+  const EVENT_IMAGES = [
+    'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=250&fit=crop', // running group
+    'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=250&fit=crop', // trail running
+    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=250&fit=crop', // gym/HIIT
+    'https://images.unsplash.com/photo-1461897104016-0b3b00b1ea56?w=600&h=250&fit=crop', // runners outdoors
+    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=250&fit=crop', // yoga
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=250&fit=crop', // cycling
+    'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=600&h=250&fit=crop', // marathon crowd
+    'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=250&fit=crop', // yoga/pilates
+    'https://images.unsplash.com/photo-1486218119243-13883505764c?w=600&h=250&fit=crop', // trail
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=250&fit=crop', // fitness
+    'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=250&fit=crop', // swimming
+    'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=250&fit=crop', // cycling group
+  ]
+
+  // Event activity type for filtering
+  const EVENT_TYPES = ['Running', 'Running', 'Fitness', 'Running', 'Yoga', 'Running', 'Marathon', 'Yoga', 'Walking', 'Pilates', 'Cycling', 'Running', 'CrossFit', 'Yoga', 'Marathon', 'Cycling']
 
   return Array.from({ length: count }, (_, i) => {
     const pricing = EVENT_PRICING[i % EVENT_PRICING.length]
     const prize = EVENT_PRIZES[i % EVENT_PRIZES.length]
+    const eventType = EVENT_TYPES[i % EVENT_TYPES.length]
     return {
       id: randomId(),
       name: GROUP_NAMES[i % GROUP_NAMES.length],
@@ -298,19 +322,20 @@ export function generateMockGroups(count = 12) {
       member_count: Math.floor(Math.random() * 200 + 5),
       created_by: randomId(),
       created_at: randomDate(180),
-      cover_image: MAP_IMAGES[i % MAP_IMAGES.length],
+      cover_image: EVENT_IMAGES[i % EVENT_IMAGES.length],
       upcoming_event: {
         title: EVENT_TITLES[i % EVENT_TITLES.length],
         description: EVENT_DESCRIPTIONS[i % EVENT_DESCRIPTIONS.length],
         location: EVENT_LOCATIONS[i % EVENT_LOCATIONS.length],
         date: new Date(Date.now() + (i + 1) * 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         time: `${6 + (i % 4)}:${i % 2 === 0 ? '00' : '30'} AM`,
-        map_image: MAP_IMAGES[(i + 2) % MAP_IMAGES.length],
+        map_image: EVENT_IMAGES[(i + 3) % EVENT_IMAGES.length],
         price: pricing.price,
         priceLabel: pricing.label,
         prize,
         organizer: EVENT_ORGANIZERS[i % EVENT_ORGANIZERS.length],
         spotsLeft: Math.floor(Math.random() * 30 + 2),
+        eventType,
       },
     }
   })
