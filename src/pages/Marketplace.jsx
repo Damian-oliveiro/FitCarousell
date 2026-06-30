@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { generateUsedListings, generateMerchantShopItems } from '../utils/mockData'
 import ListingCard from '../components/ListingCard'
 import CreateListingForm from '../components/CreateListingForm'
+import DetailModal, { ListingDetailView } from '../components/DetailModal'
 import './Marketplace.css'
 
 const USED_CATEGORIES = ['All', 'Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
@@ -24,6 +25,7 @@ export default function Marketplace() {
   const [sort, setSort] = useState('newest')
   const [shopBrand, setShopBrand] = useState('All')
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [selectedListing, setSelectedListing] = useState(null)
 
   useEffect(() => {
     setLoading(true)
@@ -167,7 +169,7 @@ export default function Marketplace() {
       {!loading && activeTab === 'used' && (
         <div className="listings-grid">
           {filteredUsed.map(listing => (
-            <div key={listing.id} className="used-listing-card">
+            <div key={listing.id} className="used-listing-card" onClick={() => setSelectedListing(listing)} style={{ cursor: 'pointer' }}>
               <ListingCard listing={listing} />
               <div className="used-listing-wear">
                 <span className="wear-badge">{listing.wear}</span>
@@ -191,13 +193,14 @@ export default function Marketplace() {
                 <h3 className="shop-brand-name">{brand.name}</h3>
                 <div className="listings-grid">
                   {brandItems.map(item => (
-                    <ListingCard
-                      key={item.id}
-                      listing={{
-                        ...item,
-                        profiles: { display_name: brand.name, role: 'merchant' },
-                      }}
-                    />
+                    <div key={item.id} onClick={() => setSelectedListing(item)} style={{ cursor: 'pointer' }}>
+                      <ListingCard
+                        listing={{
+                          ...item,
+                          profiles: { display_name: brand.name, role: 'merchant' },
+                        }}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -208,6 +211,11 @@ export default function Marketplace() {
           )}
         </div>
       )}
+
+      {/* Listing Detail Modal */}
+      <DetailModal isOpen={!!selectedListing} onClose={() => setSelectedListing(null)}>
+        {selectedListing && <ListingDetailView listing={selectedListing} />}
+      </DetailModal>
     </div>
   )
 }

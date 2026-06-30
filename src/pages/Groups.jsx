@@ -62,9 +62,6 @@ export default function Groups() {
   }, [fetchGroups, fetchMemberships])
 
   async function handleJoin(groupId) {
-    if (!user) return
-
-    // Check if already a member
     if (memberships.includes(groupId)) {
       setActionMessage({ groupId, message: 'Already a member' })
       setTimeout(() => setActionMessage(null), 3000)
@@ -74,14 +71,22 @@ export default function Groups() {
     setActionLoading(groupId)
     setActionMessage(null)
 
+    // In mock mode, just update local state
+    if (USE_MOCK_DATA) {
+      setTimeout(() => {
+        setMemberships(prev => [...prev, groupId])
+        setGroups(prev => prev.map(g => g.id === groupId ? { ...g, member_count: (g.member_count || 0) + 1 } : g))
+        setActionLoading(null)
+      }, 300)
+      return
+    }
+
     const { error: joinError } = await supabase
       .from('group_members')
-      .insert({ group_id: groupId, user_id: user.id })
+      .insert({ group_id: groupId, user_id: user?.id })
 
     if (joinError) {
-      // Handle duplicate constraint violation
       if (joinError.code === '23505') {
-        setActionMessage({ groupId, message: 'Already a member' })
         setMemberships(prev => prev.includes(groupId) ? prev : [...prev, groupId])
       } else {
         setActionMessage({ groupId, message: 'Failed to join group' })
@@ -91,27 +96,29 @@ export default function Groups() {
       return
     }
 
-    // Update local state
     setMemberships(prev => [...prev, groupId])
-    setGroups(prev =>
-      prev.map(g =>
-        g.id === groupId ? { ...g, member_count: (g.member_count || 0) + 1 } : g
-      )
-    )
+    setGroups(prev => prev.map(g => g.id === groupId ? { ...g, member_count: (g.member_count || 0) + 1 } : g))
     setActionLoading(null)
   }
 
   async function handleLeave(groupId) {
-    if (!user) return
-
     setActionLoading(groupId)
     setActionMessage(null)
+
+    if (USE_MOCK_DATA) {
+      setTimeout(() => {
+        setMemberships(prev => prev.filter(id => id !== groupId))
+        setGroups(prev => prev.map(g => g.id === groupId ? { ...g, member_count: Math.max(0, (g.member_count || 0) - 1) } : g))
+        setActionLoading(null)
+      }, 300)
+      return
+    }
 
     const { error: leaveError } = await supabase
       .from('group_members')
       .delete()
       .eq('group_id', groupId)
-      .eq('user_id', user.id)
+      .eq('user_id', user?.id)
 
     if (leaveError) {
       setActionMessage({ groupId, message: 'Failed to leave group' })
@@ -120,13 +127,8 @@ export default function Groups() {
       return
     }
 
-    // Update local state
     setMemberships(prev => prev.filter(id => id !== groupId))
-    setGroups(prev =>
-      prev.map(g =>
-        g.id === groupId ? { ...g, member_count: Math.max(0, (g.member_count || 0) - 1) } : g
-      )
-    )
+    setGroups(prev => prev.map(g => g.id === groupId ? { ...g, member_count: Math.max(0, (g.member_count || 0) - 1) } : g))
     setActionLoading(null)
   }
 

@@ -3,6 +3,8 @@
  * Provides scrollable content for HomeFeed, Marketplace, and Groups.
  */
 
+import { getCategoryImage, routeMapList } from './imagePlaceholders'
+
 const FIRST_NAMES = ['Alex', 'Jordan', 'Sam', 'Casey', 'Taylor', 'Morgan', 'Riley', 'Quinn', 'Avery', 'Blake', 'Drew', 'Sage', 'Kai', 'Reese', 'Charlie']
 const LAST_NAMES = ['Chen', 'Kim', 'Patel', 'Nguyen', 'Tanaka', 'Garcia', 'Lee', 'Singh', 'Williams', 'Brown', 'Johnson', 'Miller', 'Davis', 'Wilson', 'Moore']
 const ACTIVITY_TYPES = ['Run', 'Cycle', 'Swim', 'Walk']
@@ -109,31 +111,31 @@ const LISTING_TITLES = [
 ]
 
 const LISTING_IMAGES = [
-  'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1565084888279-aca607ecce0c?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1591291621164-2c6367723315?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1585298723682-7115561c51b7?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1518459031867-a89b944bffe4?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1483721310020-03333e577078?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1517344884509-a0c97ec11bcc?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=300&h=200&fit=crop',
-  'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=300&h=200&fit=crop',
+  'https://loremflickr.com/600/400/running-shoes?lock=11',
+  'https://loremflickr.com/600/400/smartwatch,fitness?lock=16',
+  'https://loremflickr.com/600/400/road-bike?lock=15',
+  'https://loremflickr.com/600/400/yoga-mat?lock=20',
+  'https://loremflickr.com/600/400/kettlebell,gym?lock=12',
+  'https://loremflickr.com/600/400/swimming-goggles?lock=19',
+  'https://loremflickr.com/600/400/cycling-jersey?lock=38',
+  'https://loremflickr.com/600/400/sports-headphones?lock=13',
+  'https://loremflickr.com/600/400/foam-roller,fitness?lock=27',
+  'https://loremflickr.com/600/400/gym-equipment?lock=22',
+  'https://loremflickr.com/600/400/running-vest?lock=34',
+  'https://loremflickr.com/600/400/gym-bag?lock=26',
+  'https://loremflickr.com/600/400/running-watch?lock=17',
+  'https://loremflickr.com/600/400/resistance-band?lock=23',
+  'https://loremflickr.com/600/400/water-bottle,sport?lock=29',
+  'https://loremflickr.com/600/400/dumbbells,gym?lock=21',
+  'https://loremflickr.com/600/400/jump-rope,fitness?lock=28',
+  'https://loremflickr.com/600/400/swim-fins?lock=43',
+  'https://loremflickr.com/600/400/cycling-helmet?lock=18',
+  'https://loremflickr.com/600/400/compression-tights?lock=30',
+  'https://loremflickr.com/600/400/running-shorts?lock=32',
+  'https://loremflickr.com/600/400/bike-computer?lock=39',
+  'https://loremflickr.com/600/400/tennis-racket?lock=24',
+  'https://loremflickr.com/600/400/fitness-tracker?lock=52',
+  'https://loremflickr.com/600/400/basketball?lock=25',
 ]
 const CATEGORIES = ['Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
 const CONDITIONS = ['Brand New', 'Like New', 'Good', 'Fair']
@@ -280,25 +282,25 @@ export function generateMerchantShopItems() {
 
   const items = [
     // Nike
-    { brand: 'Nike', title: 'Nike Pegasus 41', price: 189.99, category: 'Running', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop', description: 'Responsive cushioning for everyday runs. Updated mesh upper for breathability.' },
-    { brand: 'Nike', title: 'Nike Dri-FIT ADV', price: 65.00, category: 'Running', image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=300&h=200&fit=crop', description: 'Advanced moisture-wicking running shirt. Lightweight and fast-drying.' },
-    { brand: 'Nike', title: 'Nike Vaporfly 3', price: 349.99, category: 'Running', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&h=200&fit=crop', description: 'Race-day carbon fiber plate shoe. ZoomX foam for maximum energy return.' },
-    { brand: 'Nike', title: 'Nike Flex Stride Shorts', price: 55.00, category: 'Running', image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300&h=200&fit=crop', description: 'Flexible running shorts with inner brief. Reflective details for low light.' },
+    { brand: 'Nike', title: 'Nike Pegasus 41', price: 189.99, category: 'Running', image: 'https://loremflickr.com/600/400/nike-running-shoes?lock=60', description: 'Responsive cushioning for everyday runs. Updated mesh upper for breathability.' },
+    { brand: 'Nike', title: 'Nike Dri-FIT ADV', price: 65.00, category: 'Running', image: 'https://loremflickr.com/600/400/nike-running-shirt?lock=61', description: 'Advanced moisture-wicking running shirt. Lightweight and fast-drying.' },
+    { brand: 'Nike', title: 'Nike Vaporfly 3', price: 349.99, category: 'Running', image: 'https://loremflickr.com/600/400/nike-running-shoes?lock=62', description: 'Race-day carbon fiber plate shoe. ZoomX foam for maximum energy return.' },
+    { brand: 'Nike', title: 'Nike Flex Stride Shorts', price: 55.00, category: 'Running', image: 'https://loremflickr.com/600/400/running-shorts?lock=63', description: 'Flexible running shorts with inner brief. Reflective details for low light.' },
     // Adidas
-    { brand: 'Adidas', title: 'Adidas Ultraboost 24', price: 229.99, category: 'Running', image: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=300&h=200&fit=crop', description: 'Boost midsole with Continental rubber outsole. Primeknit upper adapts to your foot.' },
-    { brand: 'Adidas', title: 'Adidas Adizero Adios Pro 3', price: 299.99, category: 'Running', image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=300&h=200&fit=crop', description: 'Competition racing flat with EnergyRods. Sub-2 hour marathon technology.' },
-    { brand: 'Adidas', title: 'Adidas Terrex Free Hiker', price: 199.99, category: 'Running', image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300&h=200&fit=crop', description: 'Trail running shoe with Boost cushioning. Continental grip for technical terrain.' },
-    { brand: 'Adidas', title: 'Adidas Own The Run Tee', price: 45.00, category: 'Fitness', image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=300&h=200&fit=crop', description: 'AEROREADY moisture-absorbing running tee. Lightweight recycled materials.' },
+    { brand: 'Adidas', title: 'Adidas Ultraboost 24', price: 229.99, category: 'Running', image: 'https://loremflickr.com/600/400/adidas-running-shoes?lock=64', description: 'Boost midsole with Continental rubber outsole. Primeknit upper adapts to your foot.' },
+    { brand: 'Adidas', title: 'Adidas Adizero Adios Pro 3', price: 299.99, category: 'Running', image: 'https://loremflickr.com/600/400/adidas-shoes?lock=65', description: 'Competition racing flat with EnergyRods. Sub-2 hour marathon technology.' },
+    { brand: 'Adidas', title: 'Adidas Terrex Free Hiker', price: 199.99, category: 'Running', image: 'https://loremflickr.com/600/400/hiking-shoes?lock=66', description: 'Trail running shoe with Boost cushioning. Continental grip for technical terrain.' },
+    { brand: 'Adidas', title: 'Adidas Own The Run Tee', price: 45.00, category: 'Fitness', image: 'https://loremflickr.com/600/400/adidas-shirt?lock=67', description: 'AEROREADY moisture-absorbing running tee. Lightweight recycled materials.' },
     // Asics
-    { brand: 'Asics', title: 'Asics Gel-Nimbus 26', price: 199.99, category: 'Running', image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=300&h=200&fit=crop', description: 'Premium cushioned neutral runner. PureGEL technology for soft landings.' },
-    { brand: 'Asics', title: 'Asics GT-2000 12', price: 159.99, category: 'Running', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&h=200&fit=crop', description: 'Stability running shoe with FF Blast cushioning. Great for overpronators.' },
-    { brand: 'Asics', title: 'Asics Metaspeed Sky+', price: 329.99, category: 'Running', image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=300&h=200&fit=crop', description: 'Carbon plate racing shoe for stride runners. Motion Wrap upper for lockdown fit.' },
-    { brand: 'Asics', title: 'Asics Running Cap', price: 32.00, category: 'Running', image: 'https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=300&h=200&fit=crop', description: 'Lightweight performance running cap. Mesh panels for ventilation. UV protection.' },
+    { brand: 'Asics', title: 'Asics Gel-Nimbus 26', price: 199.99, category: 'Running', image: 'https://loremflickr.com/600/400/asics-running-shoes?lock=68', description: 'Premium cushioned neutral runner. PureGEL technology for soft landings.' },
+    { brand: 'Asics', title: 'Asics GT-2000 12', price: 159.99, category: 'Running', image: 'https://loremflickr.com/600/400/running-shoes,sport?lock=69', description: 'Stability running shoe with FF Blast cushioning. Great for overpronators.' },
+    { brand: 'Asics', title: 'Asics Metaspeed Sky+', price: 329.99, category: 'Running', image: 'https://loremflickr.com/600/400/racing-shoes?lock=70', description: 'Carbon plate racing shoe for stride runners. Motion Wrap upper for lockdown fit.' },
+    { brand: 'Asics', title: 'Asics Running Cap', price: 32.00, category: 'Running', image: 'https://loremflickr.com/600/400/running-cap?lock=71', description: 'Lightweight performance running cap. Mesh panels for ventilation. UV protection.' },
     // Garmin
-    { brand: 'Garmin', title: 'Garmin Forerunner 265', price: 549.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop', description: 'AMOLED GPS running watch. Training readiness, race predictor, and recovery advisor.' },
-    { brand: 'Garmin', title: 'Garmin Forerunner 965', price: 799.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop', description: 'Premium triathlon smartwatch. Full color maps, multi-band GPS, titanium bezel.' },
-    { brand: 'Garmin', title: 'Garmin HRM-Pro Plus', price: 179.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=300&h=200&fit=crop', description: 'Chest strap heart rate monitor. Running dynamics, ground contact time, vertical oscillation.' },
-    { brand: 'Garmin', title: 'Garmin Edge 840', price: 499.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=300&h=200&fit=crop', description: 'Touchscreen cycling computer. Turn-by-turn navigation, power meter compatible.' },
+    { brand: 'Garmin', title: 'Garmin Forerunner 265', price: 549.99, category: 'Electronics', image: 'https://loremflickr.com/600/400/garmin-watch?lock=72', description: 'AMOLED GPS running watch. Training readiness, race predictor, and recovery advisor.' },
+    { brand: 'Garmin', title: 'Garmin Forerunner 965', price: 799.99, category: 'Electronics', image: 'https://loremflickr.com/600/400/smartwatch,fitness?lock=73', description: 'Premium triathlon smartwatch. Full color maps, multi-band GPS, titanium bezel.' },
+    { brand: 'Garmin', title: 'Garmin HRM-Pro Plus', price: 179.99, category: 'Electronics', image: 'https://loremflickr.com/600/400/heart-rate-monitor?lock=74', description: 'Chest strap heart rate monitor. Running dynamics, ground contact time, vertical oscillation.' },
+    { brand: 'Garmin', title: 'Garmin Edge 840', price: 499.99, category: 'Electronics', image: 'https://loremflickr.com/600/400/bike-computer?lock=75', description: 'Touchscreen cycling computer. Turn-by-turn navigation, power meter compatible.' },
   ]
 
   return { brands, items: items.map(item => ({ ...item, id: randomId(), status: 'active' })) }
@@ -331,24 +333,27 @@ export function generateUsedListings(count = 20) {
     'Recovery Massage Gun',
   ]
 
-  return Array.from({ length: count }, (_, i) => ({
-    id: randomId(),
-    title: USED_TITLES[i % USED_TITLES.length],
-    description: `Selling my ${USED_TITLES[i % USED_TITLES.length].toLowerCase()}. Condition detailed below. Pick up or meet up available.`,
-    price: +(Math.random() * 200 + 5).toFixed(2),
-    category: CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
-    condition: CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)],
-    wear: WEAR_LEVELS[Math.floor(Math.random() * WEAR_LEVELS.length)],
-    image: LISTING_IMAGES[i % LISTING_IMAGES.length],
-    status: 'active',
-    seller_id: randomId(),
-    created_at: randomDate(30),
-    type: 'used',
-    profiles: {
-      display_name: randomName(),
-      role: 'individual',
-    },
-  }))
+  return Array.from({ length: count }, (_, i) => {
+    const category = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+    return {
+      id: randomId(),
+      title: USED_TITLES[i % USED_TITLES.length],
+      description: `Selling my ${USED_TITLES[i % USED_TITLES.length].toLowerCase()}. Condition detailed below. Pick up or meet up available.`,
+      price: +(Math.random() * 200 + 5).toFixed(2),
+      category,
+      condition: CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)],
+      wear: WEAR_LEVELS[Math.floor(Math.random() * WEAR_LEVELS.length)],
+      image: getCategoryImage(category, i),
+      status: 'active',
+      seller_id: randomId(),
+      created_at: randomDate(30),
+      type: 'used',
+      profiles: {
+        display_name: randomName(),
+        role: 'individual',
+      },
+    }
+  })
 }
 
 // ===== BLOG POSTS =====

@@ -7,6 +7,7 @@ import { generateMockFeedPosts, generateMockAds, generateMockBlogPosts } from '.
 import AdFeedCard from '../components/AdFeedCard'
 import AdForm from '../components/AdForm'
 import RouteMap from '../components/RouteMap'
+import DetailModal, { ActivityDetail, BlogDetail } from '../components/DetailModal'
 import './HomeFeed.css'
 
 const BATCH_SIZE = 20
@@ -26,6 +27,7 @@ export default function HomeFeed() {
   const [showAdForm, setShowAdForm] = useState(false)
   const [showBlogForm, setShowBlogForm] = useState(false)
   const [editingAd, setEditingAd] = useState(null)
+  const [selectedPost, setSelectedPost] = useState(null)
   const sentinelRef = useRef(null)
   const observerRef = useRef(null)
 
@@ -284,9 +286,9 @@ export default function HomeFeed() {
               )
             }
             if (item._type === 'blog') {
-              return <BlogCard key={item.id || index} post={item} />
+              return <BlogCard key={item.id || index} post={item} onClick={() => setSelectedPost(item)} />
             }
-            return <FeedCard key={item.id || index} post={item} />
+            return <FeedCard key={item.id || index} post={item} onClick={() => setSelectedPost(item)} />
           })}
 
           {/* Inline error for pagination failures */}
@@ -332,16 +334,22 @@ export default function HomeFeed() {
           }}
         />
       )}
+
+      {/* Detail Modal */}
+      <DetailModal isOpen={!!selectedPost} onClose={() => setSelectedPost(null)}>
+        {selectedPost && selectedPost._type === 'blog' && <BlogDetail post={selectedPost} />}
+        {selectedPost && !selectedPost._type && <ActivityDetail post={selectedPost} />}
+      </DetailModal>
     </div>
   )
 }
 
-function FeedCard({ post }) {
+function FeedCard({ post, onClick }) {
   const activity = post.activities
   const profile = post.profiles
 
   return (
-    <div className="feed-card">
+    <div className="feed-card" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="feed-header">
         <div className="feed-user">
           <div className="feed-avatar">
@@ -417,14 +425,14 @@ function FeedCard({ post }) {
   )
 }
 
-function BlogCard({ post }) {
+function BlogCard({ post, onClick }) {
   const profile = post.profiles
   const [expanded, setExpanded] = useState(false)
   const images = post.images || []
   const imageClass = images.length === 1 ? 'single' : images.length === 2 ? 'double' : 'triple'
 
   return (
-    <div className="feed-card blog-card">
+    <div className="feed-card blog-card" onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className="feed-header">
         <div className="feed-user">
           <div className="feed-avatar">
