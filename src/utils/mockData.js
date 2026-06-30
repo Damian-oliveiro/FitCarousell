@@ -197,16 +197,20 @@ export function generateMockGroups(count = 12) {
   const EVENT_TITLES = [
     'Saturday Morning 5K',
     'Sunrise Trail Run',
-    'Interval Training Session',
+    'HIIT Bootcamp Session',
     'Long Run Weekend',
-    'Recovery Jog + Coffee',
+    'Recovery Yoga + Coffee',
     'Sprint Challenge',
-    'Group Hill Repeats',
+    'Full Marathon - City Race',
     'Coastal Loop Run',
     'Night Run City Tour',
-    'Park Run Meetup',
-    'Bridge to Bridge',
+    'Pilates Core Strength',
+    'Walking Club - Seniors Welcome',
     'Marathon Pace Run',
+    'CrossFit Community WOD',
+    'Outdoor Yoga Session',
+    'Half Marathon Training',
+    'Cycling Endurance Ride',
   ]
 
   const EVENT_LOCATIONS = [
@@ -222,6 +226,10 @@ export function generateMockGroups(count = 12) {
     'Bishan-Ang Mo Kio Park',
     'West Coast Park',
     'Jurong Lake Gardens',
+    'City Hall Starting Point',
+    'Tanjong Beach Sentosa',
+    'Changi Coastal Walk',
+    'ActiveSG Gym Tampines',
   ]
 
   const EVENT_DESCRIPTIONS = [
@@ -231,25 +239,81 @@ export function generateMockGroups(count = 12) {
     'Building up for race day. Steady pace at 5:30-6:00 min/km. Hydration stations along the way.',
     'Easy pace run followed by brunch at the nearby cafe. Great way to start the weekend.',
     'Timed sprints with full recovery. Push your limits. Warm-up at 6:45am, sprints start at 7am sharp.',
+    'Full 42.195km certified course through the city. Timing chip included. Finisher medal for all.',
+    'Beginner-friendly yoga flow in the park. Mats provided. Ends with cold brew from our sponsor.',
+    'Walk at your own pace along the scenic coastal trail. 5km route with rest stops every 1km.',
+    'Reformer Pilates session focused on core and posture. Limited to 15 pax. Equipment provided.',
+    'Endurance ride along East Coast. 60km route, average speed 28-32km/h. Regroup every 20km.',
+    'Community workout of the day. Scaled options available. All equipment provided.',
   ]
 
-  return Array.from({ length: count }, (_, i) => ({
-    id: randomId(),
-    name: GROUP_NAMES[i % GROUP_NAMES.length],
-    description: GROUP_DESCRIPTIONS[i % GROUP_DESCRIPTIONS.length],
-    member_count: Math.floor(Math.random() * 200 + 5),
-    created_by: randomId(),
-    created_at: randomDate(180),
-    cover_image: MAP_IMAGES[i % MAP_IMAGES.length],
-    upcoming_event: {
-      title: EVENT_TITLES[i % EVENT_TITLES.length],
-      description: EVENT_DESCRIPTIONS[i % EVENT_DESCRIPTIONS.length],
-      location: EVENT_LOCATIONS[i % EVENT_LOCATIONS.length],
-      date: new Date(Date.now() + (i + 1) * 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      time: `${6 + (i % 4)}:${i % 2 === 0 ? '00' : '30'} AM`,
-      map_image: MAP_IMAGES[(i + 2) % MAP_IMAGES.length],
-    },
-  }))
+  const EVENT_PRICING = [
+    { price: 0, label: 'Free' },
+    { price: 0, label: 'Free' },
+    { price: 15, label: '$15/pax' },
+    { price: 0, label: 'Free' },
+    { price: 10, label: '$10 (includes coffee)' },
+    { price: 0, label: 'Free' },
+    { price: 85, label: '$85 (Early bird)' },
+    { price: 20, label: '$20/session' },
+    { price: 0, label: 'Free' },
+    { price: 35, label: '$35/session' },
+    { price: 0, label: 'Free' },
+    { price: 25, label: '$25 (includes meal)' },
+  ]
+
+  const EVENT_PRIZES = [
+    null,
+    null,
+    'Top 3 finishers win $50 voucher',
+    null,
+    null,
+    'Fastest time wins Garmin watch',
+    '1st: $500, 2nd: $300, 3rd: $100',
+    null,
+    null,
+    null,
+    'Complete all 4 weeks to win Nike gear pack',
+    'Random draw: 2x $100 gift cards',
+  ]
+
+  const EVENT_ORGANIZERS = [
+    'FitCarousell Official',
+    'RunSG Community',
+    'Coach Maya Fitness',
+    'Endurance Lab SG',
+    'YogaWithRen Studio',
+    'ActiveSG',
+    'Singapore Marathon Org',
+    'Urban Runners Club',
+  ]
+
+  return Array.from({ length: count }, (_, i) => {
+    const pricing = EVENT_PRICING[i % EVENT_PRICING.length]
+    const prize = EVENT_PRIZES[i % EVENT_PRIZES.length]
+    return {
+      id: randomId(),
+      name: GROUP_NAMES[i % GROUP_NAMES.length],
+      description: GROUP_DESCRIPTIONS[i % GROUP_DESCRIPTIONS.length],
+      member_count: Math.floor(Math.random() * 200 + 5),
+      created_by: randomId(),
+      created_at: randomDate(180),
+      cover_image: MAP_IMAGES[i % MAP_IMAGES.length],
+      upcoming_event: {
+        title: EVENT_TITLES[i % EVENT_TITLES.length],
+        description: EVENT_DESCRIPTIONS[i % EVENT_DESCRIPTIONS.length],
+        location: EVENT_LOCATIONS[i % EVENT_LOCATIONS.length],
+        date: new Date(Date.now() + (i + 1) * 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        time: `${6 + (i % 4)}:${i % 2 === 0 ? '00' : '30'} AM`,
+        map_image: MAP_IMAGES[(i + 2) % MAP_IMAGES.length],
+        price: pricing.price,
+        priceLabel: pricing.label,
+        prize,
+        organizer: EVENT_ORGANIZERS[i % EVENT_ORGANIZERS.length],
+        spotsLeft: Math.floor(Math.random() * 30 + 2),
+      },
+    }
+  })
 }
 
 export function generateMockAds(count = 5) {
@@ -304,7 +368,7 @@ export function generateMerchantShopItems() {
 // ===== USED MARKETPLACE ITEMS =====
 const WEAR_LEVELS = ['Like New - Used once', 'Good - Minor wear', 'Fair - Visible wear', 'Well-loved - Heavy use']
 
-export function generateUsedListings(count = 20) {
+export function generateUsedListings(count = 40) {
   // Each item has a title, its correct category, and a matching image
   const USED_ITEMS = [
     { title: 'Nike Pegasus 39 (Used 3 months)', category: 'Running', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop' },
@@ -312,21 +376,41 @@ export function generateUsedListings(count = 20) {
     { title: 'Road Bike Helmet - Specialized', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
     { title: 'Foam Roller - Trigger Point', category: 'Fitness', image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop' },
     { title: 'Swimming Goggles - Arena', category: 'Swimming', image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop' },
-    { title: 'Resistance Bands Set', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
-    { title: 'Running Vest - Salomon', category: 'Running', image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop' },
-    { title: 'Yoga Blocks (pair)', category: 'Fitness', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop' },
+    { title: 'Resistance Bands Set (5 pack)', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
+    { title: 'Running Vest - Salomon ADV', category: 'Running', image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=400&fit=crop' },
+    { title: 'Yoga Mat - Manduka PRO', category: 'Fitness', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop' },
     { title: 'Cycling Gloves - Pearl Izumi', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Jump Rope - Speed Cable', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
+    { title: 'Speed Jump Rope - Weighted', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
     { title: 'Running Belt - FlipBelt', category: 'Running', image: 'https://images.unsplash.com/photo-1461897104016-0b3b00b1ea56?w=600&h=400&fit=crop' },
-    { title: 'Gym Duffel Bag', category: 'Fitness', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=400&fit=crop' },
-    { title: 'Pull-up Bar (doorframe)', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
+    { title: 'Gym Duffel Bag - Nike', category: 'Fitness', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&h=400&fit=crop' },
+    { title: 'Doorframe Pull-up Bar', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
     { title: 'Compression Socks (3 pairs)', category: 'Running', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=400&fit=crop' },
     { title: 'Running Sunglasses - Oakley', category: 'Running', image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&h=400&fit=crop' },
-    { title: 'Kettlebell 16kg', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
+    { title: 'Kettlebell 16kg Cast Iron', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
     { title: 'TRX Suspension Trainer', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
-    { title: 'Swim Fins - Speedo', category: 'Swimming', image: 'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=600&h=400&fit=crop' },
+    { title: 'Swim Fins - Speedo Biofuse', category: 'Swimming', image: 'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=600&h=400&fit=crop' },
     { title: 'Cycling Jersey - Castelli', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
-    { title: 'Recovery Massage Gun', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
+    { title: 'Theragun Mini Massage Gun', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
+    { title: 'Adidas Ultraboost 22 (Worn twice)', category: 'Running', image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&h=400&fit=crop' },
+    { title: 'Apple Watch SE (GPS)', category: 'Electronics', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=400&fit=crop' },
+    { title: 'Wahoo KICKR Snap Trainer', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Swim Paddles - Finis Agility', category: 'Swimming', image: 'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600&h=400&fit=crop' },
+    { title: 'Adjustable Dumbbells 2-24kg', category: 'Fitness', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop' },
+    { title: 'Brooks Ghost 15 (Lightly used)', category: 'Running', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&h=400&fit=crop' },
+    { title: 'Fitbit Charge 5', category: 'Electronics', image: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&h=400&fit=crop' },
+    { title: 'Bike Repair Stand', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Swim Snorkel - Centre Mount', category: 'Swimming', image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop' },
+    { title: 'Yoga Wheel - Cork', category: 'Fitness', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop' },
+    { title: 'Asics Gel-Kayano 29', category: 'Running', image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&h=400&fit=crop' },
+    { title: 'Polar Vantage V2', category: 'Electronics', image: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600&h=400&fit=crop' },
+    { title: 'Cycling Shorts - Rapha', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Swimming Kickboard', category: 'Swimming', image: 'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=600&h=400&fit=crop' },
+    { title: 'Battle Ropes 12m', category: 'Fitness', image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop' },
+    { title: 'Hoka Bondi 8 (3 months old)', category: 'Running', image: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&h=400&fit=crop' },
+    { title: 'Coros PACE 3', category: 'Electronics', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=400&fit=crop' },
+    { title: 'Indoor Cycling Shoes - Shimano', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
+    { title: 'Waterproof Swim MP3 Player', category: 'Swimming', image: 'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=600&h=400&fit=crop' },
+    { title: 'Ab Roller Wheel', category: 'Fitness', image: 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop' },
   ]
 
   return Array.from({ length: count }, (_, i) => {

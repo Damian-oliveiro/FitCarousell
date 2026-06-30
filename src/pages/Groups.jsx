@@ -201,11 +201,26 @@ export default function Groups() {
                         <span>{group.upcoming_event.date} at {group.upcoming_event.time}</span>
                         <span>{group.upcoming_event.location}</span>
                       </div>
+                      <div className="group-card-event-details">
+                        <span className={`event-price-tag ${group.upcoming_event.price === 0 ? 'free' : 'paid'}`}>
+                          {group.upcoming_event.priceLabel}
+                        </span>
+                        {group.upcoming_event.prize && (
+                          <span className="event-prize-tag">{group.upcoming_event.prize}</span>
+                        )}
+                        <span className="event-spots">{group.upcoming_event.spotsLeft} spots left</span>
+                      </div>
+                      <div className="group-card-event-organizer">
+                        By {group.upcoming_event.organizer}
+                      </div>
                       {group.upcoming_event.map_image && (
                         <div className="group-card-map">
                           <img src={group.upcoming_event.map_image} alt="Route map" />
                         </div>
                       )}
+                      <button className="btn-primary btn-sm event-join-btn">
+                        {group.upcoming_event.price > 0 ? `Join - ${group.upcoming_event.priceLabel}` : 'Join Event'}
+                      </button>
                     </div>
                   )}
 
