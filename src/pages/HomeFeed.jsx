@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
 import { intersperseFeedWithAds } from '../utils/feedUtils'
 import { fetchActiveAds } from '../components/AdForm'
-import { generateMockFeedPosts, generateMockAds } from '../utils/mockData'
+import { generateMockFeedPosts, generateMockAds, generateMockBlogPosts } from '../utils/mockData'
 import AdFeedCard from '../components/AdFeedCard'
 import AdForm from '../components/AdForm'
 import RouteMap from '../components/RouteMap'
@@ -24,6 +24,7 @@ export default function HomeFeed() {
   const [error, setError] = useState(null)
   const [hasMore, setHasMore] = useState(true)
   const [showAdForm, setShowAdForm] = useState(false)
+  const [showBlogForm, setShowBlogForm] = useState(false)
   const [editingAd, setEditingAd] = useState(null)
   const sentinelRef = useRef(null)
   const observerRef = useRef(null)
@@ -41,8 +42,11 @@ export default function HomeFeed() {
     try {
       if (USE_MOCK_DATA) {
         // Use mock data for development/testing
-        const allMockPosts = generateMockFeedPosts(60)
-        const batch = allMockPosts.slice(offset, offset + BATCH_SIZE)
+        const allMockPosts = generateMockFeedPosts(40)
+        const blogPosts = generateMockBlogPosts(8)
+        // Mix blogs into activity posts
+        const mixed = [...allMockPosts, ...blogPosts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        const batch = mixed.slice(offset, offset + BATCH_SIZE)
         if (batch.length < BATCH_SIZE) setHasMore(false)
         if (offset === 0) {
           setPosts(batch)
@@ -227,14 +231,22 @@ export default function HomeFeed() {
     <div className="home-feed">
       <div className="home-feed-header">
         <h2 className="home-feed-title">Home</h2>
-        {isMerchant && (
+        <div className="home-feed-header-actions">
           <button
-            className="home-feed-create-ad-btn"
-            onClick={() => { setEditingAd(null); setShowAdForm(true) }}
+            className="btn-secondary btn-sm"
+            onClick={() => setShowBlogForm(!showBlogForm)}
           >
-            + Create Ad
+            Write
           </button>
-        )}
+          {isMerchant && (
+            <button
+              className="home-feed-create-ad-btn"
+              onClick={() => { setEditingAd(null); setShowAdForm(true) }}
+            >
+              + Ad
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Initial loading state */}
@@ -271,6 +283,9 @@ export default function HomeFeed() {
                 />
               )
             }
+            if (item._type === 'blog') {
+              return <BlogCard key={item.id || index} post={item} />
+            }
             return <FeedCard key={item.id || index} post={item} />
           })}
 
@@ -304,6 +319,17 @@ export default function HomeFeed() {
           onClose={() => { setShowAdForm(false); setEditingAd(null) }}
           onSuccess={handleAdFormSuccess}
           existingAd={editingAd}
+        />
+      )}
+
+      {/* Write Blog Form */}
+      {showBlogForm && (
+        <WriteBlogForm
+          onClose={() => setShowBlogForm(false)}
+          onSuccess={(newBlog) => {
+            setPosts(prev => [newBlog, ...prev])
+            setShowBlogForm(false)
+          }}
         />
       )}
     </div>
@@ -386,6 +412,131 @@ function FeedCard({ post }) {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           {post.comments_count || 0}
         </span>
+      </div>
+    </div>
+  )
+}
+
+function BlogCard({ post }) {
+  const profile = post.profiles
+  const [expanded, setExpanded] = useState(false)
+  const images = post.images || []
+  const imageClass = images.length === 1 ? 'single' : images.length === 2 ? 'double' : 'triple'
+
+  return (
+    <div className="feed-card blog-card">
+      <div className="feed-header">
+        <div className="feed-user">
+          <div className="feed-avatar">
+            <span className="avatar-placeholder">
+              {profile?.display_name?.[0] || '?'}
+            </span>
+          </div>
+          <div className="feed-user-info">
+            <span className="feed-username">
+              {profile?.display_name || 'Unknown'}
+              {profile?.is_influencer && <span className="influencer-badge">Creator</span>}
+              <span className="blog-badge">Blog</span>
+            </span>
+            <span className="feed-date">
+              {new Date(post.created_at).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+        <button className="follow-btn">Follow</button>
+      </div>
+
+      <h3 className="blog-title">{post.title}</h3>
+      <p className="blog-body">
+        {expanded ? post.body : post.body?.substring(0, 150) + '...'}
+      </p>
+      {!expanded && post.body?.length > 150 && (
+        <button className="blog-read-more" onClick={() => setExpanded(true)}>
+          Read more
+        </button>
+      )}
+
+      {images.length > 0 && (
+        <div className={`blog-images ${imageClass}`}>
+          {images.slice(0, 3).map((img, i) => (
+            <img key={i} src={img} alt={`Blog image ${i + 1}`} />
+          ))}
+        </div>
+      )}
+
+      <div className="feed-actions">
+        <span className="feed-action-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          {post.likes_count || 0}
+        </span>
+        <span className="feed-action-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          {post.comments_count || 0}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function WriteBlogForm({ onClose, onSuccess }) {
+  const { user, profile } = useAuth()
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
+  const [error, setError] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!title.trim()) { setError('Title is required'); return }
+    if (!body.trim()) { setError('Write something for your blog'); return }
+
+    const newBlog = {
+      id: Math.random().toString(36).substring(2),
+      _type: 'blog',
+      title: title.trim(),
+      body: body.trim(),
+      created_at: new Date().toISOString(),
+      likes_count: 0,
+      comments_count: 0,
+      profiles: {
+        display_name: profile?.display_name || 'You',
+        avatar_url: profile?.avatar_url,
+        role: profile?.role || 'individual',
+      },
+    }
+
+    onSuccess(newBlog)
+  }
+
+  return (
+    <div className="blog-form-overlay">
+      <div className="blog-form">
+        <div className="blog-form-header">
+          <h3>Write a Blog Post</h3>
+          <button className="blog-form-close" onClick={onClose} aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Blog title"
+            value={title}
+            onChange={(e) => { setTitle(e.target.value); setError('') }}
+            className="blog-form-title-input"
+          />
+          <textarea
+            placeholder="Share your thoughts, tips, or experience..."
+            value={body}
+            onChange={(e) => { setBody(e.target.value); setError('') }}
+            rows={8}
+            className="blog-form-body-input"
+          />
+          {error && <p className="blog-form-error">{error}</p>}
+          <div className="blog-form-actions">
+            <button type="button" className="btn-secondary" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn-primary">Publish</button>
+          </div>
+        </form>
       </div>
     </div>
   )

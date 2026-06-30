@@ -268,3 +268,148 @@ export function generateMockAds(count = 5) {
     _type: 'ad',
   }))
 }
+
+// ===== MERCHANT SHOP ITEMS =====
+export function generateMerchantShopItems() {
+  const brands = [
+    { name: 'Nike', logo: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop' },
+    { name: 'Adidas', logo: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=300&h=200&fit=crop' },
+    { name: 'Asics', logo: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=300&h=200&fit=crop' },
+    { name: 'Garmin', logo: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop' },
+  ]
+
+  const items = [
+    // Nike
+    { brand: 'Nike', title: 'Nike Pegasus 41', price: 189.99, category: 'Running', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop', description: 'Responsive cushioning for everyday runs. Updated mesh upper for breathability.' },
+    { brand: 'Nike', title: 'Nike Dri-FIT ADV', price: 65.00, category: 'Running', image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=300&h=200&fit=crop', description: 'Advanced moisture-wicking running shirt. Lightweight and fast-drying.' },
+    { brand: 'Nike', title: 'Nike Vaporfly 3', price: 349.99, category: 'Running', image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&h=200&fit=crop', description: 'Race-day carbon fiber plate shoe. ZoomX foam for maximum energy return.' },
+    { brand: 'Nike', title: 'Nike Flex Stride Shorts', price: 55.00, category: 'Running', image: 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=300&h=200&fit=crop', description: 'Flexible running shorts with inner brief. Reflective details for low light.' },
+    // Adidas
+    { brand: 'Adidas', title: 'Adidas Ultraboost 24', price: 229.99, category: 'Running', image: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=300&h=200&fit=crop', description: 'Boost midsole with Continental rubber outsole. Primeknit upper adapts to your foot.' },
+    { brand: 'Adidas', title: 'Adidas Adizero Adios Pro 3', price: 299.99, category: 'Running', image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=300&h=200&fit=crop', description: 'Competition racing flat with EnergyRods. Sub-2 hour marathon technology.' },
+    { brand: 'Adidas', title: 'Adidas Terrex Free Hiker', price: 199.99, category: 'Running', image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300&h=200&fit=crop', description: 'Trail running shoe with Boost cushioning. Continental grip for technical terrain.' },
+    { brand: 'Adidas', title: 'Adidas Own The Run Tee', price: 45.00, category: 'Fitness', image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=300&h=200&fit=crop', description: 'AEROREADY moisture-absorbing running tee. Lightweight recycled materials.' },
+    // Asics
+    { brand: 'Asics', title: 'Asics Gel-Nimbus 26', price: 199.99, category: 'Running', image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=300&h=200&fit=crop', description: 'Premium cushioned neutral runner. PureGEL technology for soft landings.' },
+    { brand: 'Asics', title: 'Asics GT-2000 12', price: 159.99, category: 'Running', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&h=200&fit=crop', description: 'Stability running shoe with FF Blast cushioning. Great for overpronators.' },
+    { brand: 'Asics', title: 'Asics Metaspeed Sky+', price: 329.99, category: 'Running', image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=300&h=200&fit=crop', description: 'Carbon plate racing shoe for stride runners. Motion Wrap upper for lockdown fit.' },
+    { brand: 'Asics', title: 'Asics Running Cap', price: 32.00, category: 'Running', image: 'https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=300&h=200&fit=crop', description: 'Lightweight performance running cap. Mesh panels for ventilation. UV protection.' },
+    // Garmin
+    { brand: 'Garmin', title: 'Garmin Forerunner 265', price: 549.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=300&h=200&fit=crop', description: 'AMOLED GPS running watch. Training readiness, race predictor, and recovery advisor.' },
+    { brand: 'Garmin', title: 'Garmin Forerunner 965', price: 799.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop', description: 'Premium triathlon smartwatch. Full color maps, multi-band GPS, titanium bezel.' },
+    { brand: 'Garmin', title: 'Garmin HRM-Pro Plus', price: 179.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1576243345690-4e4b79b63288?w=300&h=200&fit=crop', description: 'Chest strap heart rate monitor. Running dynamics, ground contact time, vertical oscillation.' },
+    { brand: 'Garmin', title: 'Garmin Edge 840', price: 499.99, category: 'Electronics', image: 'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?w=300&h=200&fit=crop', description: 'Touchscreen cycling computer. Turn-by-turn navigation, power meter compatible.' },
+  ]
+
+  return { brands, items: items.map(item => ({ ...item, id: randomId(), status: 'active' })) }
+}
+
+// ===== USED MARKETPLACE ITEMS =====
+const WEAR_LEVELS = ['Like New - Used once', 'Good - Minor wear', 'Fair - Visible wear', 'Well-loved - Heavy use']
+
+export function generateUsedListings(count = 20) {
+  const USED_TITLES = [
+    'Nike Pegasus 39 (Used 3 months)',
+    'Garmin Forerunner 245 Watch',
+    'Road Bike Helmet - Specialized',
+    'Foam Roller - Trigger Point',
+    'Swimming Goggles - Arena',
+    'Resistance Bands Set',
+    'Running Vest - Salomon',
+    'Yoga Blocks (pair)',
+    'Cycling Gloves - Pearl Izumi',
+    'Jump Rope - Speed Cable',
+    'Running Belt - FlipBelt',
+    'Gym Duffel Bag',
+    'Pull-up Bar (doorframe)',
+    'Compression Socks (3 pairs)',
+    'Running Sunglasses - Oakley',
+    'Kettlebell 16kg',
+    'TRX Suspension Trainer',
+    'Swim Fins - Speedo',
+    'Cycling Jersey - Castelli',
+    'Recovery Massage Gun',
+  ]
+
+  return Array.from({ length: count }, (_, i) => ({
+    id: randomId(),
+    title: USED_TITLES[i % USED_TITLES.length],
+    description: `Selling my ${USED_TITLES[i % USED_TITLES.length].toLowerCase()}. Condition detailed below. Pick up or meet up available.`,
+    price: +(Math.random() * 200 + 5).toFixed(2),
+    category: CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)],
+    condition: CONDITIONS[Math.floor(Math.random() * CONDITIONS.length)],
+    wear: WEAR_LEVELS[Math.floor(Math.random() * WEAR_LEVELS.length)],
+    image: LISTING_IMAGES[i % LISTING_IMAGES.length],
+    status: 'active',
+    seller_id: randomId(),
+    created_at: randomDate(30),
+    type: 'used',
+    profiles: {
+      display_name: randomName(),
+      role: 'individual',
+    },
+  }))
+}
+
+// ===== BLOG POSTS =====
+const INFLUENCER_NAMES = ['Coach Maya', 'RunWithJake', 'FitNadia', 'TrailBlazerTom', 'CycleQueenSara', 'SwimCoachLee', 'StrengthByAlex', 'YogaWithRen']
+
+const BLOG_TITLES = [
+  'How I Went From Couch to Marathon in 6 Months',
+  '5 Common Running Mistakes That Are Slowing You Down',
+  'The Science Behind Zone 2 Training',
+  'Why Recovery Is More Important Than Training',
+  'My Top 10 Post-Run Stretches',
+  'Nutrition Tips for Your First Half Marathon',
+  'How to Stay Motivated When Training Alone',
+  'The Best Time of Day to Run (Backed by Research)',
+  'Cross-Training: Why Runners Should Lift Weights',
+  'How I Manage Running with a Full-Time Job',
+  'Beginner\'s Guide to Heart Rate Training',
+  'Trail Running vs Road Running: Which Is Better?',
+]
+
+const BLOG_BODIES = [
+  'I started my running journey with barely being able to run 1km without stopping. Here\'s how I built up to completing my first marathon, the setbacks I faced, and what kept me going through the toughest training blocks...',
+  'After coaching hundreds of runners, I see the same mistakes over and over. From going too fast on easy days to neglecting hip mobility, these fixes alone could shave minutes off your PB...',
+  'Zone 2 training revolutionized my endurance. By slowing down 80% of my runs, I actually got faster at racing. Here\'s the science behind why easy running builds a stronger aerobic engine...',
+  'Overtraining nearly ended my running career. I learned the hard way that your body gets stronger during rest, not during the workout. Here are the recovery protocols I now swear by...',
+  'Flexibility is the most underrated aspect of running performance. These 10 stretches target the key muscles that tighten during running and prevent the most common injuries...',
+  'Fueling for a half marathon is different from your daily runs. I break down what to eat in the weeks before, the morning of, and during the race itself...',
+  'Solo training is tough mentally. Here are the psychological strategies and habit-building techniques I use to get out the door even when motivation is zero...',
+  'Morning vs evening runs — the research actually has a clear answer, but it might not be what you expect. I break down cortisol patterns, injury rates, and performance data...',
+  'I was a runner who avoided the gym for years. When I finally started lifting, my running improved dramatically. Here\'s a simple 2x/week strength program for runners...',
+  'Balancing 50km/week with a demanding career requires ruthless time management. These are my non-negotiable habits for fitting training into a busy life...',
+  'Heart rate training transformed my approach to running. No more junk miles. I explain the zones, how to find your thresholds, and how to structure your week around them...',
+  'I\'ve done both extensively. Trails build strength and mental toughness; roads build speed. Here\'s when to choose each and how to mix them for optimal fitness...',
+]
+
+export function generateMockBlogPosts(count = 8) {
+  const BLOG_IMAGES = [
+    ['https://images.unsplash.com/photo-1461897104016-0b3b00b1ea56?w=400&h=300&fit=crop'],
+    ['https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=400&h=300&fit=crop'],
+    ['https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1486218119243-13883505764c?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=400&h=300&fit=crop'],
+    [],
+    ['https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=400&h=300&fit=crop'],
+    ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop'],
+    ['https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=300&fit=crop', 'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=400&h=300&fit=crop'],
+    [],
+  ]
+
+  return Array.from({ length: count }, (_, i) => ({
+    id: randomId(),
+    _type: 'blog',
+    title: BLOG_TITLES[i % BLOG_TITLES.length],
+    body: BLOG_BODIES[i % BLOG_BODIES.length],
+    images: BLOG_IMAGES[i % BLOG_IMAGES.length],
+    created_at: randomDate(21),
+    likes_count: Math.floor(Math.random() * 200 + 10),
+    comments_count: Math.floor(Math.random() * 40 + 2),
+    profiles: {
+      display_name: INFLUENCER_NAMES[i % INFLUENCER_NAMES.length],
+      avatar_url: null,
+      role: 'individual',
+      is_influencer: true,
+    },
+  }))
+}

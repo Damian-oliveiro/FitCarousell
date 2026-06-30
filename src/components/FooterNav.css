@@ -4,8 +4,8 @@
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
-  width: 65%;
-  max-width: 420px;
+  width: 85%;
+  max-width: 520px;
   display: flex;
   justify-content: space-around;
   align-items: center;
