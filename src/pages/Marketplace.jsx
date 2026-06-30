@@ -29,7 +29,7 @@ export default function Marketplace() {
 
   useEffect(() => {
     setLoading(true)
-    const used = generateUsedListings(20)
+    const used = generateUsedListings(100)
     const shop = generateMerchantShopItems()
     setUsedListings(used)
     setShopData(shop)
