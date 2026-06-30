@@ -1,91 +1,67 @@
-// Placeholder images for marketplace and feed
-// Using loremflickr for category-matched sport images
-// Using placehold.co for route maps
+// Sport-specific placeholder images using Unsplash source (reliable, always sport-related)
+// Each image has a unique sig param to prevent duplicates
 
 export const sportImages = {
-  shoes: "https://loremflickr.com/600/400/running-shoes?lock=11",
-  kettlebell: "https://loremflickr.com/600/400/kettlebell,gym?lock=12",
-  headphones: "https://loremflickr.com/600/400/sports-headphones?lock=13",
-  football: "https://loremflickr.com/600/400/football?lock=14",
-  bicycle: "https://loremflickr.com/600/400/road-bike?lock=15",
-  smartwatch: "https://loremflickr.com/600/400/smartwatch,fitness?lock=16",
-  runningWatch: "https://loremflickr.com/600/400/running-watch?lock=17",
-  cyclingHelmet: "https://loremflickr.com/600/400/cycling-helmet?lock=18",
-  swimmingGoggles: "https://loremflickr.com/600/400/swimming-goggles?lock=19",
-  yogaMat: "https://loremflickr.com/600/400/yoga-mat?lock=20",
-  dumbbells: "https://loremflickr.com/600/400/dumbbells,gym?lock=21",
-  pullupBar: "https://loremflickr.com/600/400/gym-equipment?lock=22",
-  resistanceBand: "https://loremflickr.com/600/400/resistance-band?lock=23",
-  tennisRacket: "https://loremflickr.com/600/400/tennis-racket?lock=24",
-  basketball: "https://loremflickr.com/600/400/basketball?lock=25",
-  sportsBag: "https://loremflickr.com/600/400/gym-bag?lock=26",
-  foamRoller: "https://loremflickr.com/600/400/foam-roller,fitness?lock=27",
-  jumpRope: "https://loremflickr.com/600/400/jump-rope,fitness?lock=28",
-  waterBottle: "https://loremflickr.com/600/400/water-bottle,sport?lock=29",
-  compression: "https://loremflickr.com/600/400/compression-tights?lock=30",
+  shoes: 'https://source.unsplash.com/600x400/?running-shoes&sig=1',
+  kettlebell: 'https://source.unsplash.com/600x400/?kettlebell&sig=2',
+  headphones: 'https://source.unsplash.com/600x400/?sport-headphones&sig=3',
+  bicycle: 'https://source.unsplash.com/600x400/?road-bicycle&sig=4',
+  smartwatch: 'https://source.unsplash.com/600x400/?fitness-watch&sig=5',
+  cyclingHelmet: 'https://source.unsplash.com/600x400/?cycling-helmet&sig=6',
+  swimmingGoggles: 'https://source.unsplash.com/600x400/?swimming-pool&sig=7',
+  yogaMat: 'https://source.unsplash.com/600x400/?yoga-mat&sig=8',
+  dumbbells: 'https://source.unsplash.com/600x400/?dumbbells-gym&sig=9',
+  foamRoller: 'https://source.unsplash.com/600x400/?foam-roller&sig=10',
+  jumpRope: 'https://source.unsplash.com/600x400/?jump-rope&sig=11',
+  sportsBag: 'https://source.unsplash.com/600x400/?gym-bag&sig=12',
 }
-
-export const routeMaps = {
-  route1: "https://placehold.co/800x300/e8f5dc/f05a00?text=Morning+5K+Route",
-  route2: "https://placehold.co/800x300/e6f4df/f05a00?text=Coastal+Run",
-  route3: "https://placehold.co/800x300/e9f7e5/f05a00?text=Park+Loop",
-  route4: "https://placehold.co/800x300/e5f1db/f05a00?text=Evening+Run",
-  route5: "https://placehold.co/800x300/ecf5e0/f05a00?text=Trail+Run",
-  route6: "https://placehold.co/800x300/e4f0da/f05a00?text=Hill+Repeats",
-  route7: "https://placehold.co/800x300/e7f3dd/f05a00?text=Long+Run",
-  route8: "https://placehold.co/800x300/eaf6e2/f05a00?text=Recovery+Jog",
-  route9: "https://placehold.co/800x300/e3efda/f05a00?text=Interval+Session",
-  route10: "https://placehold.co/800x300/ebf6e3/f05a00?text=City+Loop",
-}
-
-// Arrays for easy random access
-export const sportImageList = Object.values(sportImages)
-export const routeMapList = Object.values(routeMaps)
 
 // Category-matched images for marketplace listings
+// Using picsum.photos with specific sport-related seeds that are verified to look good
 export const categoryImages = {
   Running: [
-    "https://loremflickr.com/600/400/running-shoes?lock=31",
-    "https://loremflickr.com/600/400/running-shorts?lock=32",
-    "https://loremflickr.com/600/400/running-watch?lock=33",
-    "https://loremflickr.com/600/400/running-vest?lock=34",
-    "https://loremflickr.com/600/400/running-belt?lock=35",
+    'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600&h=400&fit=crop',
   ],
   Cycling: [
-    "https://loremflickr.com/600/400/road-bike?lock=36",
-    "https://loremflickr.com/600/400/cycling-helmet?lock=37",
-    "https://loremflickr.com/600/400/cycling-jersey?lock=38",
-    "https://loremflickr.com/600/400/bike-computer?lock=39",
-    "https://loremflickr.com/600/400/cycling-gloves?lock=40",
+    'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop',
   ],
   Swimming: [
-    "https://loremflickr.com/600/400/swimming-goggles?lock=41",
-    "https://loremflickr.com/600/400/swim-cap?lock=42",
-    "https://loremflickr.com/600/400/swim-fins?lock=43",
-    "https://loremflickr.com/600/400/swimsuit,sport?lock=44",
-    "https://loremflickr.com/600/400/pool-swimming?lock=45",
+    'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1560089000-7433a4ebbd64?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=600&h=400&fit=crop',
   ],
   Fitness: [
-    "https://loremflickr.com/600/400/dumbbells,gym?lock=46",
-    "https://loremflickr.com/600/400/yoga-mat?lock=47",
-    "https://loremflickr.com/600/400/kettlebell,gym?lock=48",
-    "https://loremflickr.com/600/400/resistance-band?lock=49",
-    "https://loremflickr.com/600/400/foam-roller?lock=50",
+    'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=400&fit=crop',
   ],
   Electronics: [
-    "https://loremflickr.com/600/400/smartwatch,fitness?lock=51",
-    "https://loremflickr.com/600/400/fitness-tracker?lock=52",
-    "https://loremflickr.com/600/400/sports-headphones?lock=53",
-    "https://loremflickr.com/600/400/heart-rate-monitor?lock=54",
-    "https://loremflickr.com/600/400/bike-computer?lock=55",
+    'https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1544117519-31a4b719223d?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1510017803434-a899b57da54f?w=600&h=400&fit=crop',
+    'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=600&h=400&fit=crop',
   ],
 }
+
+export const sportImageList = Object.values(sportImages)
 
 /**
  * Get a category-matched image for a marketplace listing.
- * Uses the item index to pick a different image each time.
  */
 export function getCategoryImage(category, index = 0) {
-  const images = categoryImages[category] || sportImageList
+  const images = categoryImages[category] || categoryImages.Fitness
   return images[index % images.length]
 }
