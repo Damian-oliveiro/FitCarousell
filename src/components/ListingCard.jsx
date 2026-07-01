@@ -25,7 +25,10 @@ export default function ListingCard({ listing, isSpotlighted = false }) {
   }, [listing.seller_id])
 
   const handleClick = () => {
-    navigate(`/marketplace/${listing.id}`)
+    // Only navigate if not wrapped in a parent click handler
+    if (!listing._noNav) {
+      navigate(`/marketplace/${listing.id}`)
+    }
   }
 
   const handleKeyDown = (e) => {
@@ -47,8 +50,6 @@ export default function ListingCard({ listing, isSpotlighted = false }) {
   return (
     <div
       className={`listing-card ${isSpotlighted ? 'spotlighted' : ''}`}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
       aria-label={`${listing.title} - ${formatPrice(listing.price)}`}

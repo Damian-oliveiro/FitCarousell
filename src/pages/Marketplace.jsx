@@ -1,164 +1,221 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { supabase } from '../lib/supabase'
-import { generateMockListings } from '../utils/mockData'
+import { generateUsedListings, generateMerchantShopItems } from '../utils/mockData'
 import ListingCard from '../components/ListingCard'
 import CreateListingForm from '../components/CreateListingForm'
-import SpotlightSection from '../components/SpotlightSection'
-import { isSpotlightActive, sortListingsWithSpotlight } from '../utils/spotlightUtils'
+import DetailModal, { ListingDetailView } from '../components/DetailModal'
 import './Marketplace.css'
 
-const CATEGORIES = ['All', 'Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
-const USE_MOCK_DATA = true // Set to false when Supabase is connected with real data
+const USED_CATEGORIES = ['All', 'Running', 'Cycling', 'Swimming', 'Fitness', 'Electronics']
+const SORT_OPTIONS = [
+  { value: 'newest', label: 'Newest' },
+  { value: 'price_low', label: 'Price: Low to High' },
+  { value: 'price_high', label: 'Price: High to Low' },
+]
 
 export default function Marketplace() {
   const { isMerchant } = useAuth()
-
-  const [listings, setListings] = useState([])
-  const [spotlightIds, setSpotlightIds] = useState(new Set())
+  const [activeTab, setActiveTab] = useState('used') // 'used' | 'shop'
+  const [usedListings, setUsedListings] = useState([])
+  const [shopData, setShopData] = useState({ brands: [], items: [] })
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('All')
+  const [sort, setSort] = useState('newest')
+  const [shopBrand, setShopBrand] = useState('All')
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [selectedListing, setSelectedListing] = useState(null)
 
   useEffect(() => {
-    fetchListings()
+    setLoading(true)
+    const used = generateUsedListings(100)
+    const shop = generateMerchantShopItems()
+    setUsedListings(used)
+    setShopData(shop)
+    setLoading(false)
   }, [])
 
-  async function fetchListings() {
-    setLoading(true)
-    setError(null)
+  // Filter and sort used listings
+  const filteredUsed = usedListings
+    .filter(item => {
+      const matchCat = filter === 'All' || item.category === filter
+      const matchSearch = !search || item.title.toLowerCase().includes(search.toLowerCase())
+      return matchCat && matchSearch
+    })
+    .sort((a, b) => {
+      if (sort === 'price_low') return a.price - b.price
+      if (sort === 'price_high') return b.price - a.price
+      return new Date(b.created_at) - new Date(a.created_at)
+    })
 
-    if (USE_MOCK_DATA) {
-      const mockListings = generateMockListings(25)
-      setListings(mockListings)
-      setSpotlightIds(new Set([mockListings[0]?.id, mockListings[1]?.id, mockListings[2]?.id].filter(Boolean)))
-      setLoading(false)
-      return
-    }
-
-    // Fetch listings and active spotlights in parallel
-    const [listingsResult, spotlightsResult] = await Promise.all([
-      supabase
-        .from('listings')
-        .select('*, profiles(display_name, role)')
-        .order('created_at', { ascending: false }),
-      supabase
-        .from('listing_spotlights')
-        .select('listing_id, expires_at'),
-    ])
-
-    if (listingsResult.error) {
-      // Fallback to mock data
-      const mockListings = generateMockListings(25)
-      setListings(mockListings)
-      setLoading(false)
-      return
-    }
-
-    // Filter active spotlights client-side
-    const activeSpotlightListingIds = new Set(
-      (spotlightsResult.data || [])
-        .filter((s) => isSpotlightActive(s))
-        .map((s) => s.listing_id)
-    )
-    setSpotlightIds(activeSpotlightListingIds)
-    setListings(listingsResult.data || [])
-    setLoading(false)
-  }
-
-  const filteredListings = sortListingsWithSpotlight(
-    listings.filter((listing) => {
-      const matchesCategory = filter === 'All' || listing.category === filter
-      const matchesSearch =
-        !search || listing.title.toLowerCase().includes(search.toLowerCase())
-      return matchesCategory && matchesSearch
-    }),
-    [...spotlightIds]
-  )
+  // Filter shop items
+  const filteredShop = shopData.items.filter(item => {
+    const matchBrand = shopBrand === 'All' || item.brand === shopBrand
+    const matchSearch = !search || item.title.toLowerCase().includes(search.toLowerCase())
+    return matchBrand && matchSearch
+  })
 
   return (
     <div className="marketplace">
       <div className="marketplace-header">
         <h2>Marketplace</h2>
-        {isMerchant && (
-          <button
-            className="btn-primary"
-            onClick={() => setShowCreateForm(!showCreateForm)}
-          >
-            {showCreateForm ? 'Cancel' : '+ Create Listing'}
-          </button>
-        )}
       </div>
 
-      {showCreateForm && isMerchant && (
-        <CreateListingForm
-          onClose={() => setShowCreateForm(false)}
-          onSuccess={(newListing) => {
-            setListings((prev) => [newListing, ...prev])
-          }}
-        />
-      )}
+      {/* Tab switcher */}
+      <div className="marketplace-tabs">
+        <button
+          className={`marketplace-tab ${activeTab === 'used' ? 'active' : ''}`}
+          onClick={() => setActiveTab('used')}
+        >
+          Used
+        </button>
+        <button
+          className={`marketplace-tab ${activeTab === 'shop' ? 'active' : ''}`}
+          onClick={() => setActiveTab('shop')}
+        >
+          Shop
+        </button>
+      </div>
 
+      {/* Search bar */}
       <div className="marketplace-filters">
         <input
           type="text"
           className="search-input"
-          placeholder="Search listings..."
+          placeholder={activeTab === 'used' ? 'Search used items...' : 'Search brands...'}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           aria-label="Search listings"
         />
-        <div className="filter-bar" role="group" aria-label="Category filters">
-          {CATEGORIES.map((cat) => (
+
+        {/* Used filters */}
+        {activeTab === 'used' && (
+          <>
+            <div className="filter-bar" role="group" aria-label="Category filters">
+              {USED_CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  className={`filter-btn ${filter === cat ? 'active' : ''}`}
+                  onClick={() => setFilter(cat)}
+                  aria-pressed={filter === cat}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <div className="sort-bar">
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="sort-select"
+                aria-label="Sort by"
+              >
+                {SORT_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <button
+                className="btn-primary btn-sm"
+                onClick={() => setShowCreateForm(true)}
+              >
+                + Sell Item
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Shop brand filters */}
+        {activeTab === 'shop' && (
+          <div className="filter-bar" role="group" aria-label="Brand filters">
             <button
-              key={cat}
-              className={`filter-btn ${filter === cat ? 'active' : ''}`}
-              onClick={() => setFilter(cat)}
-              aria-pressed={filter === cat}
+              className={`filter-btn ${shopBrand === 'All' ? 'active' : ''}`}
+              onClick={() => setShopBrand('All')}
             >
-              {cat}
+              All Brands
             </button>
-          ))}
-        </div>
+            {shopData.brands.map(brand => (
+              <button
+                key={brand.name}
+                className={`filter-btn ${shopBrand === brand.name ? 'active' : ''}`}
+                onClick={() => setShopBrand(brand.name)}
+              >
+                {brand.name}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* Create listing form */}
+      {showCreateForm && (
+        <CreateListingForm
+          onClose={() => setShowCreateForm(false)}
+          onSuccess={(newListing) => {
+            setUsedListings(prev => [{ ...newListing, type: 'used', wear: 'Like New - Used once' }, ...prev])
+            setShowCreateForm(false)
+          }}
+        />
+      )}
 
       {loading && (
         <div className="marketplace-loading">
           <div className="loading-spinner" />
-          <p>Loading listings...</p>
+          <p>Loading...</p>
         </div>
       )}
 
-      {error && (
-        <div className="marketplace-error">
-          <p>{error}</p>
-          <button className="btn-primary" onClick={fetchListings}>
-            Retry
-          </button>
-        </div>
-      )}
-
-      {!loading && !error && (
-        <>
-          <SpotlightSection />
-          <div className="listings-grid">
-            {filteredListings.map((listing) => (
-              <ListingCard
-                key={listing.id}
-                listing={listing}
-                isSpotlighted={spotlightIds.has(listing.id)}
-              />
-            ))}
-            {filteredListings.length === 0 && (
-              <div className="empty-state">
-                <p>No listings found</p>
+      {/* Used listings grid */}
+      {!loading && activeTab === 'used' && (
+        <div className="listings-grid">
+          {filteredUsed.map(listing => (
+            <div key={listing.id} className="used-listing-card" onClick={() => setSelectedListing(listing)} style={{ cursor: 'pointer' }}>
+              <ListingCard listing={listing} />
+              <div className="used-listing-wear">
+                <span className="wear-badge">{listing.wear}</span>
               </div>
-            )}
-          </div>
-        </>
+            </div>
+          ))}
+          {filteredUsed.length === 0 && (
+            <div className="empty-state"><p>No items found</p></div>
+          )}
+        </div>
       )}
+
+      {/* Shop grid */}
+      {!loading && activeTab === 'shop' && (
+        <div className="shop-section">
+          {(shopBrand === 'All' ? shopData.brands : shopData.brands.filter(b => b.name === shopBrand)).map(brand => {
+            const brandItems = filteredShop.filter(item => item.brand === brand.name)
+            if (brandItems.length === 0) return null
+            return (
+              <div key={brand.name} className="shop-brand-section">
+                <h3 className="shop-brand-name">{brand.name}</h3>
+                <div className="listings-grid">
+                  {brandItems.map(item => (
+                    <div key={item.id} onClick={() => setSelectedListing(item)} style={{ cursor: 'pointer' }}>
+                      <ListingCard
+                        listing={{
+                          ...item,
+                          profiles: { display_name: brand.name, role: 'merchant' },
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+          {filteredShop.length === 0 && (
+            <div className="empty-state"><p>No products found</p></div>
+          )}
+        </div>
+      )}
+
+      {/* Listing Detail Modal */}
+      <DetailModal isOpen={!!selectedListing} onClose={() => setSelectedListing(null)}>
+        {selectedListing && <ListingDetailView listing={selectedListing} />}
+      </DetailModal>
     </div>
   )
 }
