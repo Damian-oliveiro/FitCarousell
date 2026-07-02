@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useData } from '../context/DataContext'
+import { useChat } from '../context/ChatContext'
 import { supabase } from '../lib/supabase'
 import { generateUsedListings, generateMerchantShopItems } from '../utils/mockData'
 import ListingCard from '../components/ListingCard'
@@ -15,7 +18,10 @@ const SORT_OPTIONS = [
 ]
 
 export default function Marketplace() {
-  const { isMerchant } = useAuth()
+  const { isMerchant, user } = useAuth()
+  const { listings: realListings, fetchListings } = useData()
+  const { openOrCreateThread, sendMessage } = useChat()
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('used') // 'used' | 'shop'
   const [usedListings, setUsedListings] = useState([])
   const [shopData, setShopData] = useState({ brands: [], items: [] })
@@ -29,12 +35,32 @@ export default function Marketplace() {
 
   useEffect(() => {
     setLoading(true)
-    const used = generateUsedListings(100)
+
+    // Load mock data for the shop tab
     const shop = generateMerchantShopItems()
-    setUsedListings(used)
     setShopData(shop)
-    setLoading(false)
+
+    // Fetch real listings from Supabase, supplement with mock data
+    async function loadListings() {
+      await fetchListings()
+      setLoading(false)
+    }
+    loadListings()
   }, [])
+
+  // Merge real Supabase listings with mock data for the "used" tab
+  // Real listings appear first, then mock data fills out the page
+  useEffect(() => {
+    const mockUsed = generateUsedListings(50)
+    // Real listings from DB go first
+    const realUsed = (realListings || []).map(listing => ({
+      ...listing,
+      type: 'used',
+      wear: listing.condition || 'Good',
+      seller: listing.profiles?.display_name || 'Seller',
+    }))
+    setUsedListings([...realUsed, ...mockUsed])
+  }, [realListings])
 
   // Filter and sort used listings
   const filteredUsed = usedListings
@@ -152,7 +178,8 @@ export default function Marketplace() {
         <CreateListingForm
           onClose={() => setShowCreateForm(false)}
           onSuccess={(newListing) => {
-            setUsedListings(prev => [{ ...newListing, type: 'used', wear: 'Like New - Used once' }, ...prev])
+            // Real listing was saved to DB via DataContext — just refresh
+            fetchListings()
             setShowCreateForm(false)
           }}
         />
@@ -214,7 +241,31 @@ export default function Marketplace() {
 
       {/* Listing Detail Modal */}
       <DetailModal isOpen={!!selectedListing} onClose={() => setSelectedListing(null)}>
-        {selectedListing && <ListingDetailView listing={selectedListing} />}
+        {selectedListing && (
+          <ListingDetailView
+            listing={selectedListing}
+            onChatWithSeller={async () => {
+              if (!selectedListing?.seller_id || !user) return
+              if (selectedListing.seller_id === user.id) return // can't chat with yourself
+              const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
+              if (thread) {
+                setSelectedListing(null)
+                navigate(`/marketplace/chat/${thread.id}`)
+              }
+            }}
+            onMakeOffer={async (amount) => {
+              if (!selectedListing?.seller_id || !user) return
+              if (selectedListing.seller_id === user.id) return
+              const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
+              if (thread) {
+                // Send the offer as a message
+                await sendMessage(thread.id, `Offer: $${amount.toFixed(2)} for "${selectedListing.title}"`)
+                setSelectedListing(null)
+                navigate(`/marketplace/chat/${thread.id}`)
+              }
+            }}
+          />
+        )}
       </DetailModal>
     </div>
   )
