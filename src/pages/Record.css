@@ -242,3 +242,44 @@
   height: 100%;
   border-radius: 16px;
 }
+
+/* ===== SECONDARY STATS ===== */
+.secondary-stats {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.secondary-stats .recording-stat-value {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+/* ===== CONNECT DEVICE ===== */
+.connect-device-btn {
+  display: block;
+  margin: 16px auto;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.connect-device-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.device-connected-badge {
+  display: block;
+  text-align: center;
+  margin: 12px auto;
+  font-size: 0.75rem;
+  color: var(--accent-success);
+  font-weight: 500;
+}

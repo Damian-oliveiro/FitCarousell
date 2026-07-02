@@ -155,6 +155,40 @@ export default function Record() {
   }
 
   const pace = distance > 0 ? (duration / 60) / distance : 0
+  // Estimated metrics
+  const estSteps = distance > 0 ? Math.round(distance * 1300) : null // ~1300 steps/km avg
+  const estCalories = distance > 0 ? Math.round(distance * 62) : null // ~62 cal/km for 70kg person
+  const [heartRate, setHeartRate] = useState(null)
+  const [cadence, setCadence] = useState(null)
+  const [deviceConnected, setDeviceConnected] = useState(false)
+
+  // Try Web Bluetooth heart rate (works on Android Chrome, some desktop)
+  const connectDevice = async () => {
+    try {
+      if (!navigator.bluetooth) {
+        alert('Bluetooth not supported on this browser. Connect via Garmin/Strava integration instead.')
+        return
+      }
+      const device = await navigator.bluetooth.requestDevice({
+        filters: [{ services: ['heart_rate'] }],
+        optionalServices: ['heart_rate'],
+      })
+      const server = await device.gatt.connect()
+      const service = await server.getPrimaryService('heart_rate')
+      const characteristic = await service.getCharacteristic('heart_rate_measurement')
+      setDeviceConnected(true)
+
+      characteristic.addEventListener('characteristicvaluechanged', (event) => {
+        const value = event.target.value
+        const hr = value.getUint8(1)
+        setHeartRate(hr)
+      })
+      await characteristic.startNotifications()
+    } catch (err) {
+      console.log('Bluetooth connect failed:', err.message)
+      // Silently fail — just show -- for HR
+    }
+  }
 
   // Activity selected — show recording screen
   if (selectedActivity) {
@@ -195,6 +229,34 @@ export default function Record() {
               <span className="recording-stat-label">min/km</span>
             </div>
           </div>
+
+          <div className="recording-stats secondary-stats">
+            <div className="recording-stat">
+              <span className="recording-stat-value">{heartRate || '--'}</span>
+              <span className="recording-stat-label">BPM</span>
+            </div>
+            <div className="recording-stat">
+              <span className="recording-stat-value">{estSteps || '--'}</span>
+              <span className="recording-stat-label">Steps</span>
+            </div>
+            <div className="recording-stat">
+              <span className="recording-stat-value">{estCalories || '--'}</span>
+              <span className="recording-stat-label">kcal</span>
+            </div>
+            <div className="recording-stat">
+              <span className="recording-stat-value">{cadence || '--'}</span>
+              <span className="recording-stat-label">Cadence</span>
+            </div>
+          </div>
+
+          {!deviceConnected && (
+            <button className="connect-device-btn" onClick={connectDevice}>
+              Connect Heart Rate Monitor
+            </button>
+          )}
+          {deviceConnected && (
+            <span className="device-connected-badge">Device connected</span>
+          )}
 
           {locationError && (
             <div className="recording-error">
