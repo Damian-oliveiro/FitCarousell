@@ -224,3 +224,21 @@
   color: var(--text-secondary);
   font-size: 0.85rem;
 }
+
+/* ===== RECORDING MAP ===== */
+.recording-map {
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  height: 250px;
+  border: 1px solid var(--border-color);
+}
+
+.recording-map .activity-map-container {
+  height: 100%;
+}
+
+.recording-map .activity-map {
+  height: 100%;
+  border-radius: 16px;
+}

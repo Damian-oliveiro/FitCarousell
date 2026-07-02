@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import ActivityMap from '../components/ActivityMap'
 import './Record.css'
 
 const ACTIVITIES = [
@@ -100,22 +101,31 @@ export default function Record() {
 
     watchRef.current = navigator.geolocation.watchPosition(
       (position) => {
-        const { latitude, longitude } = position.coords
+        const { latitude, longitude, accuracy } = position.coords
+        
+        // Filter out inaccurate readings (>30m accuracy is GPS noise)
+        if (accuracy > 30) return
+
+        const newPoint = { lat: latitude, lng: longitude, timestamp: Date.now() }
+
         setPositions(prev => {
-          const newPositions = [...prev, { lat: latitude, lng: longitude }]
-          // Calculate distance from last position
+          // Skip if too close to last point (GPS jitter filter)
           if (prev.length > 0) {
             const last = prev[prev.length - 1]
             const d = getDistanceKm(last.lat, last.lng, latitude, longitude)
+            // Skip if less than 3 meters moved (noise) or impossibly fast (>50km/h for running)
+            if (d < 0.003) return prev
+            const timeDiff = (newPoint.timestamp - last.timestamp) / 1000 / 3600 // hours
+            if (timeDiff > 0 && d / timeDiff > 50) return prev // too fast, skip
             setDistance(prevDist => prevDist + d)
           }
-          return newPositions
+          return [...prev, newPoint]
         })
       },
       (error) => {
         setLocationError(`Location error: ${error.message}`)
       },
-      { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
+      { enableHighAccuracy: true, maximumAge: 3000, timeout: 15000 }
     )
   }
 
@@ -159,6 +169,16 @@ export default function Record() {
           <div className="recording-activity-label">
             <span className="recording-icon">{selectedActivity.icon}</span>
             <h3>{selectedActivity.label}</h3>
+          </div>
+
+          {/* Live Map */}
+          <div className="recording-map">
+            <ActivityMap
+              routePoints={positions}
+              currentPosition={positions.length > 0 ? positions[positions.length - 1] : null}
+              activityType={selectedActivity.label}
+              isLive={recording}
+            />
           </div>
 
           <div className="recording-stats">
