@@ -60,10 +60,22 @@ export default function HomeFeed() {
     try {
       if (USE_MOCK_DATA) {
         // Use mock data for development/testing
-        const allMockPosts = generateMockFeedPosts(40)
-        const blogPosts = generateMockBlogPosts(8)
-        // Mix blogs into activity posts
-        const mixed = [...allMockPosts, ...blogPosts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        const allMockPosts = generateMockFeedPosts(30)
+        const blogPosts = generateMockBlogPosts(15)
+        // Load user's shared activities from localStorage
+        const sharedPosts = JSON.parse(localStorage.getItem('fitcarousell_shared_posts') || '[]').map(a => ({
+          id: a.id,
+          created_at: a.created_at,
+          caption: `Just completed a ${a.distance}km ${a.type.toLowerCase()}!`,
+          likes_count: 0,
+          comments_count: 0,
+          profiles: { display_name: 'You', avatar_url: null, role: 'individual' },
+          activities: { type: a.type, distance: a.distance, duration: a.duration },
+          _hasRealRoute: true,
+          _positions: a.positions,
+        }))
+        // Mix blogs and activities more evenly (roughly 40% blogs, 60% activities)
+        const mixed = [...sharedPosts, ...allMockPosts, ...blogPosts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         const batch = mixed.slice(offset, offset + BATCH_SIZE)
         if (batch.length < BATCH_SIZE) setHasMore(false)
         if (offset === 0) {

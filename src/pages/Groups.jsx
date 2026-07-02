@@ -229,7 +229,7 @@ export default function Groups() {
                       </div>
                       {group.upcoming_event.map_image && (
                         <div className="group-card-map">
-                          <img src={group.upcoming_event.map_image} alt="Route map" />
+                          <img src={group.upcoming_event.map_image} alt="Event" />
                         </div>
                       )}
                       <button className="btn-primary btn-sm event-join-btn">

@@ -186,12 +186,12 @@ const GROUP_DESCRIPTIONS = [
 
 export function generateMockGroups(count = 12) {
   const MAP_IMAGES = [
-    'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=600&h=250&fit=crop',
-    'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600&h=250&fit=crop',
-    'https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&h=250&fit=crop',
-    'https://images.unsplash.com/photo-1548345680-f5475ea5df84?w=600&h=250&fit=crop',
-    'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=250&fit=crop',
-    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1461897104016-0b3b00b1ea56?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1594882645126-14020914d58d?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=250&fit=crop',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=250&fit=crop',
   ]
 
   const EVENT_TITLES = [
@@ -421,28 +421,28 @@ export function generateUsedListings(count = 100) {
     { title: 'Running Headlamp - Black Diamond', category: 'Running', image: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=600&h=400&fit=crop' },
 
     // ===== CYCLING (22 items) =====
-    { title: 'Trek Domane AL3 Frame', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Bike Bottle Cage Set', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Cycling Computer Mount', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
-    { title: 'Chain Cleaning Kit', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Bike Saddle - Fizik Argo', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Road Bike Helmet - Specialized Prevail', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
-    { title: 'Cycling Jersey - Castelli Aero', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
-    { title: 'Wahoo KICKR Snap Trainer', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Cycling Gloves - Pearl Izumi Elite', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Road Bike - Trek Domane AL3', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Cycling Water Bottles (2 pack)', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Cycling Group Ride Starter Kit', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Bike Multi-Tool + Pump Set', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Road Bike Saddle - Fizik Argo', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Cycling Helmet - Specialized Prevail', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
+    { title: 'Road Cycling Kit - Castelli', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Indoor Bike Trainer - Wahoo KICKR', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Cycling Gloves - Pearl Izumi', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
     { title: 'Bike Repair Stand - Park Tool', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Cycling Shorts - Rapha Core', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
-    { title: 'Indoor Cycling Shoes - Shimano RC3', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
-    { title: 'Bike Pump - Topeak Floor', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Cycling Sunglasses - POC Aspire', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Bike Lock - Kryptonite U-Lock', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Cycling Bib Shorts - Assos', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Road Cycling Shorts - Rapha', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Cycling Shoes - Shimano RC3', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
+    { title: 'Road Bike Floor Pump', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Cycling Sunglasses - POC', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Bike U-Lock - Kryptonite', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Road Cycling Bib - Assos', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
     { title: 'Bike Multi-Tool - Crankbrothers', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Cycling Wind Jacket - Castelli', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
+    { title: 'Cycling Wind Jacket', category: 'Cycling', image: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?w=600&h=400&fit=crop' },
     { title: 'Bike Rear Light - Garmin Varia', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
-    { title: 'Helmet - Giro Aether MIPS', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
-    { title: 'Bike Trainer Mat - Wahoo', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
-    { title: 'Carbon Road Wheelset - Zipp 303', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
+    { title: 'Cycling Helmet - Giro Aether', category: 'Cycling', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop' },
+    { title: 'Bike Trainer Mat', category: 'Cycling', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&h=400&fit=crop' },
+    { title: 'Carbon Road Bike Wheelset', category: 'Cycling', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=600&h=400&fit=crop' },
 
     // ===== SWIMMING (22 items) =====
     { title: 'Speedo Vanquisher Goggles', category: 'Swimming', image: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&h=400&fit=crop' },
@@ -541,7 +541,7 @@ export function generateUsedListings(count = 100) {
 }
 
 // ===== BLOG POSTS =====
-const INFLUENCER_NAMES = ['Coach Maya', 'RunWithJake', 'FitNadia', 'TrailBlazerTom', 'CycleQueenSara', 'SwimCoachLee', 'StrengthByAlex', 'YogaWithRen']
+const INFLUENCER_NAMES = ['Coach Maya', 'RunWithJake', 'FitNadia', 'TrailBlazerTom', 'CycleQueenSara', 'SwimCoachLee', 'StrengthByAlex', 'YogaWithRen', 'MealPrepMike', 'EnduranceEmma', 'WellnessWei', 'SprintKing']
 
 const BLOG_TITLES = [
   'How I Went From Couch to Marathon in 6 Months',
@@ -556,6 +556,14 @@ const BLOG_TITLES = [
   'How I Manage Running with a Full-Time Job',
   'Beginner\'s Guide to Heart Rate Training',
   'Trail Running vs Road Running: Which Is Better?',
+  'My Weekly Meal Prep for Endurance Athletes',
+  'How I Lost 15kg Through Cycling Alone',
+  'The Mental Game: Pushing Through the Wall',
+  'Yoga for Runners: 20 Minutes That Changed Everything',
+  'Swimming Technique Drills for Triathletes',
+  'My Morning Routine as a Full-Time Athlete',
+  'Why I Switched to Barefoot Running Shoes',
+  'The Complete Guide to Foam Rolling',
 ]
 
 const BLOG_BODIES = [
@@ -571,6 +579,14 @@ const BLOG_BODIES = [
   'Balancing 50km/week with a demanding career requires ruthless time management. These are my non-negotiable habits for fitting training into a busy life...',
   'Heart rate training transformed my approach to running. No more junk miles. I explain the zones, how to find your thresholds, and how to structure your week around them...',
   'I\'ve done both extensively. Trails build strength and mental toughness; roads build speed. Here\'s when to choose each and how to mix them for optimal fitness...',
+  'Every Sunday I prep 5 days of meals in 2 hours. High protein, balanced macros, zero thinking during the week. Here\'s my exact system with recipes and shopping list...',
+  'I bought a cheap bike and started commuting. 6 months later I\'d dropped 15kg without dieting. Here\'s how cycling became my primary weight management tool...',
+  'At km 32 of my marathon, I wanted to quit. These mental strategies got me to the finish line and now I use them in every hard session...',
+  'As a runner, I dismissed yoga for years. Then I started doing 20 minutes daily and my injuries disappeared. Here are the exact poses I do and why they work...',
+  'Efficient swimming is 80% technique. These 5 drills fixed my form and dropped my 100m time by 12 seconds without increasing effort...',
+  'I wake at 5am, train fasted, then fuel with a specific protocol. This routine took months to build but now it\'s automatic. Here\'s the step by step...',
+  'After years in cushioned shoes, I transitioned to minimal footwear. The first 3 months were painful but now I run faster with fewer injuries...',
+  'Foam rolling isn\'t just rolling around. There\'s a science to it — which muscles, how long, when to do it. This guide covers everything backed by research...',
 ]
 
 export function generateMockBlogPosts(count = 8) {
