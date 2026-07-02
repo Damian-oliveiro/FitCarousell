@@ -12,6 +12,7 @@ import GroupDetail from './pages/GroupDetail'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import Onboarding from './pages/Onboarding'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { DataProvider } from './context/DataContext'
 import { ChatProvider } from './context/ChatContext'
@@ -30,6 +31,35 @@ function ProtectedRoute({ children }) {
 
   if (!user) {
     return <Navigate to="/login" replace />
+  }
+
+  // Redirect to onboarding if user hasn't completed it
+  if (!localStorage.getItem('fitcarousell_onboarded')) {
+    return <Navigate to="/onboarding" replace />
+  }
+
+  return children
+}
+
+function OnboardingRoute({ children }) {
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner" />
+        <p>Loading...</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
+
+  // If already onboarded, go to home
+  if (localStorage.getItem('fitcarousell_onboarded')) {
+    return <Navigate to="/" replace />
   }
 
   return children
@@ -60,6 +90,9 @@ function AppRoutes() {
       {/* Auth routes */}
       <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
       <Route path="/register" element={<AuthRoute><Register /></AuthRoute>} />
+
+      {/* Onboarding route */}
+      <Route path="/onboarding" element={<OnboardingRoute><Onboarding /></OnboardingRoute>} />
 
       {/* Protected routes */}
       <Route path="/" element={

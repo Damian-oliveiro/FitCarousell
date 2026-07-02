@@ -47,7 +47,7 @@ export default function Register() {
         displayName: form.displayName,
         role: form.role,
       })
-      navigate('/activities')
+      navigate('/onboarding')
     } catch (err) {
       if (err.message?.includes('already registered')) {
         setError('This email is already registered')
