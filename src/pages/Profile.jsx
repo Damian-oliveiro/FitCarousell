@@ -239,12 +239,24 @@ const typeColors = { Run: '#8b5cf6', Cycle: '#60a5fa', Swim: '#22d3ee', Walk: '#
 
 function RunHistory({ userName }) {
   const [runs] = useState(() => {
-    const mockPosts = generateMockFeedPosts(10)
-    // Override display names to be the current user
-    return mockPosts.map(p => ({
+    // Load real saved activities from localStorage
+    const savedActivities = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]').map(a => ({
+      id: a.id,
+      created_at: a.created_at,
+      caption: null,
+      route_image: null,
+      _hasRealRoute: true,
+      _positions: a.positions,
+      profiles: { display_name: userName },
+      activities: { type: a.type, distance: a.distance, duration: a.duration },
+    }))
+    // Fill rest with mock data
+    const mockPosts = generateMockFeedPosts(8)
+    const mocked = mockPosts.map(p => ({
       ...p,
       profiles: { ...p.profiles, display_name: userName },
     }))
+    return [...savedActivities, ...mocked]
   })
 
   return (

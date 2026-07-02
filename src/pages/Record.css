@@ -283,3 +283,17 @@
   color: var(--accent-success);
   font-weight: 500;
 }
+
+/* ===== RECORDING SUMMARY ===== */
+.recording-summary-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.recording-summary-actions .btn-primary,
+.recording-summary-actions .btn-secondary {
+  flex: 1;
+  padding: 12px;
+  font-size: 0.85rem;
+}

@@ -279,6 +279,55 @@ export default function Record() {
           {!recording && duration > 0 && (
             <div className="recording-summary">
               <p>Activity recorded. {positions.length} GPS points captured.</p>
+              <div className="recording-summary-actions">
+                <button className="btn-primary" onClick={() => {
+                  // Save to localStorage history
+                  const activity = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+                    type: selectedActivity.label,
+                    distance: parseFloat(distance.toFixed(2)),
+                    duration,
+                    pace: pace > 0 ? parseFloat(pace.toFixed(1)) : null,
+                    steps: estSteps,
+                    calories: estCalories,
+                    heartRate,
+                    positions: positions.slice(0, 200), // cap stored points
+                    created_at: new Date().toISOString(),
+                  }
+                  const history = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]')
+                  history.unshift(activity)
+                  localStorage.setItem('fitcarousell_activities', JSON.stringify(history.slice(0, 50)))
+                  alert('Activity saved to your profile!')
+                  handleBack()
+                }}>
+                  Save Activity
+                </button>
+                <button className="btn-secondary" onClick={() => {
+                  const activity = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+                    type: selectedActivity.label,
+                    distance: parseFloat(distance.toFixed(2)),
+                    duration,
+                    pace: pace > 0 ? parseFloat(pace.toFixed(1)) : null,
+                    steps: estSteps,
+                    calories: estCalories,
+                    positions: positions.slice(0, 200),
+                    created_at: new Date().toISOString(),
+                    shared: true,
+                  }
+                  const history = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]')
+                  history.unshift(activity)
+                  localStorage.setItem('fitcarousell_activities', JSON.stringify(history.slice(0, 50)))
+                  // Also add to shared feed
+                  const feed = JSON.parse(localStorage.getItem('fitcarousell_shared_posts') || '[]')
+                  feed.unshift(activity)
+                  localStorage.setItem('fitcarousell_shared_posts', JSON.stringify(feed.slice(0, 20)))
+                  alert('Activity saved and shared to feed!')
+                  handleBack()
+                }}>
+                  Save & Share
+                </button>
+              </div>
             </div>
           )}
         </div>

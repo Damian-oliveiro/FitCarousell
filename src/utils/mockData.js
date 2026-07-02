@@ -541,7 +541,7 @@ export function generateUsedListings(count = 100) {
 }
 
 // ===== BLOG POSTS =====
-const INFLUENCER_NAMES = ['Coach Maya', 'RunWithJake', 'FitNadia', 'TrailBlazerTom', 'CycleQueenSara', 'SwimCoachLee', 'StrengthByAlex', 'YogaWithRen']
+const INFLUENCER_NAMES = ['Coach Maya', 'RunWithJake', 'FitNadia', 'TrailBlazerTom', 'CycleQueenSara', 'SwimCoachLee', 'StrengthByAlex', 'YogaWithRen', 'MealPrepMike', 'EnduranceEmma', 'WellnessWei', 'SprintKing']
 
 const BLOG_TITLES = [
   'How I Went From Couch to Marathon in 6 Months',
@@ -556,6 +556,14 @@ const BLOG_TITLES = [
   'How I Manage Running with a Full-Time Job',
   'Beginner\'s Guide to Heart Rate Training',
   'Trail Running vs Road Running: Which Is Better?',
+  'My Weekly Meal Prep for Endurance Athletes',
+  'How I Lost 15kg Through Cycling Alone',
+  'The Mental Game: Pushing Through the Wall',
+  'Yoga for Runners: 20 Minutes That Changed Everything',
+  'Swimming Technique Drills for Triathletes',
+  'My Morning Routine as a Full-Time Athlete',
+  'Why I Switched to Barefoot Running Shoes',
+  'The Complete Guide to Foam Rolling',
 ]
 
 const BLOG_BODIES = [
@@ -571,6 +579,14 @@ const BLOG_BODIES = [
   'Balancing 50km/week with a demanding career requires ruthless time management. These are my non-negotiable habits for fitting training into a busy life...',
   'Heart rate training transformed my approach to running. No more junk miles. I explain the zones, how to find your thresholds, and how to structure your week around them...',
   'I\'ve done both extensively. Trails build strength and mental toughness; roads build speed. Here\'s when to choose each and how to mix them for optimal fitness...',
+  'Every Sunday I prep 5 days of meals in 2 hours. High protein, balanced macros, zero thinking during the week. Here\'s my exact system with recipes and shopping list...',
+  'I bought a cheap bike and started commuting. 6 months later I\'d dropped 15kg without dieting. Here\'s how cycling became my primary weight management tool...',
+  'At km 32 of my marathon, I wanted to quit. These mental strategies got me to the finish line and now I use them in every hard session...',
+  'As a runner, I dismissed yoga for years. Then I started doing 20 minutes daily and my injuries disappeared. Here are the exact poses I do and why they work...',
+  'Efficient swimming is 80% technique. These 5 drills fixed my form and dropped my 100m time by 12 seconds without increasing effort...',
+  'I wake at 5am, train fasted, then fuel with a specific protocol. This routine took months to build but now it\'s automatic. Here\'s the step by step...',
+  'After years in cushioned shoes, I transitioned to minimal footwear. The first 3 months were painful but now I run faster with fewer injuries...',
+  'Foam rolling isn\'t just rolling around. There\'s a science to it — which muscles, how long, when to do it. This guide covers everything backed by research...',
 ]
 
 export function generateMockBlogPosts(count = 8) {
