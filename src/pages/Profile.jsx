@@ -104,7 +104,7 @@ export default function Profile() {
       setEditing(false)
       setEditError('')
     } catch (err) {
-      setEditError('Update failed')
+      setEditError(err?.message || 'Update failed')
     }
   }
 
@@ -231,8 +231,8 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Seller Ratings */}
-      {profile?.id && (
+      {/* Seller Ratings — only show for merchants */}
+      {isMerchant && profile?.id && (
         <div className="profile-section">
           <h3>Seller Ratings</h3>
           <SellerRatings sellerId={profile.id} />

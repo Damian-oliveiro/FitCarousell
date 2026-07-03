@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useData } from '../context/DataContext'
+import { useAuth } from '../context/AuthContext'
+import { useGPS } from '../hooks/useGPS'
 import ActivityMap from '../components/ActivityMap'
 import './Record.css'
 
 const ACTIVITIES = [
-  { id: 'run', label: 'Run', color: '#8b5cf6', icon: (
+  { id: 'Run', label: 'Run', color: '#8b5cf6', icon: (
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="7" cy="5" r="2"/>
       <path d="M4 21l2.5-6L9 14l2-3-2-2.5"/>
@@ -11,7 +14,7 @@ const ACTIVITIES = [
       <path d="M13 21l-2-5"/>
     </svg>
   )},
-  { id: 'cycle', label: 'Cycle', color: '#60a5fa', icon: (
+  { id: 'Cycle', label: 'Cycle', color: '#60a5fa', icon: (
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="5.5" cy="17.5" r="3.5"/>
       <circle cx="18.5" cy="17.5" r="3.5"/>
@@ -19,7 +22,7 @@ const ACTIVITIES = [
       <path d="M12 17.5V14l-3-3 4-3 2 3h3"/>
     </svg>
   )},
-  { id: 'swim', label: 'Swim', color: '#22d3ee', icon: (
+  { id: 'Swim', label: 'Swim', color: '#22d3ee', icon: (
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2 20c2-1 4 0 6-1s4-2 6-1 4 0 6-1"/>
       <path d="M2 16c2-1 4 0 6-1s4-2 6-1 4 0 6-1"/>
@@ -27,7 +30,7 @@ const ACTIVITIES = [
       <path d="M11 8l3 3-2 2"/>
     </svg>
   )},
-  { id: 'walk', label: 'Walk', color: '#34d399', icon: (
+  { id: 'Walk', label: 'Walk', color: '#34d399', icon: (
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="5" r="2"/>
       <path d="M13 21l-1.5-5-2.5 3"/>
@@ -35,327 +38,362 @@ const ACTIVITIES = [
       <path d="M11 21l.5-3"/>
     </svg>
   )},
-  { id: 'hike', label: 'Hike', color: '#f59e0b', icon: (
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M13 3l3 7h5l-4 4 2 7-6-4-6 4 2-7-4-4h5l3-7z"/>
-    </svg>
-  )},
-  { id: 'log', label: 'Log Activity', color: '#a78bfa', icon: (
-    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 5v14"/>
-      <path d="M5 12h14"/>
-    </svg>
-  )},
 ]
 
-function formatDuration(seconds) {
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  const s = seconds % 60
-  if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
+const SESSION_STORAGE_KEY = 'fitcarousell_active_session'
 
 export default function Record() {
-  const [selectedActivity, setSelectedActivity] = useState(null)
-  const [recording, setRecording] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const [distance, setDistance] = useState(0)
-  const [locationError, setLocationError] = useState(null)
-  const [positions, setPositions] = useState([])
+  const { addActivity, shareToFeed } = useData()
+  const { profile } = useAuth()
+  const gps = useGPS()
+
+  const [trackerState, setTrackerState] = useState('idle')
+  const [selectedType, setSelectedType] = useState(null)
+  const [selectedColor, setSelectedColor] = useState('#8b5cf6')
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const [startedAt, setStartedAt] = useState(null)
   const timerRef = useRef(null)
-  const watchRef = useRef(null)
+
+  const [manualDistance, setManualDistance] = useState('')
+  const [distanceError, setDistanceError] = useState('')
+  const [showSummary, setShowSummary] = useState(false)
+  const [savedActivity, setSavedActivity] = useState(null)
+  const [shareCaption, setShareCaption] = useState('')
+  const [showSharePrompt, setShowSharePrompt] = useState(false)
+
+  const [showRecoveryPrompt, setShowRecoveryPrompt] = useState(false)
+  const [recoveredSession, setRecoveredSession] = useState(null)
+
+  // Check for interrupted session
+  useEffect(() => {
+    const saved = localStorage.getItem(SESSION_STORAGE_KEY)
+    if (saved) {
+      try {
+        const session = JSON.parse(saved)
+        setRecoveredSession(session)
+        setShowRecoveryPrompt(true)
+      } catch {
+        localStorage.removeItem(SESSION_STORAGE_KEY)
+      }
+    }
+  }, [])
 
   // Timer
   useEffect(() => {
-    if (recording) {
+    if (trackerState === 'running') {
       timerRef.current = setInterval(() => {
-        setDuration(prev => prev + 1)
+        setElapsedTime(prev => prev + 1)
       }, 1000)
     } else {
       clearInterval(timerRef.current)
     }
     return () => clearInterval(timerRef.current)
-  }, [recording])
+  }, [trackerState])
 
-  const handleSelectActivity = (activity) => {
-    if (activity.id === 'log') {
-      alert('Manual log coming soon. Use one of the activity types to start GPS recording.')
-      return
+  // Persist session
+  useEffect(() => {
+    if (trackerState === 'running' || trackerState === 'paused') {
+      localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({
+        type: selectedType,
+        elapsedTime,
+        startedAt,
+        state: trackerState,
+      }))
     }
-    setSelectedActivity(activity)
-    setDuration(0)
-    setDistance(0)
-    setPositions([])
-    setLocationError(null)
+  }, [trackerState, elapsedTime, selectedType, startedAt])
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600)
+    const m = Math.floor((seconds % 3600) / 60)
+    const s = seconds % 60
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
   }
 
-  const handleStart = () => {
-    if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported by your browser')
-      return
-    }
+  const handleSelectType = (activity) => {
+    setSelectedType(activity.id)
+    setSelectedColor(activity.color)
+    setElapsedTime(0)
+    setStartedAt(Date.now())
+    setTrackerState('running')
+    gps.startTracking()
+  }
 
-    setRecording(true)
-    setLocationError(null)
+  const handlePause = () => {
+    setTrackerState('paused')
+    gps.pauseTracking()
+  }
 
-    watchRef.current = navigator.geolocation.watchPosition(
-      (position) => {
-        const { latitude, longitude, accuracy } = position.coords
-        
-        // Filter out inaccurate readings (>30m accuracy is GPS noise)
-        if (accuracy > 30) return
-
-        const newPoint = { lat: latitude, lng: longitude, timestamp: Date.now() }
-
-        setPositions(prev => {
-          // Skip if too close to last point (GPS jitter filter)
-          if (prev.length > 0) {
-            const last = prev[prev.length - 1]
-            const d = getDistanceKm(last.lat, last.lng, latitude, longitude)
-            // Skip if less than 3 meters moved (noise) or impossibly fast (>50km/h for running)
-            if (d < 0.003) return prev
-            const timeDiff = (newPoint.timestamp - last.timestamp) / 1000 / 3600 // hours
-            if (timeDiff > 0 && d / timeDiff > 50) return prev // too fast, skip
-            setDistance(prevDist => prevDist + d)
-          }
-          return [...prev, newPoint]
-        })
-      },
-      (error) => {
-        setLocationError(`Location error: ${error.message}`)
-      },
-      { enableHighAccuracy: true, maximumAge: 3000, timeout: 15000 }
-    )
+  const handleResume = () => {
+    setTrackerState('running')
+    gps.resumeTracking()
   }
 
   const handleStop = () => {
-    setRecording(false)
-    if (watchRef.current !== null) {
-      navigator.geolocation.clearWatch(watchRef.current)
-      watchRef.current = null
-    }
+    setTrackerState('stopped')
+    gps.stopTracking()
+    localStorage.removeItem(SESSION_STORAGE_KEY)
   }
 
-  const handleBack = () => {
-    handleStop()
-    setSelectedActivity(null)
-    setDuration(0)
-    setDistance(0)
-    setPositions([])
-  }
+  const handleSave = async () => {
+    let distance = gps.totalDistance
 
-  // Haversine distance
-  function getDistanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371
-    const dLat = (lat2 - lat1) * Math.PI / 180
-    const dLon = (lon2 - lon1) * Math.PI / 180
-    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  }
-
-  const pace = distance > 0 ? (duration / 60) / distance : 0
-  // Estimated metrics
-  const estSteps = distance > 0 ? Math.round(distance * 1300) : null // ~1300 steps/km avg
-  const estCalories = distance > 0 ? Math.round(distance * 62) : null // ~62 cal/km for 70kg person
-  const [heartRate, setHeartRate] = useState(null)
-  const [cadence, setCadence] = useState(null)
-  const [deviceConnected, setDeviceConnected] = useState(false)
-
-  // Try Web Bluetooth heart rate (works on Android Chrome, some desktop)
-  const connectDevice = async () => {
-    try {
-      if (!navigator.bluetooth) {
-        alert('Bluetooth not supported on this browser. Connect via Garmin/Strava integration instead.')
+    if (distance < 0.01) {
+      const dist = parseFloat(manualDistance)
+      if (!manualDistance || isNaN(dist) || dist <= 0 || dist > 9999.99) {
+        setDistanceError('Enter a valid distance between 0.01 and 9999.99 km')
         return
       }
-      const device = await navigator.bluetooth.requestDevice({
-        filters: [{ services: ['heart_rate'] }],
-        optionalServices: ['heart_rate'],
-      })
-      const server = await device.gatt.connect()
-      const service = await server.getPrimaryService('heart_rate')
-      const characteristic = await service.getCharacteristic('heart_rate_measurement')
-      setDeviceConnected(true)
+      distance = dist
+    }
 
-      characteristic.addEventListener('characteristicvaluechanged', (event) => {
-        const value = event.target.value
-        const hr = value.getUint8(1)
-        setHeartRate(hr)
-      })
-      await characteristic.startNotifications()
-    } catch (err) {
-      console.log('Bluetooth connect failed:', err.message)
-      // Silently fail — just show -- for HR
+    setDistanceError('')
+    const durationMinutes = Math.max(1, Math.round(elapsedTime / 60))
+    const pace = durationMinutes / distance
+
+    const activity = {
+      type: selectedType,
+      distance: parseFloat(distance.toFixed(2)),
+      duration: durationMinutes,
+      pace: parseFloat(pace.toFixed(2)),
+      date: new Date().toISOString().split('T')[0],
+    }
+
+    const saved = await addActivity(activity)
+    if (saved) {
+      setSavedActivity(saved)
+      setShowSummary(true)
     }
   }
 
-  // Activity selected — show recording screen
-  if (selectedActivity) {
-    return (
-      <div className="record-page">
-        <button className="record-back-btn" onClick={handleBack}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-          Back
-        </button>
-
-        <div className="recording-view" style={{ '--activity-color': selectedActivity.color }}>
-          <div className="recording-activity-label">
-            <span className="recording-icon">{selectedActivity.icon}</span>
-            <h3>{selectedActivity.label}</h3>
-          </div>
-
-          {/* Live Map */}
-          <div className="recording-map">
-            <ActivityMap
-              routePoints={positions}
-              currentPosition={positions.length > 0 ? positions[positions.length - 1] : null}
-              activityType={selectedActivity.label}
-              isLive={recording}
-            />
-          </div>
-
-          <div className="recording-stats">
-            <div className="recording-stat main-stat">
-              <span className="recording-stat-value">{distance.toFixed(2)}</span>
-              <span className="recording-stat-label">km</span>
-            </div>
-            <div className="recording-stat">
-              <span className="recording-stat-value">{formatDuration(duration)}</span>
-              <span className="recording-stat-label">Duration</span>
-            </div>
-            <div className="recording-stat">
-              <span className="recording-stat-value">{pace > 0 ? pace.toFixed(1) : '--'}</span>
-              <span className="recording-stat-label">min/km</span>
-            </div>
-          </div>
-
-          <div className="recording-stats secondary-stats">
-            <div className="recording-stat">
-              <span className="recording-stat-value">{heartRate || '--'}</span>
-              <span className="recording-stat-label">BPM</span>
-            </div>
-            <div className="recording-stat">
-              <span className="recording-stat-value">{estSteps || '--'}</span>
-              <span className="recording-stat-label">Steps</span>
-            </div>
-            <div className="recording-stat">
-              <span className="recording-stat-value">{estCalories || '--'}</span>
-              <span className="recording-stat-label">kcal</span>
-            </div>
-            <div className="recording-stat">
-              <span className="recording-stat-value">{cadence || '--'}</span>
-              <span className="recording-stat-label">Cadence</span>
-            </div>
-          </div>
-
-          {!deviceConnected && (
-            <button className="connect-device-btn" onClick={connectDevice}>
-              Connect Heart Rate Monitor
-            </button>
-          )}
-          {deviceConnected && (
-            <span className="device-connected-badge">Device connected</span>
-          )}
-
-          {locationError && (
-            <div className="recording-error">
-              <p>{locationError}</p>
-            </div>
-          )}
-
-          <div className="recording-controls">
-            {!recording ? (
-              <button className="record-start-btn" onClick={handleStart}>
-                Start
-              </button>
-            ) : (
-              <button className="record-stop-btn" onClick={handleStop}>
-                Stop
-              </button>
-            )}
-          </div>
-
-          {!recording && duration > 0 && (
-            <div className="recording-summary">
-              <p>Activity recorded. {positions.length} GPS points captured.</p>
-              <div className="recording-summary-actions">
-                <button className="btn-primary" onClick={() => {
-                  // Save to localStorage history
-                  const activity = {
-                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
-                    type: selectedActivity.label,
-                    distance: parseFloat(distance.toFixed(2)),
-                    duration,
-                    pace: pace > 0 ? parseFloat(pace.toFixed(1)) : null,
-                    steps: estSteps,
-                    calories: estCalories,
-                    heartRate,
-                    positions: positions.slice(0, 200), // cap stored points
-                    created_at: new Date().toISOString(),
-                  }
-                  const history = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]')
-                  history.unshift(activity)
-                  localStorage.setItem('fitcarousell_activities', JSON.stringify(history.slice(0, 50)))
-                  alert('Activity saved to your profile!')
-                  handleBack()
-                }}>
-                  Save Activity
-                </button>
-                <button className="btn-secondary" onClick={() => {
-                  const activity = {
-                    id: Date.now().toString(36) + Math.random().toString(36).substr(2),
-                    type: selectedActivity.label,
-                    distance: parseFloat(distance.toFixed(2)),
-                    duration,
-                    pace: pace > 0 ? parseFloat(pace.toFixed(1)) : null,
-                    steps: estSteps,
-                    calories: estCalories,
-                    positions: positions.slice(0, 200),
-                    created_at: new Date().toISOString(),
-                    shared: true,
-                  }
-                  const history = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]')
-                  history.unshift(activity)
-                  localStorage.setItem('fitcarousell_activities', JSON.stringify(history.slice(0, 50)))
-                  // Also add to shared feed
-                  const feed = JSON.parse(localStorage.getItem('fitcarousell_shared_posts') || '[]')
-                  feed.unshift(activity)
-                  localStorage.setItem('fitcarousell_shared_posts', JSON.stringify(feed.slice(0, 20)))
-                  alert('Activity saved and shared to feed!')
-                  handleBack()
-                }}>
-                  Save & Share
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    )
+  const handleShare = async () => {
+    if (savedActivity) {
+      await shareToFeed(savedActivity.id, shareCaption)
+    }
+    resetTracker()
   }
 
-  // Activity selection screen
+  const resetTracker = () => {
+    setTrackerState('idle')
+    setSelectedType(null)
+    setSelectedColor('#8b5cf6')
+    setElapsedTime(0)
+    setStartedAt(null)
+    setManualDistance('')
+    setDistanceError('')
+    setShowSummary(false)
+    setSavedActivity(null)
+    setShareCaption('')
+    setShowSharePrompt(false)
+    gps.resetTracking()
+  }
+
+  const handleResumeRecovery = () => {
+    if (recoveredSession) {
+      setSelectedType(recoveredSession.type)
+      setElapsedTime(recoveredSession.elapsedTime)
+      setStartedAt(recoveredSession.startedAt)
+      setTrackerState('paused')
+      const act = ACTIVITIES.find(a => a.id === recoveredSession.type)
+      if (act) setSelectedColor(act.color)
+    }
+    setShowRecoveryPrompt(false)
+  }
+
+  const handleDiscardRecovery = () => {
+    localStorage.removeItem(SESSION_STORAGE_KEY)
+    setShowRecoveryPrompt(false)
+    setRecoveredSession(null)
+  }
+
   return (
     <div className="record-page">
-      <h2>Start Recording</h2>
-      <p className="record-subtitle">Choose your activity type</p>
-
-      <div className="activity-grid">
-        {ACTIVITIES.map(activity => (
-          <button
-            key={activity.id}
-            className="activity-card"
-            style={{ '--activity-color': activity.color }}
-            onClick={() => handleSelectActivity(activity)}
-          >
-            <div className="activity-card-icon">
-              {activity.icon}
+      {/* Recovery Prompt */}
+      {showRecoveryPrompt && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <h3>Session Interrupted</h3>
+            <p>
+              You have an unfinished <strong>{recoveredSession?.type}</strong> session
+              ({formatTime(recoveredSession?.elapsedTime || 0)} elapsed).
+            </p>
+            <div className="modal-actions">
+              <button className="btn-primary" onClick={handleResumeRecovery}>Resume</button>
+              <button className="btn-secondary" onClick={handleDiscardRecovery}>Discard</button>
             </div>
-            <span className="activity-card-label">{activity.label}</span>
-          </button>
-        ))}
-      </div>
+          </div>
+        </div>
+      )}
+
+      {/* Idle — Activity Selection */}
+      {trackerState === 'idle' && (
+        <>
+          <h2>Start Recording</h2>
+          <p className="record-subtitle">Choose your activity type</p>
+          <div className="activity-grid">
+            {ACTIVITIES.map(activity => (
+              <button
+                key={activity.id}
+                className="activity-card"
+                style={{ '--activity-color': activity.color }}
+                onClick={() => handleSelectType(activity)}
+              >
+                <div className="activity-card-icon">
+                  {activity.icon}
+                </div>
+                <span className="activity-card-label">{activity.label}</span>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Active — Recording or Paused */}
+      {(trackerState === 'running' || trackerState === 'paused') && (
+        <div className="record-active">
+          <div className="record-type" style={{ color: selectedColor }}>
+            {selectedType}
+          </div>
+          <div className="record-timer">{formatTime(elapsedTime)}</div>
+
+          <div className="record-gps-stats">
+            <div className="gps-stat">
+              <span className="gps-stat-value">{gps.totalDistance.toFixed(2)}</span>
+              <span className="gps-stat-label">km</span>
+            </div>
+            <div className="gps-stat">
+              <span className="gps-stat-value">
+                {gps.totalDistance > 0 ? ((elapsedTime / 60) / gps.totalDistance).toFixed(1) : '0.0'}
+              </span>
+              <span className="gps-stat-label">min/km</span>
+            </div>
+            <div className="gps-stat">
+              <span className="gps-stat-value">{gps.currentSpeed.toFixed(1)}</span>
+              <span className="gps-stat-label">km/h</span>
+            </div>
+          </div>
+
+          {gps.gpsAccuracy && (
+            <div className={`gps-accuracy ${gps.gpsAccuracy < 10 ? 'good' : gps.gpsAccuracy < 25 ? 'fair' : 'poor'}`}>
+              📡 GPS: ±{Math.round(gps.gpsAccuracy)}m
+            </div>
+          )}
+
+          {gps.gpsError && (
+            <div className="gps-error">⚠️ {gps.gpsError}</div>
+          )}
+
+          {gps.currentPosition && (
+            <ActivityMap
+              routePoints={gps.routePoints}
+              currentPosition={gps.currentPosition}
+              activityType={selectedType}
+              isLive={true}
+            />
+          )}
+
+          <div className="record-status">
+            {trackerState === 'paused' && <span className="status-paused">PAUSED</span>}
+            {trackerState === 'running' && <span className="status-recording">● RECORDING</span>}
+          </div>
+
+          <div className="record-controls">
+            {trackerState === 'running' ? (
+              <button className="btn-pause" onClick={handlePause}>⏸ Pause</button>
+            ) : (
+              <button className="btn-resume" onClick={handleResume}>▶ Resume</button>
+            )}
+            <button className="btn-stop" onClick={handleStop}>⏹ Stop</button>
+          </div>
+        </div>
+      )}
+
+      {/* Stopped — Save */}
+      {trackerState === 'stopped' && !showSummary && (
+        <div className="record-complete">
+          <h3>Activity Complete!</h3>
+          <p className="complete-info">{selectedType} — {formatTime(elapsedTime)}</p>
+
+          {gps.totalDistance >= 0.01 ? (
+            <div className="gps-distance-result">
+              <div className="gps-distance-value">{gps.totalDistance.toFixed(2)} km</div>
+              <div className="gps-distance-label">Distance tracked by GPS</div>
+            </div>
+          ) : (
+            <label className="distance-input">
+              Distance (km)
+              <input
+                type="number"
+                step="0.01"
+                min="0.01"
+                max="9999.99"
+                value={manualDistance}
+                onChange={(e) => setManualDistance(e.target.value)}
+                placeholder="GPS didn't detect movement — enter distance"
+              />
+              {distanceError && <span className="field-error">{distanceError}</span>}
+            </label>
+          )}
+
+          {gps.routePoints.length > 1 && (
+            <ActivityMap
+              routePoints={gps.routePoints}
+              currentPosition={null}
+              activityType={selectedType}
+              isLive={false}
+            />
+          )}
+
+          <div className="complete-actions">
+            <button className="btn-primary" onClick={handleSave}>Save Activity</button>
+            <button className="btn-cancel" onClick={resetTracker}>Discard</button>
+          </div>
+        </div>
+      )}
+
+      {/* Summary */}
+      {showSummary && !showSharePrompt && (
+        <div className="record-summary">
+          <h3>Activity Saved ✓</h3>
+          <div className="summary-grid">
+            <div className="summary-item">
+              <span className="summary-label">Type</span>
+              <span className="summary-value">{savedActivity?.type}</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-label">Duration</span>
+              <span className="summary-value">{formatTime(elapsedTime)}</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-label">Distance</span>
+              <span className="summary-value">{savedActivity?.distance} km</span>
+            </div>
+            <div className="summary-item">
+              <span className="summary-label">Pace</span>
+              <span className="summary-value">{savedActivity?.pace?.toFixed(1)} min/km</span>
+            </div>
+          </div>
+          <button className="btn-primary" onClick={() => setShowSharePrompt(true)}>Share to Community</button>
+          <button className="btn-secondary" onClick={resetTracker}>Done</button>
+        </div>
+      )}
+
+      {/* Share */}
+      {showSharePrompt && (
+        <div className="record-share">
+          <h3>Share Activity</h3>
+          <textarea
+            placeholder="Add a caption (optional)..."
+            value={shareCaption}
+            onChange={(e) => setShareCaption(e.target.value)}
+            maxLength={300}
+            rows={3}
+          />
+          <div className="share-actions">
+            <button className="btn-primary" onClick={handleShare}>Share</button>
+            <button className="btn-secondary" onClick={resetTracker}>Skip</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

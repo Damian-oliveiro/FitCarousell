@@ -254,3 +254,44 @@
   color: var(--text-primary);
   padding-left: 4px;
 }
+
+/* ===== MESSAGES BUTTON ===== */
+.marketplace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-messages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.btn-messages:hover {
+  background: var(--bg-hover);
+}
+
+.unread-badge {
+  background: #e53e3e;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}

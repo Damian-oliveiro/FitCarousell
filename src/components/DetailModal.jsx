@@ -171,18 +171,33 @@ export function BlogDetail({ post }) {
 }
 
 /** Listing Detail View */
-export function ListingDetailView({ listing }) {
+export function ListingDetailView({ listing, onChatWithSeller, onMakeOffer }) {
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([
     { id: 1, user: 'Buyer123', text: 'Is this still available?', time: '5h ago' },
     { id: 2, user: 'SportsFan', text: 'Would you accept $50?', time: '1d ago' },
   ])
+  const [offerAmount, setOfferAmount] = useState('')
+  const [showOfferInput, setShowOfferInput] = useState(false)
+  const [offerError, setOfferError] = useState('')
 
   const handleComment = (e) => {
     e.preventDefault()
     if (!comment.trim()) return
     setComments(prev => [{ id: Date.now(), user: 'You', text: comment.trim(), time: 'now' }, ...prev])
     setComment('')
+  }
+
+  const handleSubmitOffer = () => {
+    const amount = parseFloat(offerAmount)
+    if (!offerAmount || isNaN(amount) || amount <= 0) {
+      setOfferError('Enter a valid amount')
+      return
+    }
+    setOfferError('')
+    if (onMakeOffer) onMakeOffer(amount)
+    setShowOfferInput(false)
+    setOfferAmount('')
   }
 
   return (
@@ -213,13 +228,32 @@ export function ListingDetailView({ listing }) {
 
       <div className="listing-detail-seller-info">
         <h4>Seller</h4>
-        <p>{listing.profiles?.display_name || 'Unknown'} {listing.profiles?.role === 'merchant' && <span className="merchant-badge">PRO</span>}</p>
+        <p>{listing.profiles?.display_name || listing.seller || 'Unknown'} {listing.profiles?.role === 'merchant' && <span className="merchant-badge">PRO</span>}</p>
       </div>
 
       <div className="listing-detail-actions-row">
-        <button className="btn-primary">Chat with Seller</button>
-        <button className="btn-secondary">Make Offer</button>
+        <button className="btn-primary" onClick={onChatWithSeller}>Chat with Seller</button>
+        <button className="btn-secondary" onClick={() => setShowOfferInput(!showOfferInput)}>Make Offer</button>
       </div>
+
+      {showOfferInput && (
+        <div className="offer-input-section">
+          <div className="offer-input-row">
+            <span className="offer-currency">$</span>
+            <input
+              type="number"
+              step="0.01"
+              min="0.01"
+              value={offerAmount}
+              onChange={(e) => { setOfferAmount(e.target.value); setOfferError('') }}
+              placeholder="Enter your offer"
+              className="offer-amount-input"
+            />
+            <button className="btn-primary btn-sm" onClick={handleSubmitOffer}>Send</button>
+          </div>
+          {offerError && <span className="field-error">{offerError}</span>}
+        </div>
+      )}
 
       <div className="detail-section">
         <h4>Reviews</h4>

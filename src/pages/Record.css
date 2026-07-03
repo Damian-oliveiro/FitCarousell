@@ -75,225 +75,200 @@
   }
 }
 
-/* ===== RECORDING VIEW ===== */
-.record-back-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 20px;
-  padding: 8px 0;
-  cursor: pointer;
-}
-
-.record-back-btn:hover {
-  color: var(--text-primary);
-}
-
-.recording-view {
+/* ===== ACTIVE TRACKING STATE ===== */
+.record-active {
   text-align: center;
   padding: 20px 0;
 }
 
-.recording-activity-label {
+.record-type {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.record-timer {
+  font-size: 3.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.record-gps-stats {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 32px;
-  color: var(--activity-color);
+  gap: 28px;
+  margin: 16px 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
-.recording-activity-label h3 {
-  font-size: 1.2rem;
-}
-
-.recording-icon {
-  display: flex;
-}
-
-.recording-stats {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-bottom: 32px;
-}
-
-.recording-stat {
+.gps-stat {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.main-stat .recording-stat-value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--activity-color);
-}
-
-.recording-stat-value {
+.gps-stat-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
-.recording-stat-label {
-  font-size: 0.7rem;
+.gps-stat-label {
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
-.recording-error {
-  background: rgba(248, 113, 113, 0.1);
-  border: 1px solid rgba(248, 113, 113, 0.3);
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 20px;
-}
-
-.recording-error p {
-  color: var(--accent-error);
-  font-size: 0.85rem;
-}
-
-.recording-controls {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.record-start-btn {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: var(--activity-color);
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--activity-color) 40%, transparent);
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.record-start-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 28px color-mix(in srgb, var(--activity-color) 50%, transparent);
-}
-
-.record-start-btn:active {
-  transform: scale(0.95);
-}
-
-.record-stop-btn {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: var(--accent-error);
-  color: white;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(248, 113, 113, 0.4);
-  animation: pulseSlow 2s ease-in-out infinite;
-}
-
-@keyframes pulseSlow {
-  0%, 100% { box-shadow: 0 4px 20px rgba(248, 113, 113, 0.4); }
-  50% { box-shadow: 0 4px 32px rgba(248, 113, 113, 0.6); }
-}
-
-.record-stop-btn:active {
-  transform: scale(0.95);
-}
-
-.recording-summary {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 16px;
-  margin-top: 16px;
-}
-
-.recording-summary p {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-}
-
-/* ===== RECORDING MAP ===== */
-.recording-map {
-  margin-bottom: 20px;
-  border-radius: 16px;
-  overflow: hidden;
-  height: 250px;
-  border: 1px solid var(--border-color);
-}
-
-.recording-map .activity-map-container {
-  height: 100%;
-}
-
-.recording-map .activity-map {
-  height: 100%;
-  border-radius: 16px;
-}
-
-/* ===== SECONDARY STATS ===== */
-.secondary-stats {
-  margin-top: 8px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
-}
-
-.secondary-stats .recording-stat-value {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-}
-
-/* ===== CONNECT DEVICE ===== */
-.connect-device-btn {
-  display: block;
-  margin: 16px auto;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  padding: 10px 20px;
-  border-radius: 20px;
+.gps-accuracy {
   font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+  padding: 4px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 14px;
 }
 
-.connect-device-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-}
+.gps-accuracy.good { background: rgba(72, 187, 120, 0.15); color: #48bb78; }
+.gps-accuracy.fair { background: rgba(236, 201, 75, 0.15); color: #ecc94b; }
+.gps-accuracy.poor { background: rgba(229, 62, 62, 0.15); color: #e53e3e; }
 
-.device-connected-badge {
-  display: block;
-  text-align: center;
-  margin: 12px auto;
-  font-size: 0.75rem;
-  color: var(--accent-success);
-  font-weight: 500;
-}
-
-/* ===== RECORDING SUMMARY ===== */
-.recording-summary-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.recording-summary-actions .btn-primary,
-.recording-summary-actions .btn-secondary {
-  flex: 1;
-  padding: 12px;
+.gps-error {
   font-size: 0.85rem;
+  color: #e53e3e;
+  background: rgba(229, 62, 62, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.record-status { margin-bottom: 20px; }
+
+.status-recording {
+  color: var(--accent-primary, #8b5cf6);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.status-paused {
+  color: #ecc94b;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.record-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn-pause, .btn-resume {
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-pause { background: #ecc94b; color: #1a1a2e; }
+.btn-resume { background: #34d399; color: white; }
+
+.btn-stop {
+  background: #e53e3e;
+  color: white;
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===== COMPLETE / SUMMARY / SHARE ===== */
+.record-complete, .record-summary, .record-share {
+  text-align: center;
+  padding: 32px 0;
+}
+
+.complete-info {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.gps-distance-result { margin: 20px 0 24px; }
+.gps-distance-value { font-size: 2.2rem; font-weight: 700; color: var(--accent-primary, #8b5cf6); }
+.gps-distance-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+.distance-input {
+  display: block;
+  max-width: 300px;
+  margin: 0 auto 20px;
+  text-align: left;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.distance-input input { margin-top: 6px; width: 100%; }
+.field-error { color: #e53e3e; font-size: 0.8rem; display: block; margin-top: 4px; }
+
+.complete-actions { display: flex; gap: 12px; justify-content: center; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.summary-item {
+  background: var(--bg-card);
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.summary-label { display: block; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+.summary-value { font-size: 1.1rem; font-weight: 600; }
+
+.record-share textarea { width: 100%; max-width: 400px; margin-bottom: 16px; resize: none; }
+.share-actions { display: flex; gap: 12px; justify-content: center; }
+
+/* ===== BUTTONS ===== */
+.btn-primary { background: var(--accent-primary, #8b5cf6); color: white; padding: 12px 24px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; }
+.btn-secondary { background: var(--bg-hover); color: var(--text-primary); padding: 12px 24px; border-radius: 12px; font-weight: 500; border: 1px solid var(--border-color); cursor: pointer; }
+.btn-cancel { background: transparent; color: var(--text-muted); border: none; padding: 12px 24px; font-size: 0.9rem; cursor: pointer; }
+
+/* ===== MODAL ===== */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal-card { background: var(--bg-card); border-radius: 16px; padding: 32px; max-width: 360px; width: 100%; text-align: center; }
+.modal-card h3 { margin-bottom: 12px; }
+.modal-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+  .record-timer { font-size: 2.5rem; }
+  .record-gps-stats { gap: 16px; }
+  .gps-stat-value { font-size: 1.2rem; }
+  .summary-grid { grid-template-columns: 1fr; }
 }
