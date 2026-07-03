@@ -4,12 +4,12 @@ const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('fitcarousell_theme') || 'light'
+    return localStorage.getItem('tribefit_theme') || 'light'
   })
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('fitcarousell_theme', theme)
+    localStorage.setItem('tribefit_theme', theme)
   }, [theme])
 
   const toggleTheme = () => {

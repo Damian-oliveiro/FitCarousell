@@ -11,7 +11,7 @@ if (hasValidConfig) {
   supabase = createClient(supabaseUrl, supabaseAnonKey)
 } else {
   // Demo mode — mock Supabase client so the app renders without a backend
-  console.warn('[FitCarousell] No valid Supabase config. Running in demo mode.')
+  console.warn('[TribeFit] No valid Supabase config. Running in demo mode.')
 
   const mockChain = () => {
     const handler = {

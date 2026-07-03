@@ -1,5 +1,5 @@
 -- =============================================
--- FitCarousell Overhaul Migration
+-- TribeFit Overhaul Migration
 -- Adds: chat, offers, spotlight, ratings, groups, challenges, advertisements
 -- =============================================
 

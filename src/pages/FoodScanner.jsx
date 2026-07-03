@@ -4,9 +4,9 @@ import './FoodScanner.css'
 
 const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY || ''
 const MAX_SCANS = 20
-const SCAN_COUNT_KEY = 'fitcarousell_scan_count'
-const GOALS_KEY = 'fitcarousell_nutrition_goals'
-const HISTORY_KEY = 'fitcarousell_nutrition_history'
+const SCAN_COUNT_KEY = 'tribefit_scan_count'
+const GOALS_KEY = 'tribefit_nutrition_goals'
+const HISTORY_KEY = 'tribefit_nutrition_history'
 
 const MOCK_RESULTS = [
   { food: 'Grilled Chicken Breast with Rice', calories: 480, protein: 42, carbs: 52, fat: 8 },

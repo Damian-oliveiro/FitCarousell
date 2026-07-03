@@ -1,4 +1,4 @@
-FitCarousell - Setup & Run Guide
+TribeFit - Setup & Run Guide
 =================================
 
 Prerequisites:

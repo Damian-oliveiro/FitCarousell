@@ -1,4 +1,4 @@
-# FitCarousell — Pitch & Spec Summary
+# TribeFit — Pitch & Spec Summary
 
 ## One-Liner
 
@@ -17,7 +17,7 @@ Active Singaporeans juggle 3-5 apps to track workouts, buy gear, join events, fo
 
 ---
 
-## The Solution: FitCarousell
+## The Solution: TribeFit
 
 A unified mobile-first platform where your fitness life and marketplace activity live together:
 
@@ -45,19 +45,19 @@ A unified mobile-first platform where your fitness life and marketplace activity
 - Missed a Nike Run Club event because she didn't check their Instagram in time
 - Wants to sell her old Garmin but doesn't know what price is fair in the running community
 
-**How FitCarousell helps Rachel:**
+**How TribeFit helps Rachel:**
 1. One app for tracking runs AND selling her old Garmin to someone who appreciates it
 2. Discovers group runs and paid marathon training events through the Groups tab
 3. AI food scanner helps her nail pre-race nutrition without manual calorie counting
 4. Blog posts from coaches she follows appear between friends' run posts — no switching apps
 5. When she posts her half marathon PR, friends in her running group see it and comment immediately
 
-**Rachel's typical week on FitCarousell:**
+**Rachel's typical week on TribeFit:**
 - Monday: Scans breakfast → logs macros toward her 1800 cal goal
 - Tuesday: Records a 7K run with GPS → shares route to feed → gets comments
 - Wednesday: Browses marketplace for new Asics GT-2000 → finds one from a seller in Bedok
 - Thursday: Reads a blog from Coach Maya about race-week taper strategies
-- Saturday: Joins a "Nike Run Club × FitCarousell 10K" event she found in Groups
+- Saturday: Joins a "Nike Run Club × TribeFit 10K" event she found in Groups
 - Sunday: Posts her used Hoka Clifton 8 for sale → gets 3 offers by afternoon
 
 ---
@@ -68,7 +68,7 @@ A unified mobile-first platform where your fitness life and marketplace activity
 ┌──────────────────────────────────────────────────────────┐
 │ Scene 1: Rachel's Morning                                 │
 │                                                           │
-│ 6:30 AM. Rachel opens FitCarousell.                      │
+│ 6:30 AM. Rachel opens TribeFit.                      │
 │ Her feed shows: Jordan finished a 5K (map + stats),      │
 │ Coach Maya posted "Race Day Nutrition Tips" (blog),       │
 │ and Nike is promoting a $85 marathon event (ad).         │
@@ -164,9 +164,9 @@ A unified mobile-first platform where your fitness life and marketplace activity
 
 ### For Nike, Adidas, Asics, Garmin:
 
-1. **Targeted audience** — Every user on FitCarousell is actively training. Zero wasted impressions. Compare this to Carousell where <5% of users are fitness-focused.
+1. **Targeted audience** — Every user on TribeFit is actively training. Zero wasted impressions. Compare this to Carousell where <5% of users are fitness-focused.
 
-2. **Purchase intent at peak** — A runner who just PR'd their 10K is emotionally primed to upgrade shoes. A cyclist who joined a group ride wants better gear. FitCarousell puts the shop next to the achievement.
+2. **Purchase intent at peak** — A runner who just PR'd their 10K is emotionally primed to upgrade shoes. A cyclist who joined a group ride wants better gear. TribeFit puts the shop next to the achievement.
 
 3. **Event integration** — Brands can host events (Nike Run Club, Adidas Runners) directly in-app. Participants buy gear before/after. Closed-loop from community engagement to purchase.
 
@@ -221,7 +221,7 @@ All with Row Level Security policies ensuring users can only access their own da
 ### Commit History (Spec-Guided Build)
 
 ```
-feat: FitCarousell overhaul - Strava x Carousell hybrid
+feat: TribeFit overhaul - Strava x Carousell hybrid
 feat: AI food scanner, interactive UI, route maps, floating nav
 feat: marketplace split, blog posts, route maps, record grid
 feat: interactive cards, detail modals, comments, groups join fix

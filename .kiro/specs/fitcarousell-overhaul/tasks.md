@@ -1,8 +1,8 @@
-# Implementation Plan: FitCarousell Overhaul
+# Implementation Plan: TribeFit Overhaul
 
 ## Overview
 
-This plan restructures FitCarousell from a fitness-tracking app into a fitness-social-marketplace hybrid. Implementation proceeds in layers: database schema first, then navigation/routing, then individual features from simplest to most complex, finishing with cross-cutting concerns like advertisements. Each task builds on previous ones so there's no orphaned code.
+This plan restructures TribeFit from a fitness-tracking app into a fitness-social-marketplace hybrid. Implementation proceeds in layers: database schema first, then navigation/routing, then individual features from simplest to most complex, finishing with cross-cutting concerns like advertisements. Each task builds on previous ones so there's no orphaned code.
 
 ## Tasks
 

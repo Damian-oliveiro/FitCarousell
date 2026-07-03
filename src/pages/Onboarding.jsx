@@ -114,8 +114,8 @@ export default function Onboarding() {
       feedPrefs,
       completedAt: new Date().toISOString(),
     }
-    localStorage.setItem('fitcarousell_onboarding', JSON.stringify(preferences))
-    localStorage.setItem('fitcarousell_onboarded', 'true')
+    localStorage.setItem('tribefit_onboarding', JSON.stringify(preferences))
+    localStorage.setItem('tribefit_onboarded', 'true')
     navigate('/', { replace: true })
   }
 
@@ -152,7 +152,7 @@ export default function Onboarding() {
               <div className="welcome-logo">
                 <IconTarget size={36} style={{ color: 'white' }} />
               </div>
-              <h1>Welcome to FitCarousell</h1>
+              <h1>Welcome to TribeFit</h1>
               <p className="welcome-tagline">Your fitness community meets marketplace</p>
             </div>
             <div className="onboarding-nav" style={{ justifyContent: 'center' }}>
@@ -517,7 +517,7 @@ export default function Onboarding() {
                 <IconCheck size={36} />
               </div>
               <h1>You're ready to go!</h1>
-              <p className="final-subtitle">Your preferences are saved. Time to explore FitCarousell.</p>
+              <p className="final-subtitle">Your preferences are saved. Time to explore TribeFit.</p>
             </div>
             <div className="onboarding-nav" style={{ justifyContent: 'center' }}>
               <button className="btn-start" onClick={handleComplete}>

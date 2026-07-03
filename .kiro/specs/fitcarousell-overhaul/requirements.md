@@ -2,11 +2,11 @@
 
 ## Introduction
 
-FitCarousell is a fitness-social-marketplace hybrid app — a crossover between Strava (fitness tracking and social running community) and Carousell (peer-to-peer marketplace). This overhaul restructures the app's navigation and page architecture to center around a scrollable Home feed, a persistent bottom navigation bar ("hanging footer"), an enhanced Marketplace with chat/offers/spotlight/ratings, a Groups section for community and merchant events, a Record placeholder for future GPS tracking, and a Profile/Settings page.
+TribeFit is a fitness-social-marketplace hybrid app — a crossover between Strava (fitness tracking and social running community) and Carousell (peer-to-peer marketplace). This overhaul restructures the app's navigation and page architecture to center around a scrollable Home feed, a persistent bottom navigation bar ("hanging footer"), an enhanced Marketplace with chat/offers/spotlight/ratings, a Groups section for community and merchant events, a Record placeholder for future GPS tracking, and a Profile/Settings page.
 
 ## Glossary
 
-- **App**: The FitCarousell React single-page application
+- **App**: The TribeFit React single-page application
 - **Home_Feed**: The scrollable main page showing runs, friends' runs, community runs, and merchant advertisements
 - **Footer_Nav**: The persistent bottom navigation bar with five tabs: Home, Marketplace, Record, Groups, You
 - **Marketplace**: The Carousell-like section where users list items, chat with sellers, make offers, spotlight listings, and rate transactions

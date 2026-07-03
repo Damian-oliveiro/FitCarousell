@@ -1,8 +1,8 @@
-# Design Document: FitCarousell Overhaul
+# Design Document: TribeFit Overhaul
 
 ## Overview
 
-This design overhauls FitCarousell from a fitness-tracking app with a community tab into a fitness-social-marketplace hybrid. The key structural changes are:
+This design overhauls TribeFit from a fitness-tracking app with a community tab into a fitness-social-marketplace hybrid. The key structural changes are:
 
 1. **Home Feed as default** — The "/" route becomes a scrollable activity feed with infinite scroll and interspersed merchant advertisements.
 2. **New navigation structure** — A persistent 5-tab bottom nav (Home, Marketplace, Record, Groups, You) replaces the current header/mobile nav.
@@ -571,7 +571,7 @@ Property-based tests validate universal invariants across many generated inputs.
 
 **Configuration:**
 - Minimum 100 iterations per property test
-- Each test tagged with: `Feature: fitcarousell-overhaul, Property {N}: {description}`
+- Each test tagged with: `Feature: tribefit-overhaul, Property {N}: {description}`
 
 **Property tests to implement:**
 

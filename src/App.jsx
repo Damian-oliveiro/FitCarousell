@@ -34,7 +34,7 @@ function ProtectedRoute({ children }) {
   }
 
   // Redirect to onboarding if user hasn't completed it
-  if (!localStorage.getItem('fitcarousell_onboarded')) {
+  if (!localStorage.getItem('tribefit_onboarded')) {
     return <Navigate to="/onboarding" replace />
   }
 
@@ -58,7 +58,7 @@ function OnboardingRoute({ children }) {
   }
 
   // If already onboarded, go to home
-  if (localStorage.getItem('fitcarousell_onboarded')) {
+  if (localStorage.getItem('tribefit_onboarded')) {
     return <Navigate to="/" replace />
   }
 

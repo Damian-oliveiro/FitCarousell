@@ -40,7 +40,7 @@ const ACTIVITIES = [
   )},
 ]
 
-const SESSION_STORAGE_KEY = 'fitcarousell_active_session'
+const SESSION_STORAGE_KEY = 'tribefit_active_session'
 
 export default function Record() {
   const { addActivity, shareToFeed } = useData()

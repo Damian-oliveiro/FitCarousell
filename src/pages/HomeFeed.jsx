@@ -63,7 +63,7 @@ export default function HomeFeed() {
         const allMockPosts = generateMockFeedPosts(30)
         const blogPosts = generateMockBlogPosts(15)
         // Load user's shared activities from localStorage
-        const sharedPosts = JSON.parse(localStorage.getItem('fitcarousell_shared_posts') || '[]').map(a => ({
+        const sharedPosts = JSON.parse(localStorage.getItem('tribefit_shared_posts') || '[]').map(a => ({
           id: a.id,
           created_at: a.created_at,
           caption: `Just completed a ${a.distance}km ${a.type.toLowerCase()}!`,

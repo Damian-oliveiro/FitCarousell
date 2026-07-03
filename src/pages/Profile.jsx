@@ -251,7 +251,7 @@ const typeColors = { Run: '#8b5cf6', Cycle: '#60a5fa', Swim: '#22d3ee', Walk: '#
 function RunHistory({ userName }) {
   const [runs] = useState(() => {
     // Load real saved activities from localStorage
-    const savedActivities = JSON.parse(localStorage.getItem('fitcarousell_activities') || '[]').map(a => ({
+    const savedActivities = JSON.parse(localStorage.getItem('tribefit_activities') || '[]').map(a => ({
       id: a.id,
       created_at: a.created_at,
       caption: null,

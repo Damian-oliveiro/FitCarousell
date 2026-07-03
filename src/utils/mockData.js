@@ -346,7 +346,7 @@ export function generateMockAds(count = 5) {
     id: randomId(),
     merchant_id: randomId(),
     title: `${LISTING_TITLES[Math.floor(Math.random() * LISTING_TITLES.length)]} — Special Offer!`,
-    image: 'https://via.placeholder.com/400x200/8b5cf6/ffffff?text=FitCarousell+Ad',
+    image: 'https://via.placeholder.com/400x200/8b5cf6/ffffff?text=TribeFit+Ad',
     link_type: 'listing',
     link_id: randomId(),
     is_active: true,

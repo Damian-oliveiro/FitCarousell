@@ -7,7 +7,7 @@ import './Activities.css'
 const typeIcons = { Run: 'R', Cycle: 'C', Swim: 'S', Walk: 'W' }
 const typeColors = { Run: '#fc4c02', Cycle: '#2196f3', Swim: '#00bcd4', Walk: '#4caf50' }
 
-const SESSION_STORAGE_KEY = 'fitcarousell_active_session'
+const SESSION_STORAGE_KEY = 'tribefit_active_session'
 
 export default function Activities() {
   const { activities, addActivity, shareToFeed } = useData()

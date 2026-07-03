@@ -1,5 +1,5 @@
 -- =============================================
--- FitCarousell Database Schema (Supabase/PostgreSQL)
+-- TribeFit Database Schema (Supabase/PostgreSQL)
 -- =============================================
 
 -- Enable UUID extension

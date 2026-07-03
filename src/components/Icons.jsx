@@ -1,7 +1,7 @@
 import React from 'react'
 
 /**
- * Minimal SVG icon library for FitCarousell.
+ * Minimal SVG icon library for TribeFit.
  * No emojis — clean, modern line icons.
  */
 
