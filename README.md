@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/cover.png" alt="TribeFit — Move. Connect. Fuel. Thrive." width="100%" />
+</p>
+
 # TribeFit — Pitch & Spec Summary
 
 ## One-Liner
