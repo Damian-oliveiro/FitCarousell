@@ -205,7 +205,7 @@ export function ChatProvider({ children }) {
 
       if (fetchError) {
         console.error('Error checking existing thread:', fetchError)
-        return null
+        throw new Error(fetchError.message)
       }
 
       if (existing) return existing
@@ -223,7 +223,7 @@ export function ChatProvider({ children }) {
 
       if (insertError) {
         console.error('Error creating chat thread:', insertError)
-        return null
+        throw new Error(insertError.message)
       }
 
       // Add to local state

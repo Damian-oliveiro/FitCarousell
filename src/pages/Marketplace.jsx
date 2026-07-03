@@ -20,7 +20,7 @@ const SORT_OPTIONS = [
 export default function Marketplace() {
   const { isMerchant, user } = useAuth()
   const { listings: realListings, fetchListings } = useData()
-  const { openOrCreateThread, sendMessage } = useChat()
+  const { openOrCreateThread, sendMessage, totalUnreadCount } = useChat()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('used') // 'used' | 'shop'
   const [usedListings, setUsedListings] = useState([])
@@ -51,13 +51,14 @@ export default function Marketplace() {
   // Merge real Supabase listings with mock data for the "used" tab
   // Real listings appear first, then mock data fills out the page
   useEffect(() => {
-    const mockUsed = generateUsedListings(50)
+    const mockUsed = generateUsedListings(50).map(item => ({ ...item, _isMock: true }))
     // Real listings from DB go first
     const realUsed = (realListings || []).map(listing => ({
       ...listing,
       type: 'used',
       wear: listing.condition || 'Good',
       seller: listing.profiles?.display_name || 'Seller',
+      _isMock: false,
     }))
     setUsedListings([...realUsed, ...mockUsed])
   }, [realListings])
@@ -86,6 +87,15 @@ export default function Marketplace() {
     <div className="marketplace">
       <div className="marketplace-header">
         <h2>Marketplace</h2>
+        <button
+          className="btn-messages"
+          onClick={() => navigate('/marketplace/chat')}
+        >
+          💬 Messages
+          {totalUnreadCount > 0 && (
+            <span className="unread-badge">{totalUnreadCount}</span>
+          )}
+        </button>
       </div>
 
       {/* Tab switcher */}
@@ -245,23 +255,62 @@ export default function Marketplace() {
           <ListingDetailView
             listing={selectedListing}
             onChatWithSeller={async () => {
-              if (!selectedListing?.seller_id || !user) return
-              if (selectedListing.seller_id === user.id) return // can't chat with yourself
-              const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
-              if (thread) {
-                setSelectedListing(null)
-                navigate(`/marketplace/chat/${thread.id}`)
+              if (!user) {
+                alert('Please log in to chat with the seller')
+                return
+              }
+              if (selectedListing?._isMock) {
+                alert('This is a demo listing. Chat is only available on real listings.')
+                return
+              }
+              if (!selectedListing?.seller_id) {
+                alert('This listing is not available for chat')
+                return
+              }
+              if (selectedListing.seller_id === user.id) {
+                alert("This is your own listing")
+                return
+              }
+              try {
+                const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
+                if (thread) {
+                  setSelectedListing(null)
+                  navigate(`/marketplace/chat/${thread.id}`)
+                } else {
+                  alert('Could not open chat. Please try again.')
+                }
+              } catch (err) {
+                alert('Chat error: ' + (err.message || 'Unknown error'))
               }
             }}
             onMakeOffer={async (amount) => {
-              if (!selectedListing?.seller_id || !user) return
-              if (selectedListing.seller_id === user.id) return
-              const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
-              if (thread) {
-                // Send the offer as a message
-                await sendMessage(thread.id, `Offer: $${amount.toFixed(2)} for "${selectedListing.title}"`)
-                setSelectedListing(null)
-                navigate(`/marketplace/chat/${thread.id}`)
+              if (!user) {
+                alert('Please log in to make an offer')
+                return
+              }
+              if (selectedListing?._isMock) {
+                alert('This is a demo listing. Offers are only available on real listings.')
+                return
+              }
+              if (!selectedListing?.seller_id) {
+                alert('This listing is not available for offers')
+                return
+              }
+              if (selectedListing.seller_id === user.id) {
+                alert("This is your own listing")
+                return
+              }
+              try {
+                const thread = await openOrCreateThread(selectedListing.id, selectedListing.seller_id)
+                if (thread) {
+                  await sendMessage(thread.id, `Offer: $${amount.toFixed(2)} for "${selectedListing.title}"`)
+                  setSelectedListing(null)
+                  navigate(`/marketplace/chat/${thread.id}`)
+                } else {
+                  alert('Could not open chat. Please try again.')
+                }
+              } catch (err) {
+                alert('Offer error: ' + (err.message || 'Unknown error'))
               }
             }}
           />
